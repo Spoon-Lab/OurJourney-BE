@@ -16,5 +16,5 @@ public class Profile {
     private String profileImg;
     private String selfIntroduction;
     private int userId;
-
+  
 }
