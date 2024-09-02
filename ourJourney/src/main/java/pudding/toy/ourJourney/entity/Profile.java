@@ -1,20 +1,23 @@
 package pudding.toy.ourJourney.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor @Builder
 public class Profile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nickName;
-    private String profileImg;
-    private String selfIntroduction;
-    private int userId;
+    Long id;
+    String nickName;
+    String profileImg;
+    String selfIntroduction;
+    @OneToMany(mappedBy = "profile")
+    List<Post> posts;
+
 
 }
