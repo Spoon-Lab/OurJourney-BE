@@ -11,20 +11,11 @@ import java.util.List;
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Post extends BaseTimeEntity{
+public class Tag extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String title;
-    String imgUrl;
-    @ManyToOne @JoinColumn(name = "category_id")
-    Category category;
-    @ManyToOne @JoinColumn(name = "profile_id")
-    Profile profile;
-    @OneToMany(mappedBy = "post")
+    String name; //해시태그 이름
+    @OneToMany(mappedBy = "tag")
     List<PostTag> postTags;
-    @OneToMany(mappedBy= "post")
-    List<PostLike> postLikes;
-    @OneToMany(mappedBy = "post")
-    List<Thread> threads;
 
 }

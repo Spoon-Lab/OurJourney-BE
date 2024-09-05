@@ -1,25 +1,20 @@
 package pudding.toy.ourJourney.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor @Builder
-public class Profile {
+public class PostLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "user_id")
-    Long userId;
-    String nickName;
-    String profileImg;
-    String selfIntroduction;
-    @OneToMany(mappedBy = "profile")
-    List<Post> posts;
-
+    @ManyToOne @JoinColumn(name = "post_id")
+    Post post;
+    @ManyToOne @JoinColumn (name = "profile_id")
+    Profile profile;
 
 }
