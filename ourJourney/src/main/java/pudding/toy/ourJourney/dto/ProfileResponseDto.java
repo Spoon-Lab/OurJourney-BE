@@ -1,11 +1,8 @@
 package pudding.toy.ourJourney.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pudding.toy.ourJourney.dto.django.ProfileAuthResponseDto;
-import pudding.toy.ourJourney.entity.Profile;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 public class ProfileResponseDto {

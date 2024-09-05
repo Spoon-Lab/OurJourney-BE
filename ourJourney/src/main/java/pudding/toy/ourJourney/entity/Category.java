@@ -6,11 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Entity @Getter
+import java.util.List;
+
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Like{
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Category {
+    @Id
+    private Long id;
+    @Column(name = "category_name")
+    private String name; //categoryname
+    @OneToMany(mappedBy = "post")
+    private List<Post> posts;
 
 }

@@ -2,20 +2,17 @@ package pudding.toy.ourJourney.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
-@Entity @Getter
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Tag extends BaseTimeEntity{
+public class Attendee {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name; //해시태그 이름
-    @OneToMany(mappedBy = "tag")
-    List<PostTag> postTags;
-
+    @ManyToOne @JoinColumn(name = "profile_id")
+    Profile profile;
+    @ManyToOne @JoinColumn(name = "post_id")
+    Post post;
 }

@@ -9,12 +9,12 @@ import lombok.experimental.FieldDefaults;
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostLike { //Post and Tag connection middle table
+public class PostLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne @JoinColumn(name = "post_id")
     Post post;
-    @ManyToOne @JoinColumn(name = "tag_id")
-    Like like;
+    @ManyToOne @JoinColumn (name = "profile_id")
+    Profile profile;
 
 }

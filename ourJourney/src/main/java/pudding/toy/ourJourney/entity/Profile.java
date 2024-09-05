@@ -13,6 +13,8 @@ import java.util.List;
 public class Profile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(name = "user_id")
+    Long userId;
     String nickName;
     String profileImg;
     String selfIntroduction;
