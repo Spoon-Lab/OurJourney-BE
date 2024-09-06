@@ -17,7 +17,7 @@ public class Category {
     private Long id;
     @Column(name = "category_name")
     private String name; //categoryname
-    @OneToMany(mappedBy = "post")
-    private List<Post> posts;
+    @OneToMany(mappedBy = "category")
+    private List<Contents> contents;
 
 }

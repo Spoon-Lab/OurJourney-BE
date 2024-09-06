@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pudding.toy.ourJourney.entity.Post;
+import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Category;
 
 import java.time.LocalDateTime;
@@ -21,11 +21,11 @@ public class PostContentResponseDto {
     @Enumerated(EnumType.STRING)
     Category category;
     String postImg;
-    public static PostContentResponseDto from(Post post){
+    public static PostContentResponseDto from(Contents contents){
         return PostContentResponseDto.builder()
-                .title(post.getTitle())
-                .nickName(post.getProfile().getNickName())
-                .postImg(post.getImgUrl())
+                .title(contents.getTitle())
+                .nickName(contents.getProfile().getNickName())
+                .postImg(contents.getImgUrl())
                 .build();
     }
 }

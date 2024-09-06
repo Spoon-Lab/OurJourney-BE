@@ -14,5 +14,5 @@ public class Attendee {
     @ManyToOne @JoinColumn(name = "profile_id")
     Profile profile;
     @ManyToOne @JoinColumn(name = "post_id")
-    Post post;
+    Contents contents;
 }

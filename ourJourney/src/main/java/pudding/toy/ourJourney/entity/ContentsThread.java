@@ -11,7 +11,8 @@ import java.util.List;
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Thread extends BaseTimeEntity{
+@Table(name = "thread")
+public class ContentsThread extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String content;
@@ -21,6 +22,6 @@ public class Thread extends BaseTimeEntity{
     @OneToMany @JoinColumn(name = "tag_id")
     List<ThreadTag> threadTags;
     @ManyToOne @JoinColumn(name = "post_id")
-    Post post;
+    Contents contents;
 
 }

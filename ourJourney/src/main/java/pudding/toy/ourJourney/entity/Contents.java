@@ -8,23 +8,27 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Entity @Getter
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Post extends BaseTimeEntity{
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Contents extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String title;
     String imgUrl;
-    @ManyToOne @JoinColumn(name = "category_id")
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     Category category;
-    @ManyToOne @JoinColumn(name = "profile_id")
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     Profile profile;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "contents")
     List<PostTag> postTags;
-    @OneToMany(mappedBy= "post")
+    @OneToMany(mappedBy = "contents")
     List<PostLike> postLikes;
-    @OneToMany(mappedBy = "post")
-    List<Thread> threads;
+    @OneToMany(mappedBy = "contents")
+    List<ContentsThread> contentsThreads;
 
 }

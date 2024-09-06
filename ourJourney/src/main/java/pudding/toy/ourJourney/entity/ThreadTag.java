@@ -13,7 +13,7 @@ public class ThreadTag { //Post and Tag connection middle table
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne @JoinColumn(name = "thread_id")
-    Thread thread;
+    ContentsThread contentsThread;
     @ManyToOne @JoinColumn(name = "tag_id")
     Tag tag;
 
