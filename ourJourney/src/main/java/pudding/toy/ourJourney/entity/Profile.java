@@ -19,7 +19,7 @@ public class Profile {
     String profileImg;
     String selfIntroduction;
     @OneToMany(mappedBy = "profile")
-    List<Post> posts;
+    List<Contents> contents;
 
 
 }

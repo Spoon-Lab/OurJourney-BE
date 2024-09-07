@@ -13,7 +13,7 @@ public class PostTag{ //Post and Tag connection middle table
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne @JoinColumn(name = "post_id")
-    Post post;
+    Contents contents;
     @ManyToOne @JoinColumn(name = "tag_id")
     Tag tag;
 
