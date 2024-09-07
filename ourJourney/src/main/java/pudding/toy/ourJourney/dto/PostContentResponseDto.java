@@ -10,18 +10,22 @@ import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Category;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class PostContentResponseDto {
     String title;
-    String nickName;
+    Optional<String> nickName;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
     @Enumerated(EnumType.STRING)
     Category category;
     String postImg;
-    public static PostContentResponseDto from(Contents contents){
+
+    public static PostContentResponseDto from(Contents contents) {
         return PostContentResponseDto.builder()
                 .title(contents.getTitle())
                 .nickName(contents.getProfile().getNickName())
