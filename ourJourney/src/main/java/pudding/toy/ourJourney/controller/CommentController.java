@@ -13,6 +13,7 @@ import pudding.toy.ourJourney.dto.comment.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Tag(name = "Comment API")
 @RestController
 @RequiredArgsConstructor
 public class CommentController {
