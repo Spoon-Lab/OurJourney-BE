@@ -12,7 +12,7 @@ import pudding.toy.ourJourney.dto.profile.CreateProfileRequest;
 @RequestMapping("/profiles")
 public class ProfileController {
     @Operation(summary = "프로필 생성", description = "장고 서버에서 회원가입이 완료되면 호출합니다.")
-    @PostMapping("/profiles")
+    @PostMapping("")
     public void createProfile(@RequestBody CreateProfileRequest body) {
     }
 }
