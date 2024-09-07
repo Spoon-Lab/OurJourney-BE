@@ -13,6 +13,12 @@ import pudding.toy.ourJourney.repository.ProfileRepository;
 @Transactional
 public class AuthService { //django to auth
     private final ProfileRepository profileRepository;
-    //todo: auth
+    public Boolean validateAuth(String authorizationHeader){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String accessToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 부분을 추출
+        }
+        //todo: auth
+        return true;
+    }
 
 }

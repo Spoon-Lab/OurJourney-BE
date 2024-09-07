@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostTag{ //Post and Tag connection middle table
+public class ContentTag { //Post and Tag connection middle table
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne @JoinColumn(name = "post_id")

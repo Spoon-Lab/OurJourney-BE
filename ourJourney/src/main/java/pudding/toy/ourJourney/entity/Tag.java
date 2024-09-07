@@ -16,6 +16,6 @@ public class Tag extends BaseTimeEntity{
     Long id;
     String name; //해시태그 이름
     @OneToMany(mappedBy = "tag")
-    List<PostTag> postTags;
+    List<ContentTag> contentTags;
 
 }

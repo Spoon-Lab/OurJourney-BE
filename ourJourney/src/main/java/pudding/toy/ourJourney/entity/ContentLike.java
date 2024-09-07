@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostLike {
+public class ContentLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne @JoinColumn(name = "post_id")
