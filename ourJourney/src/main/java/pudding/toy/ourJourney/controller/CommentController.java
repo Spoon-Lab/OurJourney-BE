@@ -1,6 +1,7 @@
 package pudding.toy.ourJourney.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -47,6 +48,7 @@ public class CommentController {
         return new PageImpl<>(commentProfileDtos, pageable, 1L);
     }
 
+    // TODO: login_required
     @Operation(summary = "댓글 수정")
     @PatchMapping("/contents/{contentsId}/comments/{commentId}/")
     public void updateComment(
@@ -57,5 +59,13 @@ public class CommentController {
 
     }
 
-    
+    // TODO: login_required
+    @Operation(summary = "댓글 삭제")
+    @DeleteMapping("/contents/{contentsId}/comments/{commentId}/")
+    public void deleteComment(
+            @PathVariable("contentsId") Long contentsId,
+            @PathVariable("commentId") Long commentId
+    ) {
+
+    }
 }
