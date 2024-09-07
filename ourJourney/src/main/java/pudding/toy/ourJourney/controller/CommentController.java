@@ -3,14 +3,14 @@ package pudding.toy.ourJourney.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import pudding.toy.ourJourney.dto.comment.CreateCommentRequest;
-import pudding.toy.ourJourney.dto.comment.CreateCommentResponse;
-import pudding.toy.ourJourney.dto.comment.CreateReCommentRequest;
-import pudding.toy.ourJourney.dto.comment.CreateReCommentResponse;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
+import pudding.toy.ourJourney.dto.comment.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +33,17 @@ public class CommentController {
             @RequestBody @Valid CreateReCommentRequest body
     ) {
         return new CreateReCommentResponse(1L);
+    }
+
+    @Operation(summary = "댓글 목록")
+    @GetMapping("/contents/{contentsId}/comments/")
+    public PageImpl<CommentProfileDto> getComments(
+            @PathVariable("contentsId") Long contentsId,
+            @PageableDefault() Pageable pageable
+    ) {
+        CommentProfileDto commentProfileDto = new CommentProfileDto(1L, "url", "nickname");
+        GetCommentsDto getCommentsDto = new GetCommentsDto(1L, "content", commentProfileDto, LocalDateTime.now());
+        List<CommentProfileDto> commentProfileDtos = List.of(getCommentsDto.getCommentProfileDto());
+        return new PageImpl<>(commentProfileDtos, pageable, 1L);
     }
 }
