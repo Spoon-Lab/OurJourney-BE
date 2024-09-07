@@ -46,4 +46,16 @@ public class CommentController {
         List<CommentProfileDto> commentProfileDtos = List.of(getCommentsDto.getCommentProfileDto());
         return new PageImpl<>(commentProfileDtos, pageable, 1L);
     }
+
+    @Operation(summary = "댓글 수정")
+    @PatchMapping("/contents/{contentsId}/comments/{commentId}/")
+    public void updateComment(
+            @PathVariable("contentsId") Long contentsId,
+            @PathVariable("commentId") Long commentId,
+            @RequestBody @Valid UpdateCommentRequest body
+    ) {
+
+    }
+
+    
 }
