@@ -25,9 +25,9 @@ public class Contents extends BaseTimeEntity {
     @JoinColumn(name = "profile_id")
     Profile profile;
     @OneToMany(mappedBy = "contents")
-    List<PostTag> postTags;
+    List<ContentTag> contentTags;
     @OneToMany(mappedBy = "contents")
-    List<PostLike> postLikes;
+    List<ContentLike> contentLikes;
     @OneToMany(mappedBy = "contents")
     List<ContentsThread> contentsThreads;
 

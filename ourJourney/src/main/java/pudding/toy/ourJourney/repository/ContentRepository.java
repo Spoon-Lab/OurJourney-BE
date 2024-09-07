@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pudding.toy.ourJourney.entity.Contents;
 
 @Repository
-public interface PostRepository extends JpaRepository<Contents, Long>{
+public interface ContentRepository extends JpaRepository<Contents, Long>{
 }
