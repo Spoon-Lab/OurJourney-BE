@@ -5,9 +5,9 @@ import org.springframework.data.domain.PageImpl;
 
 @Data
 public class GetMyContentsResponse {
-    private PageImpl<GetMyContentsDto> contents;
+    private PageImpl<GetMyContentsDto> list;
 
-    public GetMyContentsResponse(PageImpl<GetMyContentsDto> contents) {
-        this.contents = contents;
+    public GetMyContentsResponse(PageImpl<GetMyContentsDto> list) {
+        this.list = list;
     }
 }

@@ -8,13 +8,15 @@ import java.time.LocalDateTime;
 public class GetMyContentsDto {
     Long contentId;
     String title;
+    Long profileId;
     String contentImageUrl;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
-    public GetMyContentsDto(Long contentId, String title, String contentImageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public GetMyContentsDto(Long contentId, String title, Long profileId, String contentImageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.contentId = contentId;
         this.title = title;
+        this.profileId = profileId;
         this.contentImageUrl = contentImageUrl;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

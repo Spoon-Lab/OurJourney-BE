@@ -5,9 +5,9 @@ import org.springframework.data.domain.PageImpl;
 
 @Data
 public class GetMyCommentsResponse {
-    private PageImpl<GetMyCommentsDto> contents;
+    private PageImpl<GetMyCommentsDto> list;
 
-    public GetMyCommentsResponse(PageImpl<GetMyCommentsDto> contents) {
-        this.contents = contents;
+    public GetMyCommentsResponse(PageImpl<GetMyCommentsDto> list) {
+        this.list = list;
     }
 }

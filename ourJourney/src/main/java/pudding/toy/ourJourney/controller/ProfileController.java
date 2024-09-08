@@ -43,7 +43,7 @@ public class ProfileController {
     @Operation(summary = "내가 작성한 글 가져오기")
     @GetMapping("/{id}/contents")
     public GetMyContentsResponse getMyContents(@PathVariable Long id, @PageableDefault Pageable pageable) {
-        List<GetMyContentsDto> list = List.of(new GetMyContentsDto(1L, "title", "imageUrl", null, null));
+        List<GetMyContentsDto> list = List.of(new GetMyContentsDto(1L, "title", 1L, "imageUrl", null, null));
 
         return new GetMyContentsResponse(new PageImpl<>(list, pageable, 1));
     }
