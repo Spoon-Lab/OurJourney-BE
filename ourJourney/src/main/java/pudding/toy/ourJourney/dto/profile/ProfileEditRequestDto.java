@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.dto;
+package pudding.toy.ourJourney.dto.profile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
