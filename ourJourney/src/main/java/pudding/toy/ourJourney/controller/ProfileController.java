@@ -3,10 +3,16 @@ package pudding.toy.ourJourney.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.dto.profile.CreateProfileRequest;
 import pudding.toy.ourJourney.dto.profile.GetDetailProfileResponse;
+import pudding.toy.ourJourney.dto.profile.GetMyContentsDto;
+import pudding.toy.ourJourney.dto.profile.GetMyContentsResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 @Tag(name = "Profile API")
@@ -35,5 +41,13 @@ public class ProfileController {
             @RequestParam(required = false) Optional<String> selfIntroduction
     ) {
 
+    }
+
+    @Operation(summary = "내가 작성한 글 가져오기")
+    @GetMapping("/{id}/contents")
+    public GetMyContentsResponse getMyContents(@PathVariable Long id, @PageableDefault Pageable pageable) {
+        List<GetMyContentsDto> list = List.of(new GetMyContentsDto(1L, "title", "imageUrl", null, null));
+
+        return new GetMyContentsResponse(new PageImpl<>(list, pageable, 1));
     }
 }
