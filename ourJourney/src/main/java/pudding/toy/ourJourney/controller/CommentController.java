@@ -15,11 +15,12 @@ import java.util.List;
 
 @Tag(name = "Comment API")
 @RestController
+@RequestMapping("/contents/{contentsId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
     @Operation(summary = "댓글 생성")
-    @PostMapping("/contents/{contentsId}/comments/")
+    @PostMapping("")
     public CreateCommentResponse createComment(
             @PathVariable("contentsId") Long contentsId,
             @RequestBody @Valid CreateCommentRequest body
@@ -28,7 +29,7 @@ public class CommentController {
     }
 
     @Operation(summary = "대댓글 생성")
-    @PostMapping("/contents/{contentsId}/comments/{commentId}/")
+    @PostMapping("/{commentId}")
     public CreateReCommentResponse createReComment(
             @PathVariable("contentsId") Long contentsId,
             @PathVariable("commentId") Long commentId,
@@ -38,7 +39,7 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 목록")
-    @GetMapping("/contents/{contentsId}/comments/")
+    @GetMapping("")
     public GetCommentResponse getComments(
             @PathVariable("contentsId") Long contentsId,
             @PageableDefault() Pageable pageable
@@ -52,7 +53,7 @@ public class CommentController {
 
     // TODO: login_required
     @Operation(summary = "댓글 수정")
-    @PatchMapping("/contents/{contentsId}/comments/{commentId}/")
+    @PatchMapping("/{commentId}")
     public void updateComment(
             @PathVariable("contentsId") Long contentsId,
             @PathVariable("commentId") Long commentId,
@@ -63,7 +64,7 @@ public class CommentController {
 
     // TODO: login_required
     @Operation(summary = "댓글 삭제")
-    @DeleteMapping("/contents/{contentsId}/comments/{commentId}/")
+    @DeleteMapping("/{commentId}")
     public void deleteComment(
             @PathVariable("contentsId") Long contentsId,
             @PathVariable("commentId") Long commentId
