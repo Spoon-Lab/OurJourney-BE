@@ -39,14 +39,15 @@ public class CommentController {
 
     @Operation(summary = "댓글 목록")
     @GetMapping("/contents/{contentsId}/comments/")
-    public PageImpl<CommentProfileDto> getComments(
+    public GetCommentResponse getComments(
             @PathVariable("contentsId") Long contentsId,
             @PageableDefault() Pageable pageable
     ) {
         CommentProfileDto commentProfileDto = new CommentProfileDto(1L, "url", "nickname");
         GetCommentsDto getCommentsDto = new GetCommentsDto(1L, "content", commentProfileDto, LocalDateTime.now());
-        List<CommentProfileDto> commentProfileDtos = List.of(getCommentsDto.getCommentProfileDto());
-        return new PageImpl<>(commentProfileDtos, pageable, 1L);
+        List<GetCommentsDto> list = List.of(getCommentsDto);
+
+        return new GetCommentResponse(new PageImpl<>(list, pageable, 1L));
     }
 
     // TODO: login_required
