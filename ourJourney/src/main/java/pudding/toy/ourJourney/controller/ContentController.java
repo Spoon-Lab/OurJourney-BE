@@ -21,7 +21,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Content API", description = "Content API 입니다.")
-@RequestMapping("/api/contents")
+@RequestMapping("/contents")
 public class ContentController {
     private final AuthService authService;
     private final ContentService contentService;

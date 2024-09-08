@@ -19,7 +19,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Content API", description = "Category API 입니다.")
-@RequestMapping("/api/categories")
+@RequestMapping("/categories")
 public class CategoryController {
     @GetMapping()
     @Operation(summary = "category 목록 보기", description = "category의 모든 목록을 본다.")

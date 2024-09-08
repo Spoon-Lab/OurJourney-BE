@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Thread API", description = "Thread API 입니다.")
-@RequestMapping("/api/content")
+@RequestMapping("/contents")
 public class ThreadController {
     private final AuthService authService;
     private final ContentService contentService;
@@ -31,7 +31,7 @@ public class ThreadController {
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
         //todo: 공부하고 고치기. 에러 남
        ThreadProfileDto threadProfileDto = new ThreadProfileDto(1L,"url","nickname");
-       GetThreadDto getThreadDto = new GetThreadDto(1L,"thread",threadProfileDto, LocalDateTime.now());
+       GetThreadDto getThreadDto = new GetThreadDto(1L,threadProfileDto,"thread.png","threadcontent", java.util.Optional.of(List.of("tag", "tag", "tag")),LocalDateTime.now());
        List<GetThreadDto> list = List.of(getThreadDto);
        return new GetThreadResponse(new PageImpl<>(list,pageable,1L));
     }
