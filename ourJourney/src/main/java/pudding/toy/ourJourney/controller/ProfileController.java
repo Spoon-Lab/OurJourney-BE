@@ -50,9 +50,10 @@ public class ProfileController {
 
     @Operation(summary = "내가 작성한 댓글 가져오기")
     @GetMapping("/{id}/comments")
-    public void getMyComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
+    public GetMyCommentsResponse getMyComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
         List<GetMyCommentsDto> list = List.of(new GetMyCommentsDto(1L, "contents", 1L, null, null));
 
-        new GetMyCommentsResponse(new PageImpl<>(list, pageable, 1));
+        return new GetMyCommentsResponse(new PageImpl<>(list, pageable, 1));
+    }
     }
 }
