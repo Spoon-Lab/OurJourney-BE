@@ -55,5 +55,12 @@ public class ProfileController {
 
         return new GetMyCommentsResponse(new PageImpl<>(list, pageable, 1));
     }
+
+    @Operation(summary = "내가 좋아요한 글 가져오기")
+    @GetMapping("/{id}/likes/contents")
+    public GetLikeContentsResponse getLikesContents(@PathVariable Long id, @PageableDefault Pageable pageable) {
+        List<GetLikesContentsDto> list = List.of(new GetLikesContentsDto(1L, "title", 1L, "imageUrl", null, null));
+
+        return new GetLikeContentsResponse(new PageImpl<>(list, pageable, 1));
     }
 }
