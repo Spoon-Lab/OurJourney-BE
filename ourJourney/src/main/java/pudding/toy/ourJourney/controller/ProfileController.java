@@ -31,13 +31,7 @@ public class ProfileController {
     // TODO: login_required && is_owner
     @Operation(summary = "프로필 수정")
     @PatchMapping("/{id}")
-    public void updateProfile(
-            @PathVariable Long id,
-            @RequestParam(required = false) Optional<String> nickname,
-            @RequestParam(required = false) Optional<String> imageUrl,
-            @RequestParam(required = false) Optional<String> selfIntroduction
-    ) {
-
+    public void updateProfile(@PathVariable Long id, @RequestBody UpdateProfileRequest body) {
     }
 
     @Operation(summary = "내가 작성한 글 가져오기")
