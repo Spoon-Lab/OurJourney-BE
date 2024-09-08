@@ -7,10 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.dto.profile.CreateProfileRequest;
-import pudding.toy.ourJourney.dto.profile.GetDetailProfileResponse;
-import pudding.toy.ourJourney.dto.profile.GetMyContentsDto;
-import pudding.toy.ourJourney.dto.profile.GetMyContentsResponse;
+import pudding.toy.ourJourney.dto.profile.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,5 +46,13 @@ public class ProfileController {
         List<GetMyContentsDto> list = List.of(new GetMyContentsDto(1L, "title", "imageUrl", null, null));
 
         return new GetMyContentsResponse(new PageImpl<>(list, pageable, 1));
+    }
+
+    @Operation(summary = "내가 작성한 댓글 가져오기")
+    @GetMapping("/{id}/comments")
+    public void getMyComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
+        List<GetMyCommentsDto> list = List.of(new GetMyCommentsDto(1L, "contents", 1L, null, null));
+
+        new GetMyCommentsResponse(new PageImpl<>(list, pageable, 1));
     }
 }
