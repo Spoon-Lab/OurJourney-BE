@@ -25,4 +25,15 @@ public class ProfileController {
         return new GetDetailProfileResponse(1L, Optional.of("nickname"), null, null);
     }
 
+    // TODO: login_required && is_owner
+    @Operation(summary = "프로필 수정")
+    @PatchMapping("/{id}")
+    public void updateProfile(
+            @PathVariable Long id,
+            @RequestParam(required = false) Optional<String> nickname,
+            @RequestParam(required = false) Optional<String> imageUrl,
+            @RequestParam(required = false) Optional<String> selfIntroduction
+    ) {
+
+    }
 }
