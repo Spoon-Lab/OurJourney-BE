@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.dto;
+package pudding.toy.ourJourney.dto.content;
 
 import org.springframework.stereotype.Service;
 

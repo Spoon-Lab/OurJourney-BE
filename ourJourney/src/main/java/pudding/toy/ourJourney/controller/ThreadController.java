@@ -4,62 +4,51 @@ package pudding.toy.ourJourney.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.common.response.BaseResponse;
-import pudding.toy.ourJourney.dto.ContentEditRequestDto;
-import pudding.toy.ourJourney.dto.ContentPostRequestDto;
-import pudding.toy.ourJourney.dto.ContentRequestDto;
+import pudding.toy.ourJourney.dto.content.*;
+import pudding.toy.ourJourney.dto.thread.*;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ContentService;
 
+import java.awt.print.Pageable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Content API", description = "Thread API 입니다.")
-@RequestMapping("/api/thread")
+@Tag(name = "Thread API", description = "Thread API 입니다.")
+@RequestMapping("/api/content")
 public class ThreadController {
     private final AuthService authService;
     private final ContentService contentService;
-    @GetMapping
-    @Operation(summary = "thread 보기", description = "thread를 검색한다.")
-    public BaseResponse<?> getAllContent(HttpServletRequest httpServletRequest,@RequestBody ContentRequestDto contentRequestDto){
-        if(authService.validateAuth(httpServletRequest.getHeader("Authorization"))){
-            return contentService.getAllContents(contentRequestDto);
-        }
-        return null;
+    @GetMapping("/{contentId}/threads")
+    @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
+    public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
+        //todo: 공부하고 고치기. 에러 남
+       ThreadProfileDto threadProfileDto = new ThreadProfileDto(1L,"url","nickname");
+       GetThreadDto getThreadDto = new GetThreadDto(1L,"thread",threadProfileDto, LocalDateTime.now());
+       List<GetThreadDto> list = List.of(getThreadDto);
+       return new GetThreadResponse(new PageImpl<>(list,pageable,1L));
     }
-    @PostMapping
-    @Operation(summary = "content 작성", description = "content를 작성한다.")
-    public BaseResponse<?> postContent(HttpServletRequest httpServletRequest,@RequestBody ContentPostRequestDto contentPostRequestDto){
-        if(authService.validateAuth(httpServletRequest.getHeader("Authorization"))){
-            return BaseResponse.ok(contentService.createContent(contentPostRequestDto));
-        }
-        return null;
+    @PostMapping("/{contentId}/threads")
+    @Operation(summary = "thread 작성", description = "thread를 작성한다.")
+    public CreateThreadResponseDto createThread(@PathVariable("contentId") Long contentId, @RequestBody @Valid CreateThreadRequestDto body){
+        return new CreateThreadResponseDto();
     }
-    @GetMapping("/{contentId}")
-    @Operation(summary = "content 하나 조회", description = "content 한 개 조회한다.")
-    public BaseResponse<?> getOneContent(HttpServletRequest httpServletRequest,@PathVariable("contentId") Long contentId){
-        if(authService.validateAuth(httpServletRequest.getHeader("Authorization"))){
-            return BaseResponse.ok(contentService.getOneContent(contentId));
-        }
-        return null;
+    @PatchMapping ("/{contentId}/threads/{threadId}")
+    @Operation(summary = "thread 수정", description = "thread를 수정한다.")
+    public void updateThread(@PathVariable("contentId") Long contentId,@PathVariable("threadId") Long threadId,@RequestBody @Valid ThreadEditRequestDto body){
+
     }
-    @PatchMapping ("/{contentId}")
-    @Operation(summary = "content 수정", description = "content 한 개 수정한다.")
-    public BaseResponse<?> editOneContent(HttpServletRequest httpServletRequest,@PathVariable("contentId") Long contentId,@RequestBody ContentEditRequestDto contentEditRequestDto){
-        if(authService.validateAuth(httpServletRequest.getHeader("Authorization"))){
-            return BaseResponse.ok(contentService.editOneContent(contentId,contentEditRequestDto));
-        }
-        return null;
-    }
-    @DeleteMapping ("/{contentId}")
+    @DeleteMapping ("/{contentId}/threads/{threadId}/")
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
-    public BaseResponse<?> editOneContent(HttpServletRequest httpServletRequest,@PathVariable("contentId") Long contentId){
-        if(authService.validateAuth(httpServletRequest.getHeader("Authorization"))){
-            contentService.deleteOneContent(contentId);
-            return BaseResponse.ok();
-        }
-        return null;
+    public void deleteThread(@PathVariable("contentId") Long contentId,@PathVariable("threadId") Long threadId){
+
     }
 
 
