@@ -8,14 +8,17 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseTimeEntity{
+public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne @JoinColumn(name = "profile_id")
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     Profile profile;
-    @ManyToOne @JoinColumn(name = "post_id")
+    @ManyToOne
+    @JoinColumn(name = "post_id")
     Contents contents;
-    String content;
 
+    @Column(length = 200, nullable = false)
+    String content;
 }

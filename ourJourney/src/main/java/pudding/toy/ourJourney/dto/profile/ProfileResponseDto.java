@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.dto;
+package pudding.toy.ourJourney.dto.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.dto;
+package pudding.toy.ourJourney.dto.profile;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
