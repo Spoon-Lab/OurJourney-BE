@@ -38,13 +38,13 @@ public class ContentController {
 
     @GetMapping("/{contentId}")
     @Operation(summary = "content 하나 조회", description = "content 한 개 조회한다.")
-    public DetailContentDto getDetailContent(@PathVariable("contentId") Long contentId) {
-        return new DetailContentDto();
+    public DetailContentResponse getDetailContent(@PathVariable("contentId") Long contentId) {
+        return new DetailContentResponse();
     }
 
     @PatchMapping("/{contentId}")
     @Operation(summary = "content 수정", description = "content 한 개 수정한다.")
-    public void updateContent(@PathVariable("contentId") Long contentId, @RequestBody EditContentDto editContentDto) {
+    public void updateContent(@PathVariable("contentId") Long contentId, @RequestBody EditContentRequest editContentRequest) {
 
     }
 

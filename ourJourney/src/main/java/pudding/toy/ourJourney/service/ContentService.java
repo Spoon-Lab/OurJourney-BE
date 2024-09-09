@@ -18,7 +18,7 @@ import java.util.List;
 public class ContentService {
     private final ContentRepository contentRepository;
     private final CategoryRepository categoryRepository;
-    public PageImpl<ListContentDto> getAllContents(ContentRequestDto contentRequestDto) {
+    public PageImpl<ListContentDto> getAllContents(ListContentDto listContentDto) {
         List<ListContentDto> list = List.of(new ListContentDto());
         return new PageImpl<>(list);
     }
@@ -40,7 +40,7 @@ public class ContentService {
         return new DetailContentResponse();
     }
 
-    public ListContentDto editOneContent(Long contentId, EditContentDto contentEditRequestDto) {
+    public ListContentDto editOneContent(Long contentId, EditContentRequest contentEditRequestDto) {
         return new ListContentDto();
     }
 
