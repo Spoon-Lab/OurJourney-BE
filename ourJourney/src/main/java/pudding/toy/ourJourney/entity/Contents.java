@@ -2,6 +2,7 @@ package pudding.toy.ourJourney.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,5 +31,11 @@ public class Contents extends BaseTimeEntity {
     List<ContentLike> contentLikes;
     @OneToMany(mappedBy = "contents")
     List<ContentsThread> contentsThreads;
+    @Builder
+    public Contents(String title,Category category,ContentTag contentTag){
+        this.title = title;
+        this.category = category;
+        this.contentTags.add(contentTag);
+    }
 
 }

@@ -37,7 +37,7 @@ public class ContentController {
     @PostMapping
     @Operation(summary = "content 작성", description = "content를 작성한다.")
     public CreateContentResponse createContent(@RequestBody @Valid CreateContentRequest createContentRequest) {
-        return new CreateContentResponse();
+        return new CreateContentResponse(contentService.createContent(createContentRequest));
     }
 
     @GetMapping("/{contentId}")
