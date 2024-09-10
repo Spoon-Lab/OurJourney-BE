@@ -31,11 +31,14 @@ public class Contents extends BaseTimeEntity {
     List<ContentLike> contentLikes;
     @OneToMany(mappedBy = "contents")
     List<ContentsThread> contentsThreads;
+
     @Builder
-    public Contents(String title,Category category,ContentTag contentTag){
+    public Contents(String title, Category category, ContentTag contentTag) {
         this.title = title;
         this.category = category;
-        this.contentTags.add(contentTag);
+        if (contentTag != null) {
+            this.contentTags.add(contentTag);
+        }
     }
 
 }
