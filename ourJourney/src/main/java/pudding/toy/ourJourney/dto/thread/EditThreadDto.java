@@ -1,4 +1,4 @@
 package pudding.toy.ourJourney.dto.thread;
 
-public class ThreadEditRequestDto {
+public class EditThreadDto {
 }

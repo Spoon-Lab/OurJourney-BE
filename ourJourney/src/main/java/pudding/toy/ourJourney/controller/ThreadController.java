@@ -36,13 +36,13 @@ public class ThreadController {
 
     @PostMapping("/{contentId}/threads")
     @Operation(summary = "thread 작성", description = "thread를 작성한다.")
-    public CreateThreadResponseDto createThread(@PathVariable("contentId") Long contentId, @RequestBody @Valid CreateThreadRequestDto body) {
-        return new CreateThreadResponseDto();
+    public CreateThreadResponse createThread(@PathVariable("contentId") Long contentId, @RequestBody @Valid CreateThreadDto body) {
+        return new CreateThreadResponse();
     }
 
     @PatchMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "thread 수정", description = "thread를 수정한다.")
-    public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid ThreadEditRequestDto body) {
+    public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid EditThreadDto body) {
 
     }
 
