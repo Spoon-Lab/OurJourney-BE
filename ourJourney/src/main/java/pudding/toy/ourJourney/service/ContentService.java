@@ -18,7 +18,7 @@ import java.util.List;
 public class ContentService {
     private final ContentRepository contentRepository;
     private final CategoryRepository categoryRepository;
-    public PageImpl<ListContentDto> getAllContents(ContentRequestDto contentRequestDto) {
+    public PageImpl<ListContentDto> getAllContents(ListContentDto listContentDto) {
         List<ListContentDto> list = List.of(new ListContentDto());
         return new PageImpl<>(list);
     }
@@ -27,7 +27,6 @@ public class ContentService {
         Category category = categoryRepository.findById(createContentRequest.getCategoryId()).orElseThrow(
                 ()-> new IllegalArgumentException("category 없음")
         );
-        // ContentTag contentTag; -> 태그는 뭔가,, 데베에서 찾는게 아니라 그때그떄 생성되는느낌인데 어떻게 할까요?
         Contents content = Contents.builder()
                 .title(createContentRequest.getTitle())
                 .category(category)

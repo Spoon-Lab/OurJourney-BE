@@ -3,14 +3,11 @@ package pudding.toy.ourJourney.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.common.response.BaseResponse;
 import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ContentService;
