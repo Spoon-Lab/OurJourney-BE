@@ -23,5 +23,10 @@ public class ContentsThread extends BaseTimeEntity{
     List<ThreadTag> threadTags;
     @ManyToOne @JoinColumn(name = "post_id")
     Contents contents;
+    public ContentsThread(String content,Contents contents){
+        this.content = content;
+        this.contents = contents;
+
+    }
 
 }
