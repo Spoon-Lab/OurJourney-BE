@@ -21,28 +21,25 @@ import java.util.List;
 @Tag(name = "Thread API", description = "Thread API 입니다.")
 @RequestMapping("/contents")
 public class ThreadController {
-    private final AuthService authService;
-    private final ContentService contentService;
 
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
-        //todo: 공부하고 고치기
-       ThreadProfileDto threadProfileDto = new ThreadProfileDto(1L,"url","nickname");
-       GetThreadDto getThreadDto = new GetThreadDto(1L,threadProfileDto,"thread.png","threadcontent", java.util.Optional.of(List.of("tag", "tag", "tag")),LocalDateTime.now());
-       List<GetThreadDto> list = List.of(getThreadDto);
+       ProfileThreadDto profileThreadDto = new ProfileThreadDto(1L,"url","nickname");
+       ListThreadDto listThreadDto = new ListThreadDto(1L, profileThreadDto,"thread.png","threadcontent", java.util.Optional.of(List.of("tag", "tag", "tag")),LocalDateTime.now());
+       List<ListThreadDto> list = List.of(listThreadDto);
        return new GetThreadResponse(new PageImpl<>(list,pageable,1L));
     }
 
     @PostMapping("/{contentId}/threads")
     @Operation(summary = "thread 작성", description = "thread를 작성한다.")
-    public CreateThreadResponseDto createThread(@PathVariable("contentId") Long contentId, @RequestBody @Valid CreateThreadRequestDto body) {
-        return new CreateThreadResponseDto();
+    public CreateThreadResponse createNewThread(@PathVariable("contentId") Long contentId, @RequestBody @Valid CreateThreadRequest body) {
+        return new CreateThreadResponse();
     }
 
     @PatchMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "thread 수정", description = "thread를 수정한다.")
-    public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid ThreadEditRequestDto body) {
+    public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid EditThreadRequest body) {
 
     }
 

@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Data @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GetThreadDto {
+public class ListThreadDto {
     Long threadId;
-    ThreadProfileDto threadProfileDto;
+    ProfileThreadDto profileThreadDto;
     String threadImg;
     String content;
     Optional<List<String>> tagNames;
     LocalDateTime createdAt;
-    public GetThreadDto(Long threadId, ThreadProfileDto threadProfileDto, String threadImg, String content, Optional<List<String>> tagNames, LocalDateTime createdAt) {
+    public ListThreadDto(Long threadId, ProfileThreadDto profileThreadDto, String threadImg, String content, Optional<List<String>> tagNames, LocalDateTime createdAt) {
         this.threadId = threadId;
-        this.threadProfileDto = threadProfileDto;
+        this.profileThreadDto = profileThreadDto;
         this.threadImg = threadImg;
         this.content = content;
         this.tagNames = tagNames;

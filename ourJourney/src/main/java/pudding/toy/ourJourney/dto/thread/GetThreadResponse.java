@@ -1,12 +1,11 @@
 package pudding.toy.ourJourney.dto.thread;
 
 import org.springframework.data.domain.PageImpl;
-import pudding.toy.ourJourney.dto.content.ContentResponseDto;
 
 public class GetThreadResponse {
-    private PageImpl<GetThreadDto> list;
+    private PageImpl<ListThreadDto> list;
 
-    public GetThreadResponse(PageImpl<GetThreadDto> list) {
+    public GetThreadResponse(PageImpl<ListThreadDto> list) {
         this.list = list;
     }
 }
