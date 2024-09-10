@@ -1,10 +1,10 @@
 package pudding.toy.ourJourney.dto.thread;
 
-public class ThreadProfileDto {
+public class ProfileThreadDto {
     private Long profileId;
     private String imgUrl;
     private String nickName;
-    public ThreadProfileDto(Long id, String imgUrl, String nickName){
+    public ProfileThreadDto(Long id, String imgUrl, String nickName){
         this.profileId =id;
         this.imgUrl = imgUrl;
         this.nickName = nickName;
