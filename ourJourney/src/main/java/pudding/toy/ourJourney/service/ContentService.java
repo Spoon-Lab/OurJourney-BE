@@ -61,7 +61,7 @@ public class ContentService {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        contents.setDeletedAt(LocalDateTime.now());
+        contents.remove(LocalDateTime.now());
         contentRepository.save(contents);
     }
 }

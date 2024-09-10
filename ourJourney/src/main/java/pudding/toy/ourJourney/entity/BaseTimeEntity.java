@@ -16,7 +16,7 @@ public abstract class BaseTimeEntity {
     private LocalDateTime updateAt; //마지막 수정 시간
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
-    public void setDeletedAt(LocalDateTime deletedAt){
+    public void remove(LocalDateTime deletedAt){
         this.deletedAt = deletedAt;
     }
 
