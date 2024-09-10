@@ -10,7 +10,6 @@ import pudding.toy.ourJourney.repository.ProfileRepository;
 @RequiredArgsConstructor
 @Transactional
 public class CategoryService {
-    private final CategoryService categoryService;
 
 
 }

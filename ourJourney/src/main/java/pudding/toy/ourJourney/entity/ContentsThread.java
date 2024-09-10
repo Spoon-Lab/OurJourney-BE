@@ -15,7 +15,7 @@ import java.util.List;
 public class ContentsThread extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String content;
+    String texts;
     String imgUrl;
     @ManyToOne @JoinColumn(name = "profile_id")
     Profile profile;
@@ -23,5 +23,9 @@ public class ContentsThread extends BaseTimeEntity{
     List<ThreadTag> threadTags;
     @ManyToOne @JoinColumn(name = "post_id")
     Contents contents;
+    public ContentsThread(String texts,Contents contents){
+        this.texts = texts;
+        this.contents = contents;
+    }
 
 }

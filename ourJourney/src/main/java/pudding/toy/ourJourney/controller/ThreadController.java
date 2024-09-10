@@ -25,6 +25,7 @@ public class ThreadController {
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
+
        ProfileThreadDto profileThreadDto = new ProfileThreadDto(1L,"url","nickname");
        ListThreadDto listThreadDto = new ListThreadDto(1L, profileThreadDto,"thread.png","threadcontent", java.util.Optional.of(List.of("tag", "tag", "tag")),LocalDateTime.now());
        List<ListThreadDto> list = List.of(listThreadDto);
@@ -43,7 +44,7 @@ public class ThreadController {
 
     }
 
-    @DeleteMapping("/{contentId}/threads/{threadId}/")
+    @DeleteMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
     public void deleteThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId) {
 
