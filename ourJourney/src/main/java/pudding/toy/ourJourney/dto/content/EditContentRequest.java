@@ -12,6 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor @Builder
 public class EditContentRequest {
     String title;
-    String imgUrl;
+//    JsonNullable<String> imgUrl;
     List<ContentTag> tags;
 }

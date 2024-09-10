@@ -8,5 +8,5 @@ import lombok.Data;
 public class CreateCommentRequest {
     @NotNull
     @Size(min = 1, max = 200)
-    private String content;
+    private String texts;
 }

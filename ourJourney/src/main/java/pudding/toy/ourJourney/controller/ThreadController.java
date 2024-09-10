@@ -44,7 +44,7 @@ public class ThreadController {
 
     }
 
-    @DeleteMapping("/{contentId}/threads/{threadId}/")
+    @DeleteMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
     public void deleteThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId) {
 

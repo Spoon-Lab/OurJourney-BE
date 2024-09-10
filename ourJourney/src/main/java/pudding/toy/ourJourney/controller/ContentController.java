@@ -24,7 +24,7 @@ public class ContentController {
 
     @GetMapping()
     @Operation(summary = "content 보기", description = "content를 검색한다.")
-    public GetContentResponse getAllContents(Pageable pageable, @RequestParam Optional<Long> categoryId, @RequestParam Optional<String> content, @RequestParam Optional<List<Long>> tagIds) {
+    public GetContentResponse getAllContents(Pageable pageable, @RequestParam Optional<Long> categoryId, @RequestParam Optional<String> title, @RequestParam Optional<List<Long>> tagIds) {
         List<ListContentDto> list = List.of(new ListContentDto());
         return new GetContentResponse(new PageImpl<>(list, pageable, 1L));
     }

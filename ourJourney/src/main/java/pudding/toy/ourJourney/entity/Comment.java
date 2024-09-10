@@ -20,5 +20,5 @@ public class Comment extends BaseTimeEntity {
     Contents contents;
 
     @Column(length = 200, nullable = false)
-    String content;
+    String texts;
 }

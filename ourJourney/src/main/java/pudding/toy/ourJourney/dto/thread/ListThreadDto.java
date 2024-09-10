@@ -13,14 +13,14 @@ public class ListThreadDto {
     Long threadId;
     ProfileThreadDto profileThreadDto;
     String threadImg;
-    String content;
-    Optional<List<String>> tagNames;
+    String texts;
+    Optional<List<String>> tagNames; //todo: JsonNullable
     LocalDateTime createdAt;
-    public ListThreadDto(Long threadId, ProfileThreadDto profileThreadDto, String threadImg, String content, Optional<List<String>> tagNames, LocalDateTime createdAt) {
+    public ListThreadDto(Long threadId, ProfileThreadDto profileThreadDto, String threadImg, String texts, Optional<List<String>> tagNames, LocalDateTime createdAt) {
         this.threadId = threadId;
         this.profileThreadDto = profileThreadDto;
         this.threadImg = threadImg;
-        this.content = content;
+        this.texts = texts;
         this.tagNames = tagNames;
         this.createdAt = createdAt;
     }
