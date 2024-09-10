@@ -14,10 +14,14 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "category_name")
     private String name; //categoryname
     @OneToMany(mappedBy = "category")
     private List<Contents> contents;
 
+    public Category(String name) {
+        this.name = name;
+    }
 }
