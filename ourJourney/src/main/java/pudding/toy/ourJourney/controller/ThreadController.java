@@ -21,8 +21,6 @@ import java.util.List;
 @Tag(name = "Thread API", description = "Thread API 입니다.")
 @RequestMapping("/contents")
 public class ThreadController {
-    private final AuthService authService;
-    private final ContentService contentService;
 
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
