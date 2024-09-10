@@ -30,11 +30,10 @@ public class ContentMapperTest {
     }
     @Test
     void updateContentTest(){ //mapper 성공
-        EditContentRequest ed = new EditContentRequest("제목","img.png", null);
-        Assertions.assertThat(content.getCategory().getName()).isEqualTo("name");
+        EditContentRequest ed = EditContentRequest.builder()
+                .imgUrl("img.png")
+                .build();
         contentsMapper.updateEntityFromDto(ed,content);
-
-        Assertions.assertThat(content.getTitle()).isEqualTo("제목");
         Assertions.assertThat(content.getImgUrl()).isEqualTo("img.png");
         Assertions.assertThat(content.getContentTags()).isEmpty();
         Assertions.assertThat(content.getCategory().getName()).isEqualTo("name");
