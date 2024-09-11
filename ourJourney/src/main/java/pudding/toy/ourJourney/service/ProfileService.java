@@ -23,6 +23,7 @@ public class ProfileService {
             throw new IllegalStateException("프로필이 존재합니다.");
         });
         Profile profile = profileAuthResponseDto.toEntity();
+        //닉네임 무작위로 넣는? 그리고 NuLL -> imgUrl에는 NULL
         return profile.getId();
     }
 

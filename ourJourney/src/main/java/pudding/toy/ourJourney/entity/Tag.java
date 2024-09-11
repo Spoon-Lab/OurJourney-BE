@@ -17,5 +17,8 @@ public class Tag extends BaseTimeEntity{
     String name; //해시태그 이름
     @OneToMany(mappedBy = "tag")
     List<ContentTag> contentTags;
+    public Tag(String name){
+        this.name = name;
+    }
 
 }

@@ -7,14 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Entity @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ContentTag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne @JoinColumn(name = "post_id")
+    @ManyToOne @JoinColumn(name = "contents_id")
     Contents contents;
     @ManyToOne @JoinColumn(name = "tag_id")
     Tag tag;
+    public ContentTag(Contents contents,Tag tag){
+        this.contents = contents;
+        this.tag = tag;
+    }
 
 }
