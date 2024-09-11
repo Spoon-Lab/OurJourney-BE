@@ -1,16 +1,12 @@
 package pudding.toy.ourJourney.mapper;
-
-import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pudding.toy.ourJourney.config.ProfileInitializer;
-import pudding.toy.ourJourney.dto.content.CreateContentRequest;
 import pudding.toy.ourJourney.dto.content.EditContentRequest;
 import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
@@ -50,4 +46,3 @@ public class ContentMapperTest {
 
     }
 }
-

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
 
@@ -25,6 +26,7 @@ class ContentsQueryRepositoryTest {
 
     @Autowired
     private ContentsQueryRepository contentsQueryRepository;
+    ProfileInitializer profileInitializer;
 
     Category category1;
 
@@ -32,8 +34,8 @@ class ContentsQueryRepositoryTest {
     public void setUp() {
         category1 = categoryRepository.save(new Category("category1"));
         Category category2 = categoryRepository.save(new Category("category2"));
-        contentRepository.save(new Contents("title1", category1, null));
-        contentRepository.save(new Contents("title2", category2, null));
+        contentRepository.save(new Contents("title1", category1, null,profileInitializer.dummyProfile));
+        contentRepository.save(new Contents("title2", category2, null,profileInitializer.dummyProfile));
     }
 
     @Test
