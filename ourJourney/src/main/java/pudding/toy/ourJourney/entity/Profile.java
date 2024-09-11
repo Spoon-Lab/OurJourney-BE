@@ -33,6 +33,7 @@ public class Profile {
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
 
+
     public Optional<String> getNickName() {
         return Optional.ofNullable(nickName);
     }
@@ -43,5 +44,12 @@ public class Profile {
 
     public Optional<String> getSelfIntroduction() {
         return Optional.ofNullable(selfIntroduction);
+    }
+    
+    public Profile(Long userId, String nickName, String profileImg, String selfIntroduction) {
+        this.userId = userId;
+        this.nickName = nickName;
+        this.profileImg = profileImg;
+        this.selfIntroduction = selfIntroduction;
     }
 }
