@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.dto.comment.*;
+import pudding.toy.ourJourney.service.CommentService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("/contents/{contentsId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
+    private final CommentService commentService;
 
     @Operation(summary = "댓글 생성")
     @PostMapping("")
@@ -25,9 +27,13 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @RequestBody @Valid CreateCommentRequest body
     ) {
+        // TODO: profile 채워넣기
+        commentService.createComment(null, contentsId, body.getTexts());
+
         return new CreateCommentResponse(1L);
     }
 
+    // TODO: 2차 작업으로 미뤄짐
     @Operation(summary = "대댓글 생성")
     @PostMapping("/{commentId}")
     public CreateReCommentResponse createReComment(

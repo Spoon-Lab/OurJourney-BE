@@ -23,17 +23,19 @@ public class ContentMapperTest {
     ContentsMapper contentsMapper;
     Contents content;
     Category category;
+
     @BeforeEach
-    void setUp(){
+    void setUp() {
         category = new Category("name");
-        content = new Contents("제목이었던거",category,null);
+        content = new Contents("제목이었던거", category, null);
     }
+
     @Test
-    void updateContentTest(){ //mapper 성공
+    void updateContentTest() { //mapper 성공
         EditContentRequest ed = EditContentRequest.builder()
-                .imgUrl("img.png")
+//                .imgUrl("img.png")
                 .build();
-        contentsMapper.updateEntityFromDto(ed,content);
+        contentsMapper.updateEntityFromDto(ed, content);
         Assertions.assertThat(content.getImgUrl()).isEqualTo("img.png");
         Assertions.assertThat(content.getContentTags()).isEmpty();
         Assertions.assertThat(content.getCategory().getName()).isEqualTo("name");
