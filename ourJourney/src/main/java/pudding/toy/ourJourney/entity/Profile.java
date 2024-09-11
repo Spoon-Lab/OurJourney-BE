@@ -32,6 +32,9 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
+    public Profile(Long userId){
+        this.userId = userId;
+    }
 
     public Optional<String> getNickName() {
         return Optional.ofNullable(nickName);

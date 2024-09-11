@@ -40,6 +40,8 @@ public class Contents extends BaseTimeEntity {
         this.title = title;
         this.category = category;
         this.contentTags  = new ArrayList<>();
+        this.contentLikes = new ArrayList<>();
+        this.contentsThreads = new ArrayList<>();
         this.addTag(contentTag);
     }
     public void setTitle(String title){

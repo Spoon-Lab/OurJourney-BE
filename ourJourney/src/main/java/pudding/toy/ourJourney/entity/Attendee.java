@@ -2,8 +2,12 @@ package pudding.toy.ourJourney.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import javax.swing.text.AbstractDocument;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,6 +17,10 @@ public class Attendee {
     Long id;
     @ManyToOne @JoinColumn(name = "profile_id")
     Profile profile;
-    @ManyToOne @JoinColumn(name = "post_id")
+    @ManyToOne @JoinColumn(name = "contents_id")
     Contents contents;
+    public Attendee(Profile profile, Contents contents){
+        this.profile = profile;
+        this.contents = contents;
+    }
 }
