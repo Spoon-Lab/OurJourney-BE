@@ -23,4 +23,23 @@ public class Comment extends BaseTimeEntity {
 
     @Column(length = 200, nullable = false)
     String texts;
+
+
+    public Comment(Profile profile, Contents contents, String texts) {
+        this.profile = profile;
+        this.contents = contents;
+        this.texts = texts;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public Contents getContents() {
+        return contents;
+    }
 }
