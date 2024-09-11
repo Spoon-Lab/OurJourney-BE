@@ -1,6 +1,7 @@
 package pudding.toy.ourJourney.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class ThreadService {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-
-        List <ListThreadDto> threadDtos = contents.getContentsThreads().stream()
+        Page<ContentsThread> pageThreads = threadRepository.findByContents(pageable,contents);
+        List <ListThreadDto> threadDtos = pageThreads.stream()
                 .map(contentsThread -> new ListThreadDto(
                         contentsThread.getId(),
                         new ProfileThreadDto(contentsThread.getProfile().getId(),contentsThread.getProfile().getProfileImg(),contentsThread.getProfile().getNickName()),
