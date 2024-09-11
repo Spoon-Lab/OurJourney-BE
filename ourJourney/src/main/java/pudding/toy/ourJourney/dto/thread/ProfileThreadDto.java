@@ -1,5 +1,8 @@
 package pudding.toy.ourJourney.dto.thread;
 
+import lombok.Data;
+
+@Data
 public class ProfileThreadDto {
     private Long profileId;
     private String imgUrl;
