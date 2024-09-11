@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.dto.thread.*;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ContentService;
+import pudding.toy.ourJourney.service.ThreadService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,15 +22,12 @@ import java.util.List;
 @Tag(name = "Thread API", description = "Thread API 입니다.")
 @RequestMapping("/contents")
 public class ThreadController {
+    private final ThreadService threadService;
 
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
-
-       ProfileThreadDto profileThreadDto = new ProfileThreadDto(1L,"url","nickname");
-       ListThreadDto listThreadDto = new ListThreadDto(1L, profileThreadDto,"thread.png","threadcontent", java.util.Optional.of(List.of("tag", "tag", "tag")),LocalDateTime.now());
-       List<ListThreadDto> list = List.of(listThreadDto);
-       return new GetThreadResponse(new PageImpl<>(list,pageable,1L));
+       return new GetThreadResponse(threadService.getThreads(contentId,pageable));
     }
 
     @PostMapping("/{contentId}/threads")

@@ -36,12 +36,12 @@ public class Profile {
         this.userId = userId;
     }
 
-    public Optional<String> getNickName() {
-        return Optional.ofNullable(nickName);
+    public String getNickName() {
+        return nickName;
     }
 
-    public Optional<String> getProfileImg() {
-        return Optional.ofNullable(profileImg);
+    public String getProfileImg() {
+        return profileImg;
     }
 
     public Optional<String> getSelfIntroduction() {
