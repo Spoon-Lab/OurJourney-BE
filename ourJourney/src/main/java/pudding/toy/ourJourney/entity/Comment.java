@@ -34,12 +34,16 @@ public class Comment extends BaseTimeEntity {
     public Long getId() {
         return id;
     }
-    
+
     public Profile getProfile() {
         return profile;
     }
 
     public Contents getContents() {
         return contents;
+    }
+
+    public String getTexts() {
+        return texts;
     }
 }
