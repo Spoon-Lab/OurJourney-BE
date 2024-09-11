@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
+import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.mapper.EditContentsMapper;
 import pudding.toy.ourJourney.repository.AttendeeRepository;
 import pudding.toy.ourJourney.repository.CategoryRepository;
@@ -40,12 +41,13 @@ public class ContentService {
         return new PageImpl<>(list);
     }
 
-    public Long createContent(CreateContentRequest createContentRequest) {
+    public Long createContent(CreateContentRequest createContentRequest, Profile profile) {
         Category category = categoryRepository.findById(createContentRequest.getCategoryId()).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         Contents content = Contents.builder()
                 .title(createContentRequest.getTitle())
+                .profile(profile)
                 .category(category)
                 .build();
         if(createContentRequest.getImgUrl().isPresent()){

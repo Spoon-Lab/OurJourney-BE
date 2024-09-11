@@ -23,12 +23,13 @@ public class CreateContentRequest {
     String title;
     @NotNull
     Long categoryId;
-    @Schema(implementation = String.class)
-    JsonNullable<String> imgUrl;
+    Optional<String> imgUrl;
 
-    @ArraySchema(schema = @Schema(implementation = Long.class))
-    JsonNullable<List<Long>> profileIds;
+    Optional<List<Long>> profileIds;
 
-    @ArraySchema(schema = @Schema(implementation = Long.class))
-    JsonNullable<List<Long>> tagIds;
+    Optional<List<Long>> tagIds;
 }
+/*
+title= dafd
+category =dafadf
+ */
