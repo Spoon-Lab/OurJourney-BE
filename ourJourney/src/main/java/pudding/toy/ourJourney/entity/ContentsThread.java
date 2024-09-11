@@ -27,5 +27,11 @@ public class ContentsThread extends BaseTimeEntity{
         this.texts = texts;
         this.contents = contents;
     }
+    public List<String> getTagNames(){
+        return this.getThreadTags().stream()
+                .map(ThreadTag::getTag)
+                .map(Tag::getName)
+                .toList();
+    }
 
 }

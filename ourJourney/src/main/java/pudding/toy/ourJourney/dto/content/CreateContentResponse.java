@@ -3,6 +3,7 @@ package pudding.toy.ourJourney.dto.content;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+
 @RequiredArgsConstructor
 @Data
 public class CreateContentResponse {

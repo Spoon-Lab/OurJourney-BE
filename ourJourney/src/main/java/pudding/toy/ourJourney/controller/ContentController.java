@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ContentService;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RequestMapping("/contents")
 public class ContentController {
     private final ContentService contentService;
+    private final ProfileInitializer profileInitializer;
 
     @GetMapping()
     @Operation(summary = "content 보기", description = "content를 검색한다.")
@@ -32,7 +34,8 @@ public class ContentController {
     @PostMapping
     @Operation(summary = "content 작성", description = "content를 작성한다.")
     public CreateContentResponse createNewContent(@RequestBody @Valid CreateContentRequest createContentRequest) {
-        return new CreateContentResponse(contentService.createContent(createContentRequest));
+        //유저 받아오는 로직
+        return new CreateContentResponse(contentService.createContent(createContentRequest, profileInitializer.dummyProfile));
     }
 
     @GetMapping("/{contentId}")
