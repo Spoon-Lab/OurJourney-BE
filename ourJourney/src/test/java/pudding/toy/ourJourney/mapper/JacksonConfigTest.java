@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,36 +16,38 @@ import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class JacksonConfigTest {
 
     @Autowired
     private ObjectMapper mapper;
+
     @Test
     void should_update_all_entities_in_product_except_id() throws JsonMappingException {
         CreateContentRequest update1 = new CreateContentRequest(
                 "title1",
                 2L,
-                JsonNullable.of(null),  // imgUrl이 null로 설정됨
-                JsonNullable.of(List.of(3L, 2L, 5L)),
-                JsonNullable.of(List.of(3L, 4L))
+                null,  // imgUrl이 null로 설정됨
+                Optional.of(List.of(3L, 2L, 5L)),
+                Optional.of(List.of(3L, 4L))
         );
 
         CreateContentRequest update2 = new CreateContentRequest(
                 "title2",
                 3L,
-                JsonNullable.of("img2.png"),  // imgUrl이 "img2.png"로 설정됨
-                JsonNullable.of(List.of(33L, 222L, 533L)),
-                JsonNullable.of(List.of(3L, 2L, 5L))
+                Optional.of("img2.png"),  // imgUrl이 "img2.png"로 설정됨
+                Optional.of(List.of(33L, 222L, 533L)),
+                Optional.of(List.of(3L, 2L, 5L))
         );
 
         Category category = new Category("name");
 
-        Contents content1 = new Contents("title1", category, null);
+        Contents content1 = new Contents("title1", category, null, null);
         content1.setImgUrl("img.png");  // imgUrl 초기값
 
-        Contents content2 = new Contents("title2", category, null);
+        Contents content2 = new Contents("title2", category, null, null);
 
         mapper.updateValue(update1, content1);  // update1 적용 (imgUrl을 null로 설정)
         mapper.updateValue(update2, content2);  // update2 적용 (imgUrl을 "img2.png"로 설정)
