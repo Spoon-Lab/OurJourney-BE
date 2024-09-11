@@ -32,6 +32,13 @@ public class Contents extends BaseTimeEntity {
     @OneToMany(mappedBy = "contents")
     List<ContentsThread> contentsThreads;
 
+    public Contents(Profile profile, Category category, String title, String imgUrl) {
+        this.title = title;
+        this.imgUrl = imgUrl;
+        this.category = category;
+        this.profile = profile;
+    }
+
     @Builder
     public Contents(String title, Category category, ContentTag contentTag,Profile profile) {
         this.title = title;
@@ -42,19 +49,23 @@ public class Contents extends BaseTimeEntity {
         this.contentsThreads = new ArrayList<>();
         this.addTag(contentTag);
     }
-    public void setTitle(String title){
+
+    public void setTitle(String title) {
         this.title = title;
     }
-    public void setImgUrl(String imgUrl){
+
+    public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
-    public void addTag(ContentTag contentTag){
-        if(contentTag != null){
+
+    public void addTag(ContentTag contentTag) {
+        if (contentTag != null) {
             this.contentTags.add(contentTag);
         }
     }
-    public void addTags(List<ContentTag> contentTags){
-        for(ContentTag tags: contentTags){
+
+    public void addTags(List<ContentTag> contentTags) {
+        for (ContentTag tags : contentTags) {
             this.addTag(tags);
         }
     }

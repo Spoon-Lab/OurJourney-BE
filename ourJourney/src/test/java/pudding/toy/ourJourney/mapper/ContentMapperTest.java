@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.content.CreateContentRequest;
 import pudding.toy.ourJourney.dto.content.EditContentRequest;
 import pudding.toy.ourJourney.entity.Category;
@@ -28,10 +29,11 @@ public class ContentMapperTest {
     Contents content;
     Category category;
     ContentService contentService;
+    ProfileInitializer profileInitializer;
     @BeforeEach
     void setUp(){
         category = new Category("name");
-        content = new Contents("제목이었던거",category,null);
+        content = new Contents("제목이었던거",category,null,profileInitializer.dummyProfile);
     }
     @Test
     void updateContentTest(){ //mapper 성공
@@ -48,3 +50,4 @@ public class ContentMapperTest {
 
     }
 }
+
