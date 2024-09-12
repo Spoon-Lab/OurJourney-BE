@@ -5,9 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
-import pudding.toy.ourJourney.dto.auth.ProfileAuthResponseDto;
+import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.GetDetailProfileResponse;
 import pudding.toy.ourJourney.dto.profile.NewProfileResponse;
 import pudding.toy.ourJourney.dto.profile.UpdateProfileRequest;
@@ -24,11 +23,11 @@ import java.util.*;
 public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UpdateProfileMapper updateProfileMapper;
-    public NewProfileResponse createProfile(ProfileAuthResponseDto profileAuthResponseDto) {
-        profileRepository.findByUserId(profileAuthResponseDto.getId()).ifPresent(profile -> {
+    public NewProfileResponse createProfile(ProfileAuthRequest profileAuthRequest) {
+        profileRepository.findByUserId(profileAuthRequest.getId()).ifPresent(profile -> {
             throw new IllegalStateException("프로필이 존재합니다.");
         });
-        Profile profile = Profile.builder().userId(profileAuthResponseDto.getId()).build();
+        Profile profile = Profile.builder().userId(profileAuthRequest.getId()).build();
         profileRepository.save(profile);
         return new NewProfileResponse(profile.getId(),profile.getNickName());
     }
