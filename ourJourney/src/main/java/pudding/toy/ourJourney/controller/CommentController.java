@@ -54,7 +54,7 @@ public class CommentController {
         return new GetCommentResponse(commentService.getComments(contentsId, pageable));
     }
 
-    // TODO: login_required
+    // TODO: login_required && is_owner
     @Operation(summary = "댓글 수정")
     @PatchMapping("/{commentId}")
     public void updateComment(
@@ -62,10 +62,10 @@ public class CommentController {
             @PathVariable("commentId") Long commentId,
             @RequestBody @Valid UpdateCommentRequest body
     ) {
-
+        commentService.updateComment(contentsId, commentId, body.getTexts());
     }
 
-    // TODO: login_required
+    // TODO: login_required && is_owner
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/{commentId}")
     public void deleteComment(
