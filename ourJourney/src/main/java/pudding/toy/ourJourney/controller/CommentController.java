@@ -72,6 +72,6 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @PathVariable("commentId") Long commentId
     ) {
-
+        commentService.deleteComment(contentsId, commentId);
     }
 }
