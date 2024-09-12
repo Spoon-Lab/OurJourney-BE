@@ -26,19 +26,20 @@ public class AttendeeServiceTest {
 
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         profile = new Profile(1L);
         Category category = new Category("hhhh");
         categoryRepository.save(category);
-        content = new Contents("title",category,new ContentTag());
         profileRepository.save(profile);
+        content = new Contents("title", category, new ContentTag(), profile);
         contentRepository.save(content);
-        attendee = new Attendee(profile,content);
+        attendee = new Attendee(profile, content);
         attendeeRepository.save(attendee);
     }
+
     @Test
-    void exitsByContentAndProfileTest(){
-        boolean status = attendeeRepository.existsAttendeeByContentsAndProfile(content,profile);
+    void exitsByContentAndProfileTest() {
+        boolean status = attendeeRepository.existsAttendeeByContentsAndProfile(content, profile);
         System.out.println(status);
     }
 }
