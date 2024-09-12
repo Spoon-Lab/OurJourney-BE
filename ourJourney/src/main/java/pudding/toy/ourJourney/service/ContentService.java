@@ -50,6 +50,7 @@ public class ContentService {
         if(createContentRequest.getImgUrl().isPresent()){
             content.setImgUrl(createContentRequest.getImgUrl().orElse(null));
         }
+        //todo: 서비스 분리하지말고 같이 옮기기
         if(createContentRequest.getProfileIds().isPresent()){
             attendeeService.addAttendee(createContentRequest.getProfileIds().orElse(null),content);
         }

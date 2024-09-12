@@ -7,7 +7,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import pudding.toy.ourJourney.dto.auth.ProfileAuthResponseDto;
 import pudding.toy.ourJourney.dto.profile.*;
+import pudding.toy.ourJourney.service.ProfileService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +19,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
 public class ProfileController {
+    private final ProfileService profileService;
     @Operation(summary = "프로필 생성", description = "장고 서버에서 회원가입이 완료되면 호출합니다.")
     @PostMapping("")
-    public void createProfile(@RequestBody CreateProfileRequest body) {
+    public NewProfileResponse createProfile(@RequestBody ProfileAuthResponseDto body) {
+        return profileService.createProfile(body);
     }
 
     @Operation(summary = "프로필 조회")

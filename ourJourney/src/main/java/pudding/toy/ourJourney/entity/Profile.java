@@ -12,7 +12,6 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-@Builder
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +31,6 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
-    public Profile(Long userId){
-        this.userId = userId;
-    }
 
     public String getNickName() {
         return nickName;
@@ -47,11 +43,9 @@ public class Profile {
     public Optional<String> getSelfIntroduction() {
         return Optional.ofNullable(selfIntroduction);
     }
-    
-    public Profile(Long userId, String nickName, String profileImg, String selfIntroduction) {
+    @Builder
+    public Profile(Long userId, String nickName) {
         this.userId = userId;
         this.nickName = nickName;
-        this.profileImg = profileImg;
-        this.selfIntroduction = selfIntroduction;
     }
 }

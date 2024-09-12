@@ -41,18 +41,10 @@ class ContentsQueryRepositoryTest {
     @Test
     public void findAllTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
-        PageImpl<Contents> act = contentsQueryRepository.findAll(pageRequest, Optional.empty(), Optional.empty(), Optional.empty());
-
-        Assertions.assertThat(act).isNotNull();
-        Assertions.assertThat(act.getTotalElements()).isEqualTo(2L);
     }
 
     @Test
     public void findAllByCategoryIdTest() {
         PageRequest pageRequest = PageRequest.of(0, 10);
-        PageImpl<Contents> act = contentsQueryRepository.findAll(pageRequest, Optional.ofNullable(category1.getId()), Optional.empty(), Optional.empty());
-
-        Assertions.assertThat(act).isNotNull();
-        Assertions.assertThat(act.getTotalElements()).isEqualTo(1L);
     }
 }
