@@ -1,23 +1,20 @@
 package pudding.toy.ourJourney.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.data.DataRestTagsService;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.mapper.EditContentsMapper;
-import pudding.toy.ourJourney.repository.AttendeeRepository;
 import pudding.toy.ourJourney.repository.CategoryRepository;
 import pudding.toy.ourJourney.repository.ContentRepository;
-
-import java.awt.print.Pageable;
+import pudding.toy.ourJourney.repository.ContentsQueryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,14 +28,14 @@ public class ContentService {
     private final EditContentsMapper contentsMapper;
     private final AttendeeService attendeeService;
     private final TagService tagService;
+    private final ContentsQueryRepository contentsQueryRepository;
 
-    public PageImpl<ListContentDto> getAllContents( //todo:구현
+    public PageImpl<ListContentDto> getAllContents(
             Pageable pageable,
             Optional<Long> categoryId,
-            Optional<String> content,
+            Optional<String> title,
             Optional<List<Long>> tagIds) {
-        List<ListContentDto> list = List.of(new ListContentDto());
-        return new PageImpl<>(list);
+        return contentsQueryRepository.findAll(pageable,categoryId,title,tagIds);
     }
 
     public Long createContent(CreateContentRequest createContentRequest, Profile profile) {

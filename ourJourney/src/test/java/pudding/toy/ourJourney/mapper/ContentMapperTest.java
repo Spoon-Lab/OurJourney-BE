@@ -24,7 +24,6 @@ public class ContentMapperTest {
     EditContentsMapper contentsMapper;
     Contents content;
     Category category;
-    ContentService contentService;
     ProfileInitializer profileInitializer;
     @BeforeEach
     void setUp(){
