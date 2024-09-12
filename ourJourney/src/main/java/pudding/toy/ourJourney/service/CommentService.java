@@ -23,14 +23,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public Comment createComment(Profile profile, Long contentsId, String texts) {
-        Contents contents = findContents(contentsId);
+        Contents contents = getContents(contentsId);
 
         Comment comment = new Comment(profile, contents, texts);
         return commentRepository.save(comment);
     }
 
     public PageImpl<GetCommentsDto> getComments(Long contentsId, Pageable pageable) {
-        Contents contents = findContents(contentsId);
+        Contents contents = getContents(contentsId);
         Page<Comment> comments = commentRepository.findAllByContentsIdAndDeletedAtIsNull(contents.getId(), pageable);
         List<GetCommentsDto> list = comments.getContent().stream().map(
                 comment -> new GetCommentsDto(
@@ -50,21 +50,39 @@ public class CommentService {
     }
 
     public void updateComment(Long contentId, Long commentId, String texts) {
-        Contents contents = findContents(contentId);
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
-        );
-        if (!Objects.equals(comment.getContents().getId(), contents.getId())) {
-            throw new IllegalArgumentException("컨텐츠에 속한 댓글이 아닙니다.");
-        }
+        Contents contents = getContents(contentId);
+        Comment comment = getComment(commentId);
+        validateCommentBelongsToContent(comment, contents);
 
         comment.update(texts);
         commentRepository.save(comment);
     }
 
-    private Contents findContents(Long contentsId) {
+
+    public void deleteComment(Long contentId, Long commentId) {
+        Contents contents = getContents(contentId);
+        Comment comment = getComment(commentId);
+        validateCommentBelongsToContent(comment, contents);
+
+        comment.remove();
+        commentRepository.save(comment);
+    }
+
+    private Contents getContents(Long contentsId) {
         return contentRepository.findById(contentsId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 컨텐츠입니다.")
         );
+    }
+
+    private Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
+        );
+    }
+
+    private static void validateCommentBelongsToContent(Comment comment, Contents contents) {
+        if (!Objects.equals(comment.getContents().getId(), contents.getId())) {
+            throw new IllegalArgumentException("컨텐츠에 속한 댓글이 아닙니다.");
+        }
     }
 }

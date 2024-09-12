@@ -81,4 +81,19 @@ class CommentServiceTest {
         Assertions.assertThat(act).isNotNull();
         Assertions.assertThat(act.getTexts()).isEqualTo("updateTexts");
     }
+
+    @Test
+    void deleteCommentTest() {
+        // given
+        Profile profile = profileRepository.save(new Profile(2L, "nickName", null, "selfIntroduce"));
+        Contents contents = contentRepository.save(new Contents(profile, null, "title", null));
+        Comment comment = commentRepository.save(new Comment(profile, contents, "texts"));
+
+        // when
+        commentService.deleteComment(contents.getId(), comment.getId());
+
+        // then
+        Comment act = commentRepository.findByIdAndDeletedAtIsNull(comment.getId()).orElse(null);
+        Assertions.assertThat(act).isNull();
+    }
 }
