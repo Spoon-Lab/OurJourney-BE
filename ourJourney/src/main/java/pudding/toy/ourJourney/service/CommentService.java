@@ -58,8 +58,16 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    private Contents findContents(Long contentsId) {
-        return contentRepository.findById(contentsId).orElseThrow(
+
+    public void deleteComment(Long contentId, Long commentId) {
+        Contents contents = getContents(contentId);
+        Comment comment = getComment(commentId);
+        validateCommentBelongsToContent(comment, contents);
+
+        comment.remove();
+        commentRepository.save(comment);
+    }
+
     private Contents getContents(Long contentsId) {
         return contentRepository.findByIdAndDeletedAtIsNull(contentsId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 컨텐츠입니다.")
