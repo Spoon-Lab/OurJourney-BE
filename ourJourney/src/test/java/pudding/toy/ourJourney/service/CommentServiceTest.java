@@ -65,4 +65,20 @@ class CommentServiceTest {
         // then
         Assertions.assertThat(act.getContent().size()).isEqualTo(10);
     }
+
+    @Test
+    void updateCommentTest() {
+        // given
+        Profile profile = profileRepository.save(new Profile(2L, "nickName", null, "selfIntroduce"));
+        Contents contents = contentRepository.save(new Contents(profile, null, "title", null));
+        Comment comment = commentRepository.save(new Comment(profile, contents, "texts"));
+
+        // when
+        commentService.updateComment(contents.getId(), comment.getId(), "updateTexts");
+
+        // then
+        Comment act = commentRepository.findById(comment.getId()).orElse(null);
+        Assertions.assertThat(act).isNotNull();
+        Assertions.assertThat(act.getTexts()).isEqualTo("updateTexts");
+    }
 }
