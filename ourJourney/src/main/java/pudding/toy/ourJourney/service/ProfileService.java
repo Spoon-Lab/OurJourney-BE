@@ -28,8 +28,20 @@ public class ProfileService {
             throw new IllegalStateException("프로필이 존재합니다.");
         });
         Profile profile = Profile.builder().userId(profileAuthRequest.getId()).build();
+        String defaultNickName = defaultNickName(profile);
+        profile.defaultName(defaultNickName);
+        
         profileRepository.save(profile);
         return new NewProfileResponse(profile.getId(),profile.getNickName());
+    }
+    public String defaultNickName(Profile profile){
+        boolean isDuplicate;
+        String randomNickName;
+        do{
+            randomNickName = profile.createRandomNickName();
+            isDuplicate = profileRepository.existsByNickName(randomNickName);
+        }while(isDuplicate);
+        return randomNickName;
     }
     public GetDetailProfileResponse getDetailProfile(Long id){
         Profile profile = profileRepository.findById(id).orElseThrow(
