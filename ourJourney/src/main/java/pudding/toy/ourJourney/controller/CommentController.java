@@ -29,7 +29,6 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @RequestBody @Valid CreateCommentRequest body
     ) {
-        // TODO: profile 채워넣기
         commentService.createComment(profileInitializer.dummyProfile, contentsId, body.getTexts());
 
         return new CreateCommentResponse(1L);
