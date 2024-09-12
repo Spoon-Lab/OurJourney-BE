@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import pudding.toy.ourJourney.dto.content.ListContentDto;
 import pudding.toy.ourJourney.entity.Contents;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import static pudding.toy.ourJourney.entity.QContents.contents;
 public class ContentsQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
-    public PageImpl<Contents> findAll(
+    public PageImpl<ListContentDto> findAll(
             Pageable pageable,
             Optional<Long> categoryId,
             Optional<String> title,
@@ -29,12 +30,15 @@ public class ContentsQueryRepository {
                 .limit(pageable.getPageSize())
                 .select(contents)
                 .fetch();
+        List<ListContentDto> listDto = list.stream()
+                .map(content -> new ListContentDto(content))
+                .toList();
 
         Long count = baseQuery(categoryId, title, tagIds)
                 .select(contents.count())
                 .fetchFirst();
 
-        return new PageImpl<>(list, pageable, count);
+        return new PageImpl<>(listDto, pageable, count);
     }
 
     private JPAQuery<?> baseQuery(
