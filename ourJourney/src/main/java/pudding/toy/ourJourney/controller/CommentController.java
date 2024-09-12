@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.comment.*;
 import pudding.toy.ourJourney.service.CommentService;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/contents/{contentsId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
+    private final ProfileInitializer profileInitializer;
     private final CommentService commentService;
 
     @Operation(summary = "댓글 생성")
@@ -28,7 +30,7 @@ public class CommentController {
             @RequestBody @Valid CreateCommentRequest body
     ) {
         // TODO: profile 채워넣기
-        commentService.createComment(null, contentsId, body.getTexts());
+        commentService.createComment(profileInitializer.dummyProfile, contentsId, body.getTexts());
 
         return new CreateCommentResponse(1L);
     }
@@ -50,11 +52,7 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @PageableDefault() Pageable pageable
     ) {
-        CommentProfileDto commentProfileDto = new CommentProfileDto(1L, "url", "nickname");
-        GetCommentsDto getCommentsDto = new GetCommentsDto(1L, "content", commentProfileDto, LocalDateTime.now());
-        List<GetCommentsDto> list = List.of(getCommentsDto);
-
-        return new GetCommentResponse(new PageImpl<>(list, pageable, 1L));
+        return new GetCommentResponse(commentService.getComments(contentsId, pageable));
     }
 
     // TODO: login_required
