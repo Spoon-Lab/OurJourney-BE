@@ -31,7 +31,7 @@ public class ContentsQueryRepository {
                 .select(contents)
                 .fetch();
         List<ListContentDto> listDto = list.stream()
-                .map(content -> new ListContentDto(content))
+                .map(ListContentDto::new)
                 .toList();
 
         Long count = baseQuery(categoryId, title, tagIds)
