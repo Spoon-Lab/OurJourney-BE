@@ -69,13 +69,13 @@ public class CommentService {
     }
 
     private Contents getContents(Long contentsId) {
-        return contentRepository.findByIdAndDeletedAtIsNull(contentsId).orElseThrow(
+        return contentRepository.findById(contentsId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 컨텐츠입니다.")
         );
     }
 
     private Comment getComment(Long commentId) {
-        return commentRepository.findByIdAndDeletedAtIsNull(commentId).orElseThrow(
+        return commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
         );
     }
