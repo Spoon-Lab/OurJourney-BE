@@ -27,7 +27,7 @@ public class AttendeeServiceTest {
 
     @BeforeEach
     public void setUp() {
-        profile = new Profile(3L,"hi");
+        profile = new Profile(3L);
         Category category = new Category("hhhh");
         categoryRepository.save(category);
         profileRepository.save(profile);

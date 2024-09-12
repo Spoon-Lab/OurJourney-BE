@@ -29,13 +29,14 @@ public class ProfileController {
     @Operation(summary = "프로필 조회")
     @GetMapping("/{id}")
     public GetDetailProfileResponse getProfile(@PathVariable Long id) {
-        return new GetDetailProfileResponse(1L, Optional.of("nickname"), null, null);
+        return profileService.getDetailProfile(id);
     }
 
     // TODO: login_required && is_owner
     @Operation(summary = "프로필 수정")
     @PatchMapping("/{id}")
     public void updateProfile(@PathVariable Long id, @RequestBody UpdateProfileRequest body) {
+        profileService.updateMyProfile(id,body);
     }
 
     @Operation(summary = "내가 작성한 글 가져오기")

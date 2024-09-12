@@ -16,7 +16,6 @@ import pudding.toy.ourJourney.repository.ContentRepository;
 import pudding.toy.ourJourney.repository.ProfileRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
@@ -38,7 +37,7 @@ class CommentServiceTest {
     @Test
     void createCommentTest() {
         // given
-        Profile profile = profileRepository.save(new Profile(2L, "nickName"));
+        Profile profile = profileRepository.save(new Profile(2L));
         Contents contents = contentRepository.save(new Contents(profile, null, "title", null));
 
         // when
@@ -51,7 +50,7 @@ class CommentServiceTest {
     @Test
     void getCommentsTest() {
         // given
-        Profile profile = profileRepository.save(new Profile(2L, "nickName"));
+        Profile profile = profileRepository.save(new Profile(2L));
         Contents contents = contentRepository.save(new Contents(profile, null, "title", null));
 
         List<Comment> comments = IntStream.range(0, 11)
@@ -69,7 +68,7 @@ class CommentServiceTest {
     @Test
     void updateCommentTest() {
         // given
-        Profile profile = profileRepository.save(new Profile(2L, "nickName"));
+        Profile profile = profileRepository.save(new Profile(2L));
         Contents contents = contentRepository.save(new Contents(profile, null, "title", null));
         Comment comment = commentRepository.save(new Comment(profile, contents, "texts"));
 
@@ -85,7 +84,7 @@ class CommentServiceTest {
     @Test
     void deleteCommentTest() {
         // given
-        Profile profile = profileRepository.save(new Profile(2L, "nickName"));
+        Profile profile = profileRepository.save(new Profile(2L));
         Contents contents = contentRepository.save(new Contents(profile, null, "title", null));
         Comment comment = commentRepository.save(new Comment(profile, contents, "texts"));
 

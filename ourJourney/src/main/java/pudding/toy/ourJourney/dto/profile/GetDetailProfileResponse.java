@@ -11,13 +11,13 @@ public class GetDetailProfileResponse {
     @NotNull
     private Long profileId;
     @Size(max = 32)
-    private Optional<String> nickname;
+    private String nickname;
     @Size(max = 255)
     private Optional<String> imageUrl;
     @Size(max = 255)
     private Optional<String> selfIntroduction;
 
-    public GetDetailProfileResponse(Long profileId, Optional<String> nickname, Optional<String> imageUrl, Optional<String> selfIntroduction) {
+    public GetDetailProfileResponse(Long profileId, String nickname, Optional<String> imageUrl, Optional<String> selfIntroduction) {
         this.profileId = profileId;
         this.nickname = nickname;
         this.imageUrl = imageUrl;

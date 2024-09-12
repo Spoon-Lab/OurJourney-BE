@@ -7,21 +7,15 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pudding.toy.ourJourney.config.ProfileInitializer;
-import pudding.toy.ourJourney.dto.content.EditContentRequest;
+import pudding.toy.ourJourney.dto.content.UpdateContentRequest;
 import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
-import pudding.toy.ourJourney.service.ContentService;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
 
 @Transactional
 @SpringBootTest
 public class ContentMapperTest {
     @Autowired
-    EditContentsMapper contentsMapper;
+    UpdateContentsMapper contentsMapper;
     Contents content;
     Category category;
     ProfileInitializer profileInitializer;
@@ -32,7 +26,7 @@ public class ContentMapperTest {
     }
     @Test
     void updateContentTest(){ //mapper 성공
-        EditContentRequest ed = EditContentRequest.builder()
+        UpdateContentRequest ed = UpdateContentRequest.builder()
                 .imgUrl(JsonNullable.of("img.png"))
                 .build();
         contentsMapper.updateEntityFromDto(ed,content);

@@ -3,8 +3,6 @@ package pudding.toy.ourJourney.mapper;
 import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
 import org.openapitools.jackson.nullable.JsonNullable;
-import pudding.toy.ourJourney.dto.content.EditContentRequest;
-import pudding.toy.ourJourney.entity.Contents;
 
 @Mapper(componentModel = "spring")
 public interface JsonNullableMapper {

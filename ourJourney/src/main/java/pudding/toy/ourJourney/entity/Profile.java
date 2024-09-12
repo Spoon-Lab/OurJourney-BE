@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +14,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class Profile {
+public class Profile extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -39,13 +41,17 @@ public class Profile {
     public String getProfileImg() {
         return profileImg;
     }
-
-    public Optional<String> getSelfIntroduction() {
-        return Optional.ofNullable(selfIntroduction);
+    public String getSelfIntroduction() {
+        return selfIntroduction;
     }
     @Builder
-    public Profile(Long userId, String nickName) {
+    public Profile(Long userId) {
         this.userId = userId;
-        this.nickName = nickName;
+        this.nickName = this.createRandomNickName();
+    }
+    public String createRandomNickName(){
+        final List<String> adjectives = Arrays.asList("예쁜", "졸린", "작은", "큰", "빠른", "따뜻한", "밝은", "산뜻한", "사랑스러운", "행복한", "귀여운");
+        int randomIndex = (int)(Math.random()*adjectives.size());
+        return adjectives.get(randomIndex)+"푸딩"+(int)(Math.random()*1000);
     }
 }

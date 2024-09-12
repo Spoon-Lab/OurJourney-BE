@@ -5,12 +5,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.content.*;
-import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ContentService;
 
 import java.util.List;
@@ -45,7 +43,7 @@ public class ContentController {
 
     @PatchMapping("/{contentId}")
     @Operation(summary = "content 수정", description = "content 한 개 수정한다.")
-    public void updateContent(@PathVariable("contentId") Long contentId, @RequestBody EditContentRequest editContent) {
+    public void updateContent(@PathVariable("contentId") Long contentId, @RequestBody UpdateContentRequest editContent) {
         contentService.updateContent(contentId,editContent);
     }
 
