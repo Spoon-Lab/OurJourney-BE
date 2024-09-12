@@ -1,12 +1,8 @@
 package pudding.toy.ourJourney.mapper;
 
 import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.factory.Mappers;
-import pudding.toy.ourJourney.dto.content.EditContentRequest;
-import pudding.toy.ourJourney.entity.Contents;
 
 public interface GenericMapper<D,E> {
     D toDto(E e);

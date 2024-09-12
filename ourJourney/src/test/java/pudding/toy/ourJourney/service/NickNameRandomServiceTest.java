@@ -3,11 +3,10 @@ package pudding.toy.ourJourney.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pudding.toy.ourJourney.dto.auth.ProfileAuthResponseDto;
+import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 @SpringBootTest
 public class NickNameRandomServiceTest {
@@ -23,8 +22,8 @@ public class NickNameRandomServiceTest {
     }
     @Test
     void createProfile(){
-        ProfileAuthResponseDto profileAuthResponseDto = new ProfileAuthResponseDto(3L);
-        System.out.println(profileService.createProfile(profileAuthResponseDto).getNickName());
+        ProfileAuthRequest profileAuthRequest = new ProfileAuthRequest(3L);
+        System.out.println(profileService.createProfile(profileAuthRequest).getNickName());
 
     }
 }

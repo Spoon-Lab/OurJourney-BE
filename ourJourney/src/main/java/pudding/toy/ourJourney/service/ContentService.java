@@ -11,7 +11,7 @@ import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.entity.Category;
 import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Profile;
-import pudding.toy.ourJourney.mapper.EditContentsMapper;
+import pudding.toy.ourJourney.mapper.UpdateContentsMapper;
 import pudding.toy.ourJourney.repository.CategoryRepository;
 import pudding.toy.ourJourney.repository.ContentRepository;
 import pudding.toy.ourJourney.repository.ContentsQueryRepository;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class ContentService {
     private final ContentRepository contentRepository;
     private final CategoryRepository categoryRepository;
-    private final EditContentsMapper contentsMapper;
+    private final UpdateContentsMapper contentsMapper;
     private final AttendeeService attendeeService;
     private final TagService tagService;
     private final ContentsQueryRepository contentsQueryRepository;
@@ -68,7 +68,7 @@ public class ContentService {
         return DetailContentResponse.from(contents);
     }
 
-    public void updateContent(Long contentId, EditContentRequest editRequestDto) {
+    public void updateContent(Long contentId, UpdateContentRequest editRequestDto) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
