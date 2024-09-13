@@ -34,7 +34,7 @@ public class ProfileService {
         profileRepository.save(profile);
         return new NewProfileResponse(profile.getId(),profile.getNickName());
     }
-    public String defaultNickName(Profile profile){
+    private String defaultNickName(Profile profile){
         boolean isDuplicate;
         String randomNickName;
         do{
