@@ -99,7 +99,7 @@ public class ProfileService {
         //todo: login_required && is_owner?
         Page<Long> contentLikesId = contentLikeRepository.findAllByProfileId(profileId, pageable);
         List<Long> contentLikes = contentLikesId.getContent();
-        Page<Contents> contents = contentRepository.findAllByContentLikeIdIn(contentLikes, pageable);
+        Page<Contents> contents = contentRepository.findAllByContentLikesIdIn(contentLikes, pageable);
         List<GetLikesContentsDto> getLikesContentsDtos = contents.stream()
                 .map(content -> new GetLikesContentsDto(content.getId(), content.getTitle(), content.getProfile().getId(),
                         content.getImgUrl(), content.getCreatedAt(), content.getUpdateAt()))

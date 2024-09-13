@@ -58,7 +58,7 @@ public class ContentController {
         return contentService.addLikesToContent(contentId);
     }
     @Operation(summary = "글에 좋아요 취소하기")
-    @PostMapping("/{contentId}/likes")
+    @DeleteMapping("/{contentId}/likes")
     public void deleteLikesToContent(@PathVariable("contentId") Long contentId){
         contentService.deleteLike(contentId);
     }

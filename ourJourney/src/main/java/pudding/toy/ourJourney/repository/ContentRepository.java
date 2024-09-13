@@ -15,5 +15,5 @@ import java.util.Optional;
 public interface ContentRepository extends JpaRepository<Contents, Long>{
     Optional<Contents> findByIdAndDeletedAtIsNull(Long id);
     Page<Contents> findAllByProfileId(Long profileId, Pageable pageable);
-    Page<Contents> findAllByContentLikeIdIn(List<Long> contentLikeId, Pageable pageable);
+    Page<Contents> findAllByContentLikesIdIn(List<Long> contentLikeId, Pageable pageable);
 }
