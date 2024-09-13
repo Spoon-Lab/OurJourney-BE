@@ -12,11 +12,10 @@ import pudding.toy.ourJourney.dto.thread.ListThreadDto;
 import pudding.toy.ourJourney.dto.thread.ProfileThreadDto;
 import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.repository.ContentRepository;
+import pudding.toy.ourJourney.repository.TagRepository;
 import pudding.toy.ourJourney.repository.ThreadRepository;
+import pudding.toy.ourJourney.repository.ThreadTagRepository;
 
-import org.springframework.data.domain.PageImpl;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,11 +24,11 @@ import java.util.List;
 public class ThreadService {
     private final ThreadRepository threadRepository;
     private final ContentRepository contentRepository;
+    private final TagRepository tagRepository;
+    private final ThreadTagRepository threadTagRepository;
 
     public PageImpl<ListThreadDto> getThreads(Long contentId, Pageable pageable) {
-        Contents contents = contentRepository.findById(contentId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
+        Contents contents = getContent(contentId);
         Page<ContentsThread> pageThreads = threadRepository.findByContents(pageable, contents);
         Long totalCount = threadRepository.countByContents(contents);
         List<ListThreadDto> threadDtos = pageThreads.stream()
@@ -47,7 +46,25 @@ public class ThreadService {
                         )
                 )
                 .toList();
-        
+
         return new PageImpl<>(threadDtos, pageable, totalCount);
+    }
+
+    public ContentsThread createThreads(Profile profile, Long contentId, String texts, List<Long> tagIds, String threadImg) {
+        Contents content = getContent(contentId);
+        List<Tag> tags = tagRepository.findAllById(tagIds);
+
+        ContentsThread thread = new ContentsThread(texts, threadImg, profile, content);
+        threadRepository.save(thread);
+
+        List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
+        threadTagRepository.saveAll(threadTags);
+
+        return thread;
+    }
+
+    private Contents getContent(Long contentId) {
+        return contentRepository.findById(contentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

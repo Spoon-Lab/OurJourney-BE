@@ -27,6 +27,14 @@ public class ContentsThread extends BaseTimeEntity{
         this.texts = texts;
         this.contents = contents;
     }
+
+    public ContentsThread(String texts, String imgUrl, Profile profile, Contents contents) {
+        this.texts = texts;
+        this.imgUrl = imgUrl;
+        this.profile = profile;
+        this.contents = contents;
+    }
+
     public List<String> getTagNames(){
         return this.getThreadTags().stream()
                 .map(ThreadTag::getTag)
