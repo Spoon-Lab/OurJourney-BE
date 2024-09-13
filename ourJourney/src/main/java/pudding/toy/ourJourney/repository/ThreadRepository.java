@@ -13,4 +13,5 @@ import java.util.Optional;
 @Repository
 public interface ThreadRepository extends JpaRepository<ContentsThread, Long>{
     Page<ContentsThread> findByContents(Pageable pageable, Contents contents);
+    Long countByContents(Contents contents);
 }
