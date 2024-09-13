@@ -7,12 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.entity.Category;
+import pudding.toy.ourJourney.entity.ContentLike;
 import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.mapper.UpdateContentsMapper;
 import pudding.toy.ourJourney.repository.CategoryRepository;
+import pudding.toy.ourJourney.repository.ContentLikeRepository;
 import pudding.toy.ourJourney.repository.ContentRepository;
 import pudding.toy.ourJourney.repository.ContentsQueryRepository;
 import java.time.LocalDateTime;
@@ -29,6 +32,8 @@ public class ContentService {
     private final AttendeeService attendeeService;
     private final TagService tagService;
     private final ContentsQueryRepository contentsQueryRepository;
+    private final ProfileInitializer profileInitializer;
+    private final ContentLikeRepository contentLikeRepository;
 
     public PageImpl<ListContentDto> getAllContents(
             Pageable pageable,
@@ -81,5 +86,27 @@ public class ContentService {
         );
         contents.remove(LocalDateTime.now());
         contentRepository.save(contents);
+    }
+    public Long addLikesToContent(Long contentId){
+        Profile profile = profileInitializer.dummyProfile; //dummy
+        Contents content = contentRepository.findById(contentId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        ContentLike contentLike = new ContentLike(content,profile);
+        contentLikeRepository.save(contentLike);
+        if(contentLikeRepository.existsByContentsAndProfile(content,profile)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT); //이미 좋아요 처리
+        }
+        return contentLike.getId();
+    }
+    public void deleteLike(Long contentId){
+        Profile profile = profileInitializer.dummyProfile; //dummy
+        Contents content = contentRepository.findById(contentId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        ContentLike contentLike = contentLikeRepository.findByContentsAndProfile(content,profile).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        contentLikeRepository.delete(contentLike);
     }
 }

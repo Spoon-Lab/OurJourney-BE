@@ -16,5 +16,9 @@ public class ContentLike {
     Contents contents;
     @ManyToOne @JoinColumn (name = "profile_id")
     Profile profile;
+    public ContentLike(Contents contents, Profile profile){
+        this.contents = contents;
+        this.profile = profile;
+    }
 
 }

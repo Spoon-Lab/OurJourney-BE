@@ -52,6 +52,16 @@ public class ContentController {
     public void deleteContent(@PathVariable("contentId") Long contentId) {
         contentService.deleteContent(contentId);
     }
+    @Operation(summary = "글에 좋아요 누르기")
+    @PostMapping("/{contentId}/likes")
+    public Long addLikesToContent(@PathVariable("contentId") Long contentId){
+        return contentService.addLikesToContent(contentId);
+    }
+    @Operation(summary = "글에 좋아요 취소하기")
+    @PostMapping("/{contentId}/likes")
+    public void deleteLikesToContent(@PathVariable("contentId") Long contentId){
+        contentService.deleteLike(contentId);
+    }
 
 
 }
