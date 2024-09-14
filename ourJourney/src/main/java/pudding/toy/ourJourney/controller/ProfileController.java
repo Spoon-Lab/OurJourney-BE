@@ -38,7 +38,7 @@ public class ProfileController {
         profileService.updateMyProfile(id,body);
     }
 
-    @Operation(summary = "내가 작성한 글 가져오기")
+    @Operation(summary = "해당 유저가 작성한 글 가져오기")
     @GetMapping("/{id}/contents")
     public GetMyContentsResponse getMyContents(@PathVariable Long id, @PageableDefault Pageable pageable) {
        return profileService.getMyContents(id,pageable); //todo: id 빼기.

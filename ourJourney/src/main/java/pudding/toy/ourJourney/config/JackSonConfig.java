@@ -15,4 +15,5 @@ public class JackSonConfig {
                 .modulesToInstall(new JsonNullableModule());
         return builder;
     }
+
 }
