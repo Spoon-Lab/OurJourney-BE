@@ -4,7 +4,7 @@ from apps.adminapp.models import Category
 from apps.userapp.models import Profile
 
 
-class Post(models.Model):
+class Contents(models.Model):
     id = models.AutoField(primary_key=True)
     category_id = models.ForeignKey(
         Category, on_delete=models.CASCADE, null=False, blank=False
@@ -13,15 +13,15 @@ class Post(models.Model):
         Profile, on_delete=models.CASCADE, null=False, blank=False
     )
     title = models.CharField(max_length=255)
-    # 포스트 이미지
-    post_img = models.CharField(max_length=200, null=True)
+    # content 이미지
+    content_img = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
 
     class Meta:
         managed = True
-        db_table = "post"
+        db_table = "contents"
 
 
 class Comment(models.Model):
@@ -29,7 +29,9 @@ class Comment(models.Model):
     profile_id = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=False, blank=False
     )
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, null=False, blank=False)
+    content_id = models.ForeignKey(
+        Contents, on_delete=models.CASCADE, null=False, blank=False
+    )
     content = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -50,14 +52,16 @@ class Tag(models.Model):
         db_table = "tag"
 
 
-class PostTag(models.Model):
+class ContentTag(models.Model):
     id = models.AutoField(primary_key=True)
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, null=False, blank=False)
+    content_id = models.ForeignKey(
+        Contents, on_delete=models.CASCADE, null=False, blank=False
+    )
     tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         managed = True
-        db_table = "post_tag"
+        db_table = "content_tag"
 
 
 class Thread(models.Model):
@@ -65,7 +69,9 @@ class Thread(models.Model):
     profile_id = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=False, blank=False
     )
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, null=False, blank=False)
+    content_id = models.ForeignKey(
+        Contents, on_delete=models.CASCADE, null=False, blank=False
+    )
     content = models.CharField(max_length=500)
     # 타래 이미지
     thread_img = models.CharField(max_length=200, null=True)
@@ -88,13 +94,15 @@ class ThreadTag(models.Model):
         db_table = "thread_tag"
 
 
-class PostLike(models.Model):
+class ContentLike(models.Model):
     id = models.AutoField(primary_key=True)
     profile_id = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=False, blank=False
     )
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, null=False, blank=False)
+    content_id = models.ForeignKey(
+        Contents, on_delete=models.CASCADE, null=False, blank=False
+    )
 
     class Meta:
         managed = True
-        db_table = "post_like"
+        db_table = "content_like"

@@ -52,8 +52,8 @@ class Attendee(models.Model):
     profile_id = models.ForeignKey(
         Profile, on_delete=models.CASCADE, null=False, blank=False
     )
-    post_id = models.ForeignKey(
-        "contentapp.Post", on_delete=models.CASCADE, null=False, blank=False
+    content_id = models.ForeignKey(
+        "contentapp.Contents", on_delete=models.CASCADE, null=False, blank=False
     )
 
     class Meta:
