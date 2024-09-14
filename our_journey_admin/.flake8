@@ -1,0 +1,14 @@
+[flake8]
+max-line-length = 88
+ignore = E203, W503  # 선택 사항: 필요에 따라 무시할 규칙 추가
+exclude =
+    .git,
+    __pycache__,
+    migrations,
+    env,
+    venv,
+    .venv,
+    build,
+    dist,
+    *.pyc,
+    .tox,
