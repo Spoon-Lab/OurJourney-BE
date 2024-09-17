@@ -63,6 +63,26 @@ public class ThreadService {
         return thread;
     }
 
+    public void deleteThread(Long contentId, Long threadId) {
+        Contents contents = getContent(contentId);
+        ContentsThread thread = getThread(threadId);
+        validateThreadBelongsToContent(thread, contents);
+
+        thread.remove();
+        threadRepository.save(thread);
+    }
+
+    private void validateThreadBelongsToContent(ContentsThread thread, Contents contents) {
+        if (!thread.getContents().equals(contents)) {
+            throw new IllegalStateException("글에 속한 타래가 아닙니다.");
+        }
+    }
+
+    private ContentsThread getThread(Long threadId) {
+        return threadRepository.findById(threadId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     private Contents getContent(Long contentId) {
         return contentRepository.findById(contentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

@@ -30,7 +30,7 @@ public class ThreadController {
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
-       return new GetThreadResponse(threadService.getThreads(contentId,pageable));
+        return new GetThreadResponse(threadService.getThreads(contentId, pageable));
     }
 
     @PostMapping("/{contentId}/threads")
@@ -49,7 +49,7 @@ public class ThreadController {
     @DeleteMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
     public void deleteThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId) {
-
+        threadService.deleteThread(contentId, threadId);
     }
 
 

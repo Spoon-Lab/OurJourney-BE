@@ -8,22 +8,28 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Entity @Getter
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "thread")
-public class ContentsThread extends BaseTimeEntity{
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ContentsThread extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String texts;
     String imgUrl;
-    @ManyToOne @JoinColumn(name = "profile_id")
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     Profile profile;
-    @OneToMany @JoinColumn(name = "tag_id")
+    @OneToMany
+    @JoinColumn(name = "tag_id")
     List<ThreadTag> threadTags;
-    @ManyToOne @JoinColumn(name = "post_id")
+    @ManyToOne
+    @JoinColumn(name = "post_id")
     Contents contents;
-    public ContentsThread(String texts,Contents contents){
+
+    public ContentsThread(String texts, Contents contents) {
         this.texts = texts;
         this.contents = contents;
     }
@@ -35,7 +41,7 @@ public class ContentsThread extends BaseTimeEntity{
         this.contents = contents;
     }
 
-    public List<String> getTagNames(){
+    public List<String> getTagNames() {
         return this.getThreadTags().stream()
                 .map(ThreadTag::getTag)
                 .map(Tag::getName)
