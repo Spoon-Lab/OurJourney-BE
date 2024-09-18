@@ -17,14 +17,19 @@ public class ContentsThread extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String texts;
+
     String imgUrl;
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     Profile profile;
+
     @OneToMany
     @JoinColumn(name = "tag_id")
     List<ThreadTag> threadTags;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     Contents contents;
@@ -46,6 +51,14 @@ public class ContentsThread extends BaseTimeEntity {
                 .map(ThreadTag::getTag)
                 .map(Tag::getName)
                 .toList();
+    }
+
+    public void setTexts(String texts) {
+        this.texts = texts;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
 }
