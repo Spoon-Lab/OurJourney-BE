@@ -27,7 +27,7 @@ public class Contents extends BaseTimeEntity {
     Profile profile;
     @OneToMany(mappedBy = "contents")
     List<ContentTag> contentTags;
-    @OneToMany(mappedBy = "contents")
+    @OneToMany(mappedBy = "contents", cascade = CascadeType.REMOVE)
     List<ContentLike> contentLikes;
     @OneToMany(mappedBy = "contents")
     List<ContentsThread> contentsThreads;

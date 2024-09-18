@@ -38,27 +38,20 @@ public class ProfileController {
         profileService.updateMyProfile(id,body);
     }
 
-    @Operation(summary = "내가 작성한 글 가져오기")
+    @Operation(summary = "해당 유저가 작성한 글 가져오기")
     @GetMapping("/{id}/contents")
     public GetMyContentsResponse getMyContents(@PathVariable Long id, @PageableDefault Pageable pageable) {
-        List<GetMyContentsDto> list = List.of(new GetMyContentsDto(1L, "title", 1L, "imageUrl", null, null));
-
-        return new GetMyContentsResponse(new PageImpl<>(list, pageable, 1));
+       return profileService.getMyContents(id,pageable); //todo: id 빼기.
     }
 
     @Operation(summary = "내가 작성한 댓글 가져오기")
     @GetMapping("/{id}/comments")
     public GetMyCommentsResponse getMyComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
-        List<GetMyCommentsDto> list = List.of(new GetMyCommentsDto(1L, "contents", 1L, null, null));
-
-        return new GetMyCommentsResponse(new PageImpl<>(list, pageable, 1));
+        return profileService.getMyComments(id,pageable);
     }
-
     @Operation(summary = "내가 좋아요한 글 가져오기")
     @GetMapping("/{id}/likes/contents")
     public GetLikeContentsResponse getLikesContents(@PathVariable Long id, @PageableDefault Pageable pageable) {
-        List<GetLikesContentsDto> list = List.of(new GetLikesContentsDto(1L, "title", 1L, "imageUrl", null, null));
-
-        return new GetLikeContentsResponse(new PageImpl<>(list, pageable, 1));
+        return profileService.getMyLikeContents(id,pageable);
     }
 }

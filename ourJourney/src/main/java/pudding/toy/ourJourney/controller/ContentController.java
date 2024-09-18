@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.content.*;
+import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.service.ContentService;
 
 import java.util.List;
@@ -51,6 +52,18 @@ public class ContentController {
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
     public void deleteContent(@PathVariable("contentId") Long contentId) {
         contentService.deleteContent(contentId);
+    }
+    @Operation(summary = "글에 좋아요 누르기")
+    @PostMapping("/{contentId}/likes")
+    public Long addLikesToContent(@PathVariable("contentId") Long contentId){
+        Profile profile = profileInitializer.dummyProfile; //dummy
+        return contentService.addLikesToContent(contentId,profile);
+    }
+    @Operation(summary = "글에 좋아요 취소하기")
+    @DeleteMapping("/{contentId}/likes")
+    public void deleteLikesToContent(@PathVariable("contentId") Long contentId){
+        Profile profile = profileInitializer.dummyProfile; //dummy
+        contentService.deleteLike(contentId,profile);
     }
 
 

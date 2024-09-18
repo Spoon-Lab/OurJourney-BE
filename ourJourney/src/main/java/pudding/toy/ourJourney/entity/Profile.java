@@ -32,6 +32,7 @@ public class Profile extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
+
     public void defaultName(String nickName){
         this.nickName = nickName;
     }

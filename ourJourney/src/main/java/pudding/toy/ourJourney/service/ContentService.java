@@ -7,14 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.content.*;
-import pudding.toy.ourJourney.entity.Category;
-import pudding.toy.ourJourney.entity.Contents;
-import pudding.toy.ourJourney.entity.Profile;
+import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.mapper.UpdateContentsMapper;
-import pudding.toy.ourJourney.repository.CategoryRepository;
-import pudding.toy.ourJourney.repository.ContentRepository;
-import pudding.toy.ourJourney.repository.ContentsQueryRepository;
+import pudding.toy.ourJourney.repository.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +24,12 @@ public class ContentService {
     private final ContentRepository contentRepository;
     private final CategoryRepository categoryRepository;
     private final UpdateContentsMapper contentsMapper;
-    private final AttendeeService attendeeService;
-    private final TagService tagService;
+    private final AttendeeRepository attendeeRepository;
+    private final TagRepository tagRepository;
+    private final ContentTagRepository contentTagRepository;
     private final ContentsQueryRepository contentsQueryRepository;
+    private final ContentLikeRepository contentLikeRepository;
+    private final ProfileRepository profileRepository;
 
     public PageImpl<ListContentDto> getAllContents(
             Pageable pageable,
@@ -50,16 +51,36 @@ public class ContentService {
         if(createContentRequest.getImgUrl().isPresent()){
             content.setImgUrl(createContentRequest.getImgUrl().orElse(null));
         }
-        //todo: 서비스 분리하지말고 같이 옮기기
         if(createContentRequest.getProfileIds().isPresent()){
-            attendeeService.addAttendee(createContentRequest.getProfileIds().orElse(null),content);
+            addAttendee(createContentRequest.getProfileIds().orElse(null),content);
         }
         if(createContentRequest.getTagIds().isPresent()){
-            tagService.addContentTag(createContentRequest.getTagIds().orElse(null),content);
+            addContentTag(createContentRequest.getTagIds().orElse(null),content);
         }
         contentRepository.save(content);
         return content.getId();
     }
+    private void addAttendee(List<Long> profileId,Contents content) {
+        List<Profile> profiles = profileRepository.findAllById(profileId);
+        if(profiles.size()!=profileId.size()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        List<Attendee> attendees = profiles.stream()
+                .map(profile -> new Attendee(profile,content))
+                .toList();
+        attendeeRepository.saveAll(attendees);
+    }
+    private void addContentTag(List<Long> tagIds, Contents content) {
+        List<Tag> tags = tagRepository.findAllById(tagIds);
+        if (tagIds.size() != tags.size()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        List<ContentTag> contentTags = tags.stream()
+                .map(tag -> new ContentTag(content, tag))
+                .toList();
+        contentTagRepository.saveAll(contentTags);
+    }
+
 
     public DetailContentResponse getDetailContent(Long contentId) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
@@ -81,5 +102,25 @@ public class ContentService {
         );
         contents.remove(LocalDateTime.now());
         contentRepository.save(contents);
+    }
+    public Long addLikesToContent(Long contentId,Profile profile){
+        Contents content = contentRepository.findById(contentId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        ContentLike contentLike = new ContentLike(content,profile);
+        contentLikeRepository.save(contentLike);
+        if(contentLikeRepository.existsByContentsAndProfile(content,profile)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT); //이미 좋아요 처리
+        }
+        return contentLike.getId();
+    }
+    public void deleteLike(Long contentId,Profile profile){
+        Contents content = contentRepository.findById(contentId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        ContentLike contentLike = contentLikeRepository.findByContentsAndProfile(content,profile).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        contentLikeRepository.delete(contentLike);
     }
 }

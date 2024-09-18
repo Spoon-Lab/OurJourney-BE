@@ -40,16 +40,4 @@ public class TagService {
         return new PageImpl<>(tags, pageable, totalCount);
     }
 
-    public void addContentTag(List<Long> tagIds, Contents content) {
-        List<Tag> tags = tagRepository.findAllById(tagIds);
-        if (tagIds.size() != tags.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        List<ContentTag> contentTags = tags.stream()
-                .map(tag -> new ContentTag(content, tag))
-                .toList();
-        contentTagRepository.saveAll(contentTags);
-    }
-
-
 }
