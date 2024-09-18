@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.category.GetCategoriesResponse;
+import pudding.toy.ourJourney.entity.Follow;
+import pudding.toy.ourJourney.service.FollowService;
 import pudding.toy.ourJourney.service.ProfileService;
 
 @RestController
@@ -15,14 +17,16 @@ import pudding.toy.ourJourney.service.ProfileService;
 @RequestMapping("/follow")
 public class FollowController {
     private final ProfileInitializer profileInitializer;
-    private final ProfileService profileService;
+    private final FollowService followService;
     @PostMapping("/{id}")
     @Operation(summary = "팔로우 하기", description = "다른 사용자를 팔로우 한다.")
     public void follow(@PathVariable("id") Long id){
-        profileService.followProfile(profileInitializer.dummyProfile,id);
-
+        followService.followProfile(profileInitializer.dummyProfile,id);
     }
-
-
+    @PostMapping("/{id}")
+    @Operation(summary = "팔로우 취소하기", description = "다른 사용자를 언팔로우한다.")
+    public void unFollow(@PathVariable("id") Long id){
+        followService.unFollow(profileInitializer.dummyProfile,id);
+    }
 
 }
