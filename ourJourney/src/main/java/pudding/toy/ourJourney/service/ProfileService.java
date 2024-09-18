@@ -11,15 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
-import pudding.toy.ourJourney.entity.Comment;
-import pudding.toy.ourJourney.entity.ContentLike;
-import pudding.toy.ourJourney.entity.Contents;
-import pudding.toy.ourJourney.entity.Profile;
+import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.mapper.UpdateProfileMapper;
-import pudding.toy.ourJourney.repository.CommentRepository;
-import pudding.toy.ourJourney.repository.ContentLikeRepository;
-import pudding.toy.ourJourney.repository.ContentRepository;
-import pudding.toy.ourJourney.repository.ProfileRepository;
+import pudding.toy.ourJourney.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -33,6 +27,7 @@ public class ProfileService {
     private final ContentRepository contentRepository;
     private final CommentRepository commentRepository;
     private final ContentLikeRepository contentLikeRepository;
+    private final FollowRepository followRepository;
     public NewProfileResponse createProfile(ProfileAuthRequest profileAuthRequest) {
         profileRepository.findByUserId(profileAuthRequest.getId()).ifPresent(profile -> {
             throw new IllegalStateException("프로필이 존재합니다.");
@@ -105,5 +100,28 @@ public class ProfileService {
                         content.getImgUrl(), content.getCreatedAt(), content.getUpdateAt()))
                 .toList();
         return new GetLikeContentsResponse(new PageImpl<>(getLikesContentsDtos, pageable, getLikesContentsDtos.size()));
+    }
+    public void followProfile(Profile follower, Long followId){
+        Profile following = profileRepository.findById(followId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        if(followRepository.existsByFollowerIdAndFollowingId(follower.getId(),following.getId())){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+        Follow follow = new Follow(follower,following);
+        followRepository.save(follow);
+    }
+    public void unFollow(Profile follower, Long followId){
+        Profile following = profileRepository.findById(followId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        if(!followRepository.existsByFollowerIdAndFollowingId(follower.getId(),following.getId())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        Follow follow = followRepository.findByFollowerIdAndFollowingId(follower.getId(),following.getId())
+                .orElseThrow(
+                        ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                );
+        followRepository.delete(follow);
     }
 }
