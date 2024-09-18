@@ -27,7 +27,8 @@ public class ProfileService {
     private final ContentRepository contentRepository;
     private final CommentRepository commentRepository;
     private final ContentLikeRepository contentLikeRepository;
-    private final FollowRepository followRepository;
+
+
     public NewProfileResponse createProfile(ProfileAuthRequest profileAuthRequest) {
         profileRepository.findByUserId(profileAuthRequest.getId()).ifPresent(profile -> {
             throw new IllegalStateException("프로필이 존재합니다.");

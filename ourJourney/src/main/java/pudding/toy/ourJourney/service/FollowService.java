@@ -22,6 +22,10 @@ public class FollowService {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         Follow follow = new Follow(follower,following);
+        if(isFollowBack(follower.getId(),followId)){
+            System.out.println("맞팔되었어요^_^");
+        }
+
         followRepository.save(follow);
     }
     public void unFollow(Profile follower, Long followId){
