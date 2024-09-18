@@ -23,7 +23,7 @@ public class FollowController {
     public void follow(@PathVariable("id") Long id){
         followService.followProfile(profileInitializer.dummyProfile,id);
     }
-    @PostMapping("/{id}")
+    @PostMapping("/unfollow/{id}")
     @Operation(summary = "팔로우 취소하기", description = "다른 사용자를 언팔로우한다.")
     public void unFollow(@PathVariable("id") Long id){
         followService.unFollow(profileInitializer.dummyProfile,id);

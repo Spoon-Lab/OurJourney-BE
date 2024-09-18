@@ -22,7 +22,7 @@ public class FollowService {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
         Follow follow = new Follow(follower,following);
-        if(isFollowBack(follower.getId(),followId)){
+        if(isMutualFollow(follower.getId(),followId)){
             System.out.println("맞팔되었어요^_^");
         }
 
@@ -41,7 +41,7 @@ public class FollowService {
                 );
         followRepository.delete(follow);
     }
-    public boolean isFollowBack(Long followerId,Long followId){
+    public boolean isMutualFollow(Long followerId,Long followId){
         if(followRepository.existsByFollowerIdAndFollowingId(followerId,followId)
         && followRepository.existsByFollowerIdAndFollowingId(followId,followerId)){
             return true;

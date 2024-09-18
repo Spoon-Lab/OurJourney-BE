@@ -34,7 +34,7 @@ public class FollowServiceTest {
         FollowService followService = new FollowService(followRepository,profileRepository);
         when(followRepository.existsByFollowerIdAndFollowingId(1L,2L)).thenReturn(true);
         when(followRepository.existsByFollowerIdAndFollowingId(2L,1L)).thenReturn(true);
-        Assertions.assertThat(followService.isFollowBack(1L, 2L)).isTrue();
+        Assertions.assertThat(followService.isMutualFollow(1L, 2L)).isTrue();
     }
     @Test
     void isFollowingTest(){

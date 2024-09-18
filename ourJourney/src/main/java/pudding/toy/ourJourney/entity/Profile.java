@@ -32,7 +32,7 @@ public class Profile extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "follower")
     List<Follow> follows;
 
     public void defaultName(String nickName){
