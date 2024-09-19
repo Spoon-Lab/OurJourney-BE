@@ -4,23 +4,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.config.ProfileInitializer;
+import pudding.toy.ourJourney.config.DummyDataInitializer;
 import pudding.toy.ourJourney.dto.comment.*;
 import pudding.toy.ourJourney.service.CommentService;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Tag(name = "Comment API")
 @RestController
 @RequestMapping("/contents/{contentsId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
-    private final ProfileInitializer profileInitializer;
+    private final DummyDataInitializer dummyDataInitializer;
     private final CommentService commentService;
 
     @Operation(summary = "댓글 생성")
@@ -29,7 +25,7 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @RequestBody @Valid CreateCommentRequest body
     ) {
-        commentService.createComment(profileInitializer.dummyProfile, contentsId, body.getTexts());
+        commentService.createComment(dummyDataInitializer.dummyProfile, contentsId, body.getTexts());
 
         return new CreateCommentResponse(1L);
     }
