@@ -20,5 +20,11 @@ public class Follow {
         this.follower = follower;
         this.following = following;
     }
+    public Profile getFollower(){
+        return this.follower;
+    }
+    public Profile getFollowing(){
+        return this.following;
+    }
 
 }

@@ -27,7 +27,8 @@ public class ProfileService {
     private final ContentRepository contentRepository;
     private final CommentRepository commentRepository;
     private final ContentLikeRepository contentLikeRepository;
-    private final FollowRepository followRepository;
+
+
     public NewProfileResponse createProfile(ProfileAuthRequest profileAuthRequest) {
         profileRepository.findByUserId(profileAuthRequest.getId()).ifPresent(profile -> {
             throw new IllegalStateException("프로필이 존재합니다.");
@@ -52,7 +53,11 @@ public class ProfileService {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        return new GetDetailProfileResponse(profile.getId(), profile.getNickName(), Optional.ofNullable(profile.getProfileImg()),Optional.ofNullable(profile.getSelfIntroduction()));
+        return new GetDetailProfileResponse(
+                profile.getId(), profile.getNickName(), Optional.ofNullable(profile.getProfileImg()),
+                Optional.ofNullable(profile.getSelfIntroduction()),
+                profile.followerNum(), profile.followingNum()
+        );
     }
     public void updateMyProfile(Long id, UpdateProfileRequest updateProfileRequest){
         //todo: login_required && is_owner?
@@ -100,28 +105,5 @@ public class ProfileService {
                         content.getImgUrl(), content.getCreatedAt(), content.getUpdateAt()))
                 .toList();
         return new GetLikeContentsResponse(new PageImpl<>(getLikesContentsDtos, pageable, getLikesContentsDtos.size()));
-    }
-    public void followProfile(Profile follower, Long followId){
-        Profile following = profileRepository.findById(followId).orElseThrow(
-                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-        if(followRepository.existsByFollowerIdAndFollowingId(follower.getId(),following.getId())){
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-        Follow follow = new Follow(follower,following);
-        followRepository.save(follow);
-    }
-    public void unFollow(Profile follower, Long followId){
-        Profile following = profileRepository.findById(followId).orElseThrow(
-                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-        if(!followRepository.existsByFollowerIdAndFollowingId(follower.getId(),following.getId())){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        Follow follow = followRepository.findByFollowerIdAndFollowingId(follower.getId(),following.getId())
-                .orElseThrow(
-                        ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
-                );
-        followRepository.delete(follow);
     }
 }

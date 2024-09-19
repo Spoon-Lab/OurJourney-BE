@@ -22,6 +22,7 @@ public class ProfileInitializer {
                 "배고픈 무지",
                 "profile.png",
                 "안녕하세요. 배고픈 무지입니다.",
+                null,
                 null
         );
         profileRepository.save(profile);

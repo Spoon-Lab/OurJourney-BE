@@ -32,6 +32,8 @@ public class Profile extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
+    @OneToMany(mappedBy = "follower")
+    List<Follow> follows;
 
     public void defaultName(String nickName){
         this.nickName = nickName;
@@ -55,5 +57,15 @@ public class Profile extends BaseTimeEntity{
         final List<String> adjectives = Arrays.asList("예쁜", "졸린", "작은", "큰", "빠른", "따뜻한", "밝은", "산뜻한", "사랑스러운", "행복한", "귀여운");
         int randomIndex = (int)(Math.random()*adjectives.size());
         return adjectives.get(randomIndex)+"푸딩"+(int)(Math.random()*10000);
+    }
+    public int followingNum(){
+        return (int) follows.stream()
+                .filter(follow -> follow.getFollower().equals(this))
+                .count();
+    }
+    public int followerNum(){
+        return (int) follows.stream()
+                .filter(follow -> follow.getFollowing().equals(this))
+                .count();
     }
 }
