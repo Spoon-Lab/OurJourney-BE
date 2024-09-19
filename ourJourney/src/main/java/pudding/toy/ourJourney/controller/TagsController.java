@@ -29,7 +29,7 @@ public class TagsController {
 
     @Operation(summary = "해시태그 가져오기", description = "해시태그 자동완성할때 호출")
     @GetMapping("")
-    public GetTagsResponse getTags(@PageableDefault Pageable pageable, @RequestParam() String tagName) {
+    public GetTagsResponse getTags(@PageableDefault Pageable pageable, @RequestParam("name") String tagName) {
         PageImpl<GetTagsDto> tags = tagService.getTags(tagName, pageable);
         return new GetTagsResponse(tags);
     }
