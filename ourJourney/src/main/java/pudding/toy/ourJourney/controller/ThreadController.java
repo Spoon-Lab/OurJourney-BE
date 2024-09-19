@@ -5,19 +5,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.config.ProfileInitializer;
 import pudding.toy.ourJourney.dto.thread.*;
 import pudding.toy.ourJourney.entity.ContentsThread;
-import pudding.toy.ourJourney.service.AuthService;
-import pudding.toy.ourJourney.service.ContentService;
 import pudding.toy.ourJourney.service.ThreadService;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +24,7 @@ public class ThreadController {
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
-       return new GetThreadResponse(threadService.getThreads(contentId,pageable));
+        return new GetThreadResponse(threadService.getThreads(contentId, pageable));
     }
 
     @PostMapping("/{contentId}/threads")
@@ -42,15 +36,14 @@ public class ThreadController {
 
     @PatchMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "thread 수정", description = "thread를 수정한다.")
-    public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid EditThreadRequest body) {
-
+    public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid UpdateThreadRequest body) {
+        threadService.updateThread(contentId, threadId, body);
     }
 
     @DeleteMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
     public void deleteThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId) {
-
+        threadService.deleteThread(contentId, threadId);
     }
-
 
 }
