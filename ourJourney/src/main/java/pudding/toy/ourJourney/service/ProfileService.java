@@ -2,6 +2,7 @@ package pudding.toy.ourJourney.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
 import pudding.toy.ourJourney.entity.*;
-import pudding.toy.ourJourney.mapper.UpdateProfileMapper;
 import pudding.toy.ourJourney.repository.*;
 
 import java.time.LocalDateTime;
@@ -23,7 +23,6 @@ import java.util.*;
 @Transactional
 public class ProfileService {
     private final ProfileRepository profileRepository;
-    private final UpdateProfileMapper updateProfileMapper;
     private final ContentRepository contentRepository;
     private final CommentRepository commentRepository;
     private final ContentLikeRepository contentLikeRepository;
@@ -49,9 +48,9 @@ public class ProfileService {
         }while(isDuplicate);
         return randomNickName;
     }
-    public GetDetailProfileResponse getDetailProfile(Long id){
+    public GetDetailProfileResponse getDetailProfile(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
-                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         return new GetDetailProfileResponse(
                 profile.getId(), profile.getNickName(), Optional.ofNullable(profile.getProfileImg()),
@@ -64,7 +63,15 @@ public class ProfileService {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        updateProfileMapper.updateEntityFromDto(updateProfileRequest,profile);
+        if(updateProfileRequest.getImageUrl()!=null){
+            updateProfileRequest.getImageUrl().ifPresent(profile::setProfileImg);
+        }
+        if(updateProfileRequest.getNickname()!=null){
+            updateProfileRequest.getNickname().ifPresent(profile::setNickName);
+        }
+        if(updateProfileRequest.getSelfIntroduction()!=null){
+            updateProfileRequest.getSelfIntroduction().ifPresent(profile::setSelfIntroduction);
+        }
         profileRepository.save(profile);
     }
     public void deleteProfile(Long id){
