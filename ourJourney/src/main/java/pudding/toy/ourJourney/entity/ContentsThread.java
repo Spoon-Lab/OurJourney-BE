@@ -17,9 +17,9 @@ public class ContentsThread extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    @Column(name = "text")
     String texts;
-
+    @Column(name = "img_url")
     String imgUrl;
 
     @ManyToOne

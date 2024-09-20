@@ -17,7 +17,9 @@ public class Contents extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(name = "title")
     String title;
+    @Column(name = "img_url")
     String imgUrl;
     @ManyToOne
     @JoinColumn(name = "category_id")

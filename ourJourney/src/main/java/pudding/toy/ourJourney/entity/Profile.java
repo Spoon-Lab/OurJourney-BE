@@ -24,12 +24,11 @@ public class Profile extends BaseTimeEntity{
     @Column(name = "nick_name", length = 32, unique = true)
     String nickName;
 
-    @Column(name = "profile_img")
-    String profileImg;
+    @Column(name = "img_url")
+    String imgUrl;
 
     @Column(name = "self_introduction")
     String selfIntroduction;
-
     @OneToMany(mappedBy = "profile")
     List<Contents> contents;
     @OneToMany(mappedBy = "follower")
@@ -44,7 +43,7 @@ public class Profile extends BaseTimeEntity{
     }
 
     public String getProfileImg() {
-        return profileImg;
+        return imgUrl;
     }
     public String getSelfIntroduction() {
         return selfIntroduction;
@@ -53,8 +52,8 @@ public class Profile extends BaseTimeEntity{
     public Profile(Long userId) {
         this.userId = userId;
     }
+    static final List<String> adjectives = Arrays.asList("예쁜", "졸린", "작은", "큰", "빠른", "따뜻한", "밝은", "산뜻한", "사랑스러운", "행복한", "귀여운");
     public String createRandomNickName(){
-        final List<String> adjectives = Arrays.asList("예쁜", "졸린", "작은", "큰", "빠른", "따뜻한", "밝은", "산뜻한", "사랑스러운", "행복한", "귀여운");
         int randomIndex = (int)(Math.random()*adjectives.size());
         return adjectives.get(randomIndex)+"푸딩"+(int)(Math.random()*10000);
     }
@@ -67,5 +66,32 @@ public class Profile extends BaseTimeEntity{
         return (int) follows.stream()
                 .filter(follow -> follow.getFollowing().equals(this))
                 .count();
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void setProfileImg(String profileImg) {
+        this.imgUrl = profileImg;
+    }
+
+    public void setSelfIntroduction(String selfIntroduction) {
+        this.selfIntroduction = selfIntroduction;
+    }
+
+    public void setContents(List<Contents> contents) {
+        this.contents = contents;
+    }
+
+    public void setFollows(List<Follow> follows) {
+        this.follows = follows;
     }
 }
