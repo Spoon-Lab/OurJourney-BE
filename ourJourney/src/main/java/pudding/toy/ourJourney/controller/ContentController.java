@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.config.ProfileInitializer;
+import pudding.toy.ourJourney.config.DummyDataInitializer;
 import pudding.toy.ourJourney.dto.content.*;
 import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.service.ContentService;
@@ -21,19 +21,24 @@ import java.util.Optional;
 @RequestMapping("/contents")
 public class ContentController {
     private final ContentService contentService;
-    private final ProfileInitializer profileInitializer;
+    private final DummyDataInitializer dummyDataInitializer;
 
     @GetMapping()
     @Operation(summary = "content 보기", description = "content를 검색한다.")
-    public GetContentResponse getAllContents(Pageable pageable, @RequestParam Optional<Long> categoryId, @RequestParam Optional<String> title, @RequestParam Optional<List<Long>> tagIds) {
-        return new GetContentResponse(contentService.getAllContents(pageable,categoryId,title,tagIds));
+    public GetContentResponse getAllContents(
+            Pageable pageable,
+            @RequestParam("categoryId") Optional<Long> categoryId,
+            @RequestParam("title") Optional<String> title,
+            @RequestParam("tagIds") Optional<List<Long>> tagIds
+    ) {
+        return new GetContentResponse(contentService.getAllContents(pageable, categoryId, title, tagIds));
     }
 
     @PostMapping
     @Operation(summary = "content 작성", description = "content를 작성한다.")
     public CreateContentResponse createNewContent(@RequestBody @Valid CreateContentRequest createContentRequest) {
         //유저 받아오는 로직
-        return new CreateContentResponse(contentService.createContent(createContentRequest, profileInitializer.dummyProfile));
+        return new CreateContentResponse(contentService.createContent(createContentRequest, dummyDataInitializer.dummyProfile));
     }
 
     @GetMapping("/{contentId}")
@@ -45,7 +50,7 @@ public class ContentController {
     @PatchMapping("/{contentId}")
     @Operation(summary = "content 수정", description = "content 한 개 수정한다.")
     public void updateContent(@PathVariable("contentId") Long contentId, @RequestBody UpdateContentRequest editContent) {
-        contentService.updateContent(contentId,editContent);
+        contentService.updateContent(contentId, editContent);
     }
 
     @DeleteMapping("/{contentId}")
@@ -53,17 +58,19 @@ public class ContentController {
     public void deleteContent(@PathVariable("contentId") Long contentId) {
         contentService.deleteContent(contentId);
     }
+
     @Operation(summary = "글에 좋아요 누르기")
     @PostMapping("/{contentId}/likes")
-    public Long addLikesToContent(@PathVariable("contentId") Long contentId){
-        Profile profile = profileInitializer.dummyProfile; //dummy
-        return contentService.addLikesToContent(contentId,profile);
+    public Long addLikesToContent(@PathVariable("contentId") Long contentId) {
+        Profile profile = dummyDataInitializer.dummyProfile; //dummy
+        return contentService.addLikesToContent(contentId, profile);
     }
+
     @Operation(summary = "글에 좋아요 취소하기")
     @DeleteMapping("/{contentId}/likes")
-    public void deleteLikesToContent(@PathVariable("contentId") Long contentId){
-        Profile profile = profileInitializer.dummyProfile; //dummy
-        contentService.deleteLike(contentId,profile);
+    public void deleteLikesToContent(@PathVariable("contentId") Long contentId) {
+        Profile profile = dummyDataInitializer.dummyProfile; //dummy
+        contentService.deleteLike(contentId, profile);
     }
 
 

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.thread.ListThreadDto;
 import pudding.toy.ourJourney.dto.thread.ProfileThreadDto;
+import pudding.toy.ourJourney.dto.thread.UpdateThreadRequest;
 import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.repository.ContentRepository;
 import pudding.toy.ourJourney.repository.TagRepository;
@@ -61,6 +62,47 @@ public class ThreadService {
         threadTagRepository.saveAll(threadTags);
 
         return thread;
+    }
+
+    @Transactional
+    public ContentsThread updateThread(Long contentId, Long threadId, UpdateThreadRequest body) {
+        Contents contents = getContent(contentId);
+        ContentsThread thread = getThread(threadId);
+        validateThreadBelongsToContent(thread, contents);
+
+        body.getThreadImg().ifPresent(thread::setImgUrl);
+        body.getTexts().ifPresent(thread::setTexts);
+        body.getTags().ifPresent(tagIds -> {
+            threadTagRepository.deleteAllByContentsThreadId(threadId);
+
+            if (tagIds != null) {
+                List<Tag> tags = tagRepository.findAllById(tagIds);
+                List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
+                threadTagRepository.saveAll(threadTags);
+            }
+        });
+
+        return threadRepository.save(thread);
+    }
+
+    public void deleteThread(Long contentId, Long threadId) {
+        Contents contents = getContent(contentId);
+        ContentsThread thread = getThread(threadId);
+        validateThreadBelongsToContent(thread, contents);
+
+        thread.remove();
+        threadRepository.save(thread);
+    }
+
+    private void validateThreadBelongsToContent(ContentsThread thread, Contents contents) {
+        if (!thread.getContents().equals(contents)) {
+            throw new IllegalStateException("글에 속한 타래가 아닙니다.");
+        }
+    }
+
+    private ContentsThread getThread(Long threadId) {
+        return threadRepository.findById(threadId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     private Contents getContent(Long contentId) {
