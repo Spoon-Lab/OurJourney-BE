@@ -1,0 +1,31 @@
+  version: '3.7'
+
+  services:
+    backend_admin:
+      image: spoonlab/ourjourney-be-admin:latest
+      container_name: backend_admin
+      environment:
+        MYSQL_HOST: ourjourney-be-db.cfkuy0m0a1v2.ap-northeast-2.rds.amazonaws.com
+        MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_DATABASE: _main_db
+        MYSQL_USER: root
+      env_file:
+        - .env
+      ports:
+        - "8000:8000"
+      networks:
+        - my_network
+
+    nginx:
+        image: nginx:latest
+        ports:
+          - "80:80"
+        volumes:
+          - /home/ubuntu/nginx.conf:/etc/nginx/nginx.conf # 로컬 nginx.conf 파일을 컨테이너 내부로 마운트, 로컬 파일 절대 경로로 수정
+        depends_on:
+          - backend_admin # 웹 서비스와 의존 관계
+        networks:
+          - my_network
+  networks:
+    my_network:
+      driver: bridge
