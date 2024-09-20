@@ -14,7 +14,7 @@ class Contents(models.Model):
     )
     title = models.CharField(max_length=255)
     # content 이미지
-    content_img = models.CharField(max_length=200, null=True)
+    img_url = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
@@ -45,6 +45,8 @@ class Comment(models.Model):
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=10)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
 
     class Meta:

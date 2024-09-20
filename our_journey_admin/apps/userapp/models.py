@@ -5,10 +5,12 @@ class Profile(models.Model):
     id = models.AutoField(primary_key=True)
     nick_name = models.CharField(max_length=100, null=True)
     # 프로필 이미지 url
-    profile_img = models.CharField(max_length=200, null=True)
+    img_url = models.CharField(max_length=200, null=True)
     # auth db에서의 user pk값
     user_id = models.BigIntegerField(null=False, blank=False)
     self_introduction = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
 
     class Meta:
