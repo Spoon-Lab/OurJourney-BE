@@ -21,7 +21,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["54.180.216.52"]
+ALLOWED_HOSTS = ["54.180.216.52", "127.0.0.1"]
 
 
 CSRF_TRUSTED_ORIGINS = [
