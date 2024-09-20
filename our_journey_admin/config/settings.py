@@ -19,14 +19,15 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["https://z7wukbztzj.execute-api.ap-northeast-2.amazonaws.com", "*"]
+ALLOWED_HOSTS = ["54.180.216.52"]
 
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
+    "http://localhost:8080",
     "http://127.0.0.1:8000",
 ]
 
@@ -84,10 +85,19 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+MYSQL_PASSWORD = env("MYSQL_PASSWORD")
+
+AUTH_USER_MODEL = "auth.User"  # Django 기본 인증 모델
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "ourjourney_main_db",
+        "USER": "root",
+        "PASSWORD": MYSQL_PASSWORD,
+        "HOST": "ourjourney-be-db.cfkuy0m0a1v2.ap-northeast-2.rds.amazonaws.com",  # MySQL 컨테이너 이름
+        # "HOST": "localhost",
+        "PORT": "3306",
     }
 }
 
@@ -135,3 +145,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
