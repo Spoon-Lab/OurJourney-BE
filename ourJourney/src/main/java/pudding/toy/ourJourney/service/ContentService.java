@@ -94,6 +94,7 @@ public class ContentService {
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         contentsMapper.updateEntityFromDto(editRequestDto,contents);
+        contentRepository.save(contents);
     }
 
     public void deleteContent(Long contentId) {

@@ -65,6 +65,7 @@ public class ProfileService {
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         updateProfileMapper.updateEntityFromDto(updateProfileRequest,profile);
+        profileRepository.save(profile);
     }
     public void deleteProfile(Long id){
         //todo: login_required && is_owner?
