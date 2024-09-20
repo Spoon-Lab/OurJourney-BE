@@ -94,7 +94,8 @@ public class ContentService {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        contentsMapper.updateEntityFromDto(editRequestDto, contents);
+        contentsMapper.updateEntityFromDto(editRequestDto,contents);
+        contentRepository.save(contents);
     }
 
     public void deleteContent(Long contentId) {
