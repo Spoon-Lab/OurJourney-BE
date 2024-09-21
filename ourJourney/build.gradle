@@ -32,8 +32,9 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	implementation 'org.openapitools:jackson-databind-nullable:0.2.4'
-	compileOnly 'org.projectlombok:lombok'
+	implementation "me.paulschwarz:spring-dotenv:4.0.0"
 
+	compileOnly 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2'
