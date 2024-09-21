@@ -22,6 +22,7 @@ class ContentsQueryRepositoryTest {
 
     @Autowired
     private ContentsQueryRepository contentsQueryRepository;
+    @Autowired
     DummyDataInitializer dummyDataInitializer;
 
     Category category1;

@@ -21,6 +21,7 @@ class ThreadsQueryRepositoryTest {
     private CategoryRepository categoryRepository;
     @Autowired
     private ContentRepository contentRepository;
+    @Autowired
     DummyDataInitializer dummyDataInitializer;
 
     @BeforeEach
