@@ -19,6 +19,7 @@ public class ContentMapperTest {
     UpdateContentsMapper contentsMapper;
     Contents content;
     Category category;
+    @Autowired
     DummyDataInitializer dummyDataInitializer;
 
     @BeforeEach
