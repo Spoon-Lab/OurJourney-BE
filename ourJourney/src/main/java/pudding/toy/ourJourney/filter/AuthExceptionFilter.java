@@ -20,6 +20,7 @@ public class AuthExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         try{
             chain.doFilter(request,response);
+            return;
         }catch (Exception e){
             throw e;
         }

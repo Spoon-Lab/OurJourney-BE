@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
 import pudding.toy.ourJourney.service.AuthService;
@@ -22,22 +23,25 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthService authService;
     private final CustomUserDetailService userDetailService;
+    private static final String[] exceptURIs = {"/contents/*", "/profiles/*","/categories/*","/categories","/contents"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String requestUrl = request.getRequestURI();
         String method = request.getMethod();
         try{
-            if ("/contents/**".equals(requestUrl) && "GET".equalsIgnoreCase(method)){
+            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method))){
+                System.out.println("필터적용안한다잇");
                 chain.doFilter(request,response);
+                return;
             }
+            System.out.println("필터적용한다잇");
             AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
             setAuthenticationInContext(authResponse);
+
             chain.doFilter(request,response);
         }catch (Exception e){
             throw e;
-        }finally {
-            log.info("AuthorizationFilter is applied");
         }
     }
 
@@ -49,5 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+    }
+    private boolean isExceptUrl(String requestUrl) {
+         return PatternMatchUtils.simpleMatch(exceptURIs,requestUrl);
     }
 }
