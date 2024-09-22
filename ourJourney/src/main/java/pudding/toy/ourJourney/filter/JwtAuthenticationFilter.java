@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
@@ -14,20 +15,22 @@ import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.CustomUserDetailService;
 
 import java.io.IOException;
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthService authService;
     private final CustomUserDetailService userDetailService;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //1. 장고에 요청
         AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetailService.loadUserByUserId(authResponse.getUserId()),
                 "",
                 userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
     }
 }
