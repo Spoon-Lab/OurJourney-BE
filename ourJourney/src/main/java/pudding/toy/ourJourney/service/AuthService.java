@@ -15,8 +15,7 @@ import java.util.Collections;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class AuthService { //django to auth
-    private final ProfileRepository profileRepository;
+public class AuthService {
     private final RestTemplate authRestTemplate;
 
     public AuthResponse validateAuth(String authorizationHeader) {
@@ -31,9 +30,11 @@ public class AuthService { //django to auth
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set("Authorization", "Bearer " + accessToken);
-
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
+        if(response.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
         return response.getBody();
     }
 

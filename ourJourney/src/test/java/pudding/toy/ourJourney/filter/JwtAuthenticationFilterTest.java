@@ -10,22 +10,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.core.context.SecurityContext;
+import pudding.toy.ourJourney.config.FilterConfig;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
 import pudding.toy.ourJourney.service.AuthService;
 
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class JwtAuthenticationFilterTest {
     HttpServletRequest request;
     HttpServletResponse response;
     FilterChain filterChain;
-    JwtAuthenticationFilter jwtAuthenticationFilter;
+    FilterConfig jwtAuthenticationFilter;
     AuthResponse authResponse;
     AuthService authService;
     SecurityContext securityContext;
@@ -33,7 +32,7 @@ class JwtAuthenticationFilterTest {
 
     @BeforeEach
     void setUp(){
-        jwtAuthenticationFilter = Mockito.mock(JwtAuthenticationFilter.class);
+        jwtAuthenticationFilter = Mockito.mock(FilterConfig.class);
         request = Mockito.mock(HttpServletRequest.class);
         response = Mockito.mock(HttpServletResponse.class);
         filterChain = Mockito.mock(FilterChain.class);
