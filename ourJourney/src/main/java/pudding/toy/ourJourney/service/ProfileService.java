@@ -2,7 +2,6 @@ package pudding.toy.ourJourney.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -88,7 +87,7 @@ public class ProfileService {
         List <GetMyContentsDto> contentsDto = contents.stream()
                 .map(content -> new GetMyContentsDto(
                         content.getId(),content.getTitle(),content.getProfile().getId(),
-                        content.getImgUrl(),content.getCreatedAt(),content.getUpdateAt()))
+                        content.getImgUrl(),content.getCreatedAt(),content.getUpdatedAt()))
                 .toList();
         PageImpl<GetMyContentsDto> myContentsDtoPage = new PageImpl<>(contentsDto,pageable,contentsDto.size());
         return new GetMyContentsResponse(myContentsDtoPage);
@@ -98,7 +97,7 @@ public class ProfileService {
        Page<Comment> comments =  commentRepository.findAllByProfileId(profileId,pageable);
 
        List<GetMyCommentsDto> getMyCommentsDtos = comments.stream()
-               .map(comment -> new GetMyCommentsDto(comment.getId(),comment.getTexts(), comment.getProfile().getId(), comment.getCreatedAt(),comment.getUpdateAt()))
+               .map(comment -> new GetMyCommentsDto(comment.getId(),comment.getTexts(), comment.getProfile().getId(), comment.getCreatedAt(),comment.getUpdatedAt()))
                .toList();
        PageImpl<GetMyCommentsDto> myCommentsDtoPage = new PageImpl<>(getMyCommentsDtos,pageable,getMyCommentsDtos.size());
         return new GetMyCommentsResponse(myCommentsDtoPage);
@@ -110,7 +109,7 @@ public class ProfileService {
         Page<Contents> contents = contentRepository.findAllByContentLikesIdIn(contentLikes, pageable);
         List<GetLikesContentsDto> getLikesContentsDtos = contents.stream()
                 .map(content -> new GetLikesContentsDto(content.getId(), content.getTitle(), content.getProfile().getId(),
-                        content.getImgUrl(), content.getCreatedAt(), content.getUpdateAt()))
+                        content.getImgUrl(), content.getCreatedAt(), content.getUpdatedAt()))
                 .toList();
         return new GetLikeContentsResponse(new PageImpl<>(getLikesContentsDtos, pageable, getLikesContentsDtos.size()));
     }

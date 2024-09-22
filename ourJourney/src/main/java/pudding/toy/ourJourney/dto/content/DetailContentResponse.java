@@ -24,7 +24,7 @@ public class DetailContentResponse {
                 contents.getTitle(),
                 contents.getImgUrl(),
                 contents.getCreatedAt(),
-                contents.getUpdateAt()
+                contents.getUpdatedAt()
         );
     }
 

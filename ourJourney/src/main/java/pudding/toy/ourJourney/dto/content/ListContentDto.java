@@ -30,7 +30,7 @@ public class ListContentDto {
                 contents.getProfile().getNickName()
         );
         this.createdAt = contents.getCreatedAt();
-        this.updatedAt = contents.getUpdateAt();
+        this.updatedAt = contents.getUpdatedAt();
     }
 
 }
