@@ -10,7 +10,7 @@ import pudding.toy.ourJourney.service.FollowService;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Category API", description = "Category API 입니다.")
+@Tag(name = "Follow API", description = "Follow API 입니다.")
 @RequestMapping("/profile")
 public class FollowController {
     private final DummyDataInitializer dummyDataInitializer;
