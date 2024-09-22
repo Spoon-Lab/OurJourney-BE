@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 springdoc:
   swagger-ui:
     path:/swagger-ui.html
@@ -13,13 +16,17 @@ logging:
 
 --- # development phase
 spring:
-  profiles:
-    active: development
+  config:
+    activate:
+      on-profile: development
+
+  auth-server:
+    url: ${AUTH_SERVER_URL}
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
+    url: jdbc:${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.h2.Driver
 
   jpa:
@@ -37,30 +44,28 @@ spring:
       enabled: true
       path: /h2-console
 
-
---- # alpha phase
+--- # production phase
 spring:
   config:
     activate:
-      on-profile: alpha
+      on-profile: production
+
+  auth-server:
+    url: ${AUTH_SERVER_URL}
 
   datasource:
-    url: jdbc:h2:file:./db/alpha
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:${DATABASE_URL}/${DATABASE_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
     open-in-view: true
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console

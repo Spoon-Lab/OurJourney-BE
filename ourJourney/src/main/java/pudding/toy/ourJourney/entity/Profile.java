@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class Profile extends BaseTimeEntity{
+public class Profile extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -34,7 +34,7 @@ public class Profile extends BaseTimeEntity{
     @OneToMany(mappedBy = "follower")
     List<Follow> follows;
 
-    public void defaultName(String nickName){
+    public void defaultName(String nickName) {
         this.nickName = nickName;
     }
 
@@ -45,28 +45,42 @@ public class Profile extends BaseTimeEntity{
     public String getProfileImg() {
         return imgUrl;
     }
+
     public String getSelfIntroduction() {
         return selfIntroduction;
     }
+
     @Builder
     public Profile(Long userId) {
         this.userId = userId;
     }
-    static final List<String> adjectives = Arrays.asList("예쁜", "졸린", "작은", "큰", "빠른", "따뜻한", "밝은", "산뜻한", "사랑스러운", "행복한", "귀여운");
-    public String createRandomNickName(){
-        int randomIndex = (int)(Math.random()*adjectives.size());
-        return adjectives.get(randomIndex)+"푸딩"+(int)(Math.random()*10000);
+
+    public Profile(Long userId, String nickName, String imgUrl, String selfIntroduction) {
+        this.userId = userId;
+        this.nickName = nickName;
+        this.imgUrl = imgUrl;
+        this.selfIntroduction = selfIntroduction;
     }
-    public int followingNum(){
+
+    static final List<String> adjectives = Arrays.asList("예쁜", "졸린", "작은", "큰", "빠른", "따뜻한", "밝은", "산뜻한", "사랑스러운", "행복한", "귀여운");
+
+    public String createRandomNickName() {
+        int randomIndex = (int) (Math.random() * adjectives.size());
+        return adjectives.get(randomIndex) + "푸딩" + (int) (Math.random() * 10000);
+    }
+
+    public int followingNum() {
         return (int) follows.stream()
                 .filter(follow -> follow.getFollower().equals(this))
                 .count();
     }
-    public int followerNum(){
+
+    public int followerNum() {
         return (int) follows.stream()
                 .filter(follow -> follow.getFollowing().equals(this))
                 .count();
     }
+
     public void setId(Long id) {
         this.id = id;
     }
