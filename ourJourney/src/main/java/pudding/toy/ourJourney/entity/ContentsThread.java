@@ -33,12 +33,7 @@ public class ContentsThread extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "post_id")
     Contents contents;
-
-    public ContentsThread(String texts, Contents contents) {
-        this.texts = texts;
-        this.contents = contents;
-    }
-
+    
     public ContentsThread(String texts, String imgUrl, Profile profile, Contents contents) {
         this.texts = texts;
         this.imgUrl = imgUrl;
