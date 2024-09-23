@@ -17,8 +17,10 @@ public class ContentsThread extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @Column(name = "text")
     String texts;
+
     @Column(name = "img_url")
     String imgUrl;
 
@@ -31,9 +33,9 @@ public class ContentsThread extends BaseTimeEntity {
     List<ThreadTag> threadTags;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "content_id")
     Contents contents;
-    
+
     public ContentsThread(String texts, String imgUrl, Profile profile, Contents contents) {
         this.texts = texts;
         this.imgUrl = imgUrl;
