@@ -16,16 +16,18 @@ public class DetailContentResponse {
     String postImg;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+    Long likeCount;
+    Long commentCount;
 
-
-    public static DetailContentResponse from(Contents contents){
+    public static DetailContentResponse from(Contents contents, Long likeCount, Long commentCount){
         return new DetailContentResponse(
                 contents.getId(),
                 contents.getTitle(),
                 contents.getImgUrl(),
                 contents.getCreatedAt(),
-                contents.getUpdatedAt()
+                contents.getUpdatedAt(),
+                likeCount,
+                commentCount
         );
     }
-
 }
