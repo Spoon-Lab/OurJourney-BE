@@ -82,7 +82,6 @@ public class ProfileService {
         profileRepository.save(profile);
     }
     public GetMyContentsResponse getMyContents(Long profileId, Pageable pageable){
-        //todo: login_required && is_owner?
         Page<Contents> contents = contentRepository.findAllByProfileId(profileId,pageable);
         List <GetMyContentsDto> contentsDto = contents.stream()
                 .map(content -> new GetMyContentsDto(
@@ -93,7 +92,6 @@ public class ProfileService {
         return new GetMyContentsResponse(myContentsDtoPage);
     }
     public GetMyCommentsResponse getMyComments(Long profileId, Pageable pageable){
-        //todo: login_required && is_owner?
        Page<Comment> comments =  commentRepository.findAllByProfileId(profileId,pageable);
 
        List<GetMyCommentsDto> getMyCommentsDtos = comments.stream()

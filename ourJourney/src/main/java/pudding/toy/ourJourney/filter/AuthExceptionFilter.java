@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ public class AuthExceptionFilter extends OncePerRequestFilter {
             chain.doFilter(request,response);
             return;
         }catch (Exception e){
-           throw e;
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
     }

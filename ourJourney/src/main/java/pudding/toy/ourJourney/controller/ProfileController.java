@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
 import pudding.toy.ourJourney.service.ProfileService;
+import pudding.toy.ourJourney.utils.AuthUtils;
 
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class ProfileController {
     public NewProfileResponse createProfile(@RequestBody ProfileAuthRequest body) {
         return profileService.createProfile(body);
     }
+    @Operation(summary = "내 프로필 조회")
+    @GetMapping("")
+    public GetDetailProfileResponse getProfile() {
+        return profileService.getDetailProfile(AuthUtils.currentUser());
+    }
 
     @Operation(summary = "프로필 조회")
     @GetMapping("/{id}")
@@ -32,28 +38,28 @@ public class ProfileController {
         return profileService.getDetailProfile(id);
     }
 
-    // TODO: login_required && is_owner
-    @Operation(summary = "프로필 수정")
-    @PatchMapping("/{id}")
-    public void updateProfile(@PathVariable("id") Long id, @RequestBody UpdateProfileRequest body) {
-        profileService.updateMyProfile(id, body);
+    @Operation(summary = "내 프로필 수정")
+    @PatchMapping("")
+    public void updateProfile(@RequestBody UpdateProfileRequest body) {
+        profileService.updateMyProfile(AuthUtils.currentUser(),body);
     }
 
     @Operation(summary = "해당 유저가 작성한 글 가져오기")
-    @GetMapping("/{id}/contents")
-    public GetMyContentsResponse getMyContents(@PathVariable("id") Long id, @PageableDefault Pageable pageable) {
-        return profileService.getMyContents(id, pageable); //todo: id 빼기.
+    @GetMapping("/contents")
+    public GetMyContentsResponse getMyContents(@PageableDefault Pageable pageable) {
+        return profileService.getMyContents(AuthUtils.currentUser(), pageable);
     }
 
     @Operation(summary = "내가 작성한 댓글 가져오기")
-    @GetMapping("/{id}/comments")
-    public GetMyCommentsResponse getMyComments(@PathVariable("id") Long id, @PageableDefault Pageable pageable) {
-        return profileService.getMyComments(id, pageable);
+    @GetMapping("/comments")
+    public GetMyCommentsResponse getMyComments(@PageableDefault Pageable pageable) {
+        return profileService.getMyComments(AuthUtils.currentUser(), pageable);
     }
 
     @Operation(summary = "내가 좋아요한 글 가져오기")
-    @GetMapping("/{id}/likes/contents")
-    public GetLikeContentsResponse getLikesContents(@PathVariable("id") Long id, @PageableDefault Pageable pageable) {
-        return profileService.getMyLikeContents(id, pageable);
+    @GetMapping("/likes/contents")
+    public GetLikeContentsResponse getLikesContents(@PageableDefault Pageable pageable) {
+        return profileService.getMyLikeContents(AuthUtils.currentUser(), pageable);
     }
 }
+

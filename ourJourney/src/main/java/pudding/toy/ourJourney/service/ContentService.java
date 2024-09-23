@@ -29,7 +29,6 @@ public class ContentService {
     private final ContentsQueryRepository contentsQueryRepository;
     private final ContentLikeRepository contentLikeRepository;
     private final ProfileRepository profileRepository;
-    private final CommentRepository commentRepository;
 
     public PageImpl<ListContentDto> getAllContents(
             Pageable pageable,
@@ -88,10 +87,7 @@ public class ContentService {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        Long likeCount = contentLikeRepository.countByContentsId(contentId);
-        Long totalCount = commentRepository.countByContentsIdAndDeletedAtIsNull(contentId);
-
-        return DetailContentResponse.from(contents, likeCount, totalCount);
+        return DetailContentResponse.from(contents);
     }
 
     public void updateContent(Long contentId, UpdateContentRequest editRequestDto) {
