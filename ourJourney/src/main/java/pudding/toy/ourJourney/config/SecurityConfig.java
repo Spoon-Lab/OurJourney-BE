@@ -11,8 +11,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pudding.toy.ourJourney.filter.AuthExceptionFilter;
 import pudding.toy.ourJourney.filter.JwtAuthenticationFilter;
-import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.CustomUserDetailService;
+import pudding.toy.ourJourney.service.AuthService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,7 @@ public class SecurityConfig {
         return new AuthExceptionFilter();
     }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http,AuthService authService,CustomUserDetailService userDetailService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthService authService, CustomUserDetailService userDetailService) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

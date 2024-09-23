@@ -3,12 +3,14 @@ package pudding.toy.ourJourney.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
-import pudding.toy.ourJourney.repository.ProfileRepository;
 
 import java.util.Collections;
 
@@ -37,5 +39,4 @@ public class AuthService {
         }
         return response.getBody();
     }
-
 }

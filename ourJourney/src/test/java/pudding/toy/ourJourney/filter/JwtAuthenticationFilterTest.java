@@ -18,7 +18,6 @@ import pudding.toy.ourJourney.service.AuthService;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 class JwtAuthenticationFilterTest {
     HttpServletRequest request;
@@ -38,12 +37,11 @@ class JwtAuthenticationFilterTest {
         filterChain = Mockito.mock(FilterChain.class);
         authResponse = Mockito.spy(new AuthResponse(1L,null, true, "user"));
         securityContext = Mockito.mock(SecurityContext.class);
-        authService =  Mockito.mock(AuthService.class);
+        authService = Mockito.mock(AuthService.class);
     }
     @Test
     @DisplayName("토큰을 지닌 유저가 요청을 하면 filter가 수행되는가.")
     void securityContextTest() throws ServletException, IOException {
-        when(authService.validateAuth(any())).thenReturn(authResponse);
 
     }
 }
