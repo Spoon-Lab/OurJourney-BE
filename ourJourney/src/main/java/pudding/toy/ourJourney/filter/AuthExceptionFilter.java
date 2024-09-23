@@ -22,7 +22,7 @@ public class AuthExceptionFilter extends OncePerRequestFilter {
             chain.doFilter(request,response);
             return;
         }catch (Exception e){
-            throw e;
+           throw e;
         }
 
     }

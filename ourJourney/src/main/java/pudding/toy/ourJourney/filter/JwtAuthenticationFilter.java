@@ -46,6 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationInContext(AuthResponse authResponse) {
+        System.out.println("UserDetail profileID"+ userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetailService.loadUserByUserId(authResponse.getUserId()),
                 "",

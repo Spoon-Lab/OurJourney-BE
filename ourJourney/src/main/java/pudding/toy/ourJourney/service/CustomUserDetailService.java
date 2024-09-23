@@ -24,6 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
     }
     public UserDetails loadUserByUserId(Long id) throws UsernameNotFoundException{
         Profile profile =  profileRepository.findByUserId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        System.out.println("UserDetail profileID"+ profile.getId());
         return new CustomUserDetail(profile);
     }
 }

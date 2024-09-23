@@ -9,7 +9,6 @@ import java.util.Collection;
 
 public class CustomUserDetail implements UserDetails {
     private final Profile profile;
-    private String AUTHORITY;
 
     public CustomUserDetail(Profile profile) {
         this.profile = profile;
@@ -18,7 +17,7 @@ public class CustomUserDetail implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-        auth.add(new SimpleGrantedAuthority(AUTHORITY));
+        auth.add(new SimpleGrantedAuthority(Role.ROLE_USER.getRole()));
         return auth;
     }
 
