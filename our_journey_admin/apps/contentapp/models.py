@@ -48,7 +48,7 @@ class Comment(models.Model):
         blank=False,
         db_column="content_id",
     )
-    content = models.CharField(max_length=500)
+    texts = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, default=None)
@@ -104,7 +104,7 @@ class Thread(models.Model):
         blank=False,
         db_column="content_id",
     )
-    content = models.CharField(max_length=500)
+    texts = models.CharField(max_length=500)
     # 타래 이미지
     img_url = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
