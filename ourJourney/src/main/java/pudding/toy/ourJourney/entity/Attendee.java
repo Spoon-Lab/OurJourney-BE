@@ -17,7 +17,7 @@ public class Attendee {
     Long id;
     @ManyToOne @JoinColumn(name = "profile_id")
     Profile profile;
-    @ManyToOne @JoinColumn(name = "contents_id")
+    @ManyToOne @JoinColumn(name = "content_id")
     Contents contents;
     public Attendee(Profile profile, Contents contents){
         this.profile = profile;
