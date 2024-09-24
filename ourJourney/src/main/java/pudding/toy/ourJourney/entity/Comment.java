@@ -20,7 +20,7 @@ public class Comment extends BaseTimeEntity {
     Profile profile;
 
     @ManyToOne
-    @JoinColumn(name = "contents_id")
+    @JoinColumn(name = "content_id")
     Contents contents;
 
     @Column(length = 200, nullable = false)

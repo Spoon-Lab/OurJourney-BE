@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class ContentTag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne @JoinColumn(name = "contents_id")
+    @ManyToOne @JoinColumn(name = "content_id")
     Contents contents;
     @ManyToOne @JoinColumn(name = "tag_id")
     Tag tag;
