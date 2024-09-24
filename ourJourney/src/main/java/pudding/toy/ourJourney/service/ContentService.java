@@ -84,15 +84,15 @@ public class ContentService {
     }
 
 
-    public DetailContentResponse getDetailContent(Long contentId, Profile profile) {
+    public DetailContentResponse getDetailContent(Long contentId, Optional<Profile> profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         Long likeCount = contentLikeRepository.countByContentsId(contentId);
         Long totalCount = commentRepository.countByContentsIdAndDeletedAtIsNull(contentId);
 
-        Boolean isEditable = contents.getProfile().getId().equals(profile.getId());
-        Boolean isRemovable = contents.getProfile().getId().equals(profile.getId());
+        Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+        Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
 
         return DetailContentResponse.from(contents, likeCount, totalCount, isEditable, isRemovable);
     }
@@ -101,7 +101,7 @@ public class ContentService {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        contentsMapper.updateEntityFromDto(editRequestDto,contents);
+        contentsMapper.updateEntityFromDto(editRequestDto, contents);
         contentRepository.save(contents);
     }
 
