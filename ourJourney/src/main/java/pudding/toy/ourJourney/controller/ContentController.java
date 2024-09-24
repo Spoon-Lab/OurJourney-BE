@@ -44,7 +44,7 @@ public class ContentController {
     @GetMapping("/{contentId}")
     @Operation(summary = "content 하나 조회", description = "content 한 개 조회한다.")
     public DetailContentResponse getDetailContent(@PathVariable("contentId") Long contentId) {
-        return contentService.getDetailContent(contentId);
+        return contentService.getDetailContent(contentId, dummyDataInitializer.dummyProfile);
     }
 
     @PatchMapping("/{contentId}")

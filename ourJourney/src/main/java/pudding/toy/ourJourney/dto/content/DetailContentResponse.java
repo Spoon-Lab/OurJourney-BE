@@ -8,7 +8,8 @@ import pudding.toy.ourJourney.entity.Contents;
 
 import java.time.LocalDateTime;
 
-@Data @FieldDefaults(level = AccessLevel.PRIVATE)
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class DetailContentResponse {
     Long contentId;
@@ -18,8 +19,10 @@ public class DetailContentResponse {
     LocalDateTime updatedAt;
     Long likeCount;
     Long commentCount;
+    Boolean isEditable;
+    Boolean isRemovable;
 
-    public static DetailContentResponse from(Contents contents, Long likeCount, Long commentCount){
+    public static DetailContentResponse from(Contents contents, Long likeCount, Long commentCount, Boolean isEditable, Boolean isRemovable) {
         return new DetailContentResponse(
                 contents.getId(),
                 contents.getTitle(),
@@ -27,7 +30,9 @@ public class DetailContentResponse {
                 contents.getCreatedAt(),
                 contents.getUpdatedAt(),
                 likeCount,
-                commentCount
+                commentCount,
+                isEditable,
+                isRemovable
         );
     }
 }
