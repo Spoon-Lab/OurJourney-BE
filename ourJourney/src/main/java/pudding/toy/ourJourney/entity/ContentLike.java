@@ -6,17 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Entity @Getter
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ContentLike {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne @JoinColumn(name = "post_id")
+
+    @ManyToOne
+    @JoinColumn(name = "content_id")
     Contents contents;
-    @ManyToOne @JoinColumn (name = "profile_id")
+
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     Profile profile;
-    public ContentLike(Contents contents, Profile profile){
+
+    public ContentLike(Contents contents, Profile profile) {
         this.contents = contents;
         this.profile = profile;
     }
