@@ -3,11 +3,8 @@ package pudding.toy.ourJourney.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +16,7 @@ import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.repository.ProfileRepository;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,23 +40,28 @@ public class AuthService {
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
-        if(response.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (response.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         return response.getBody();
     }
-    public Long currentProfileId(){
+
+    public Long currentProfileId() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        log.info("authentication"+authentication.getName());
+        log.info("authentication" + authentication.getName());
         return Long.parseLong(authentication.getName());
     }
 
-    public Profile currentProfile(){
+    public Optional<Profile> currentProfile() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Long profileId = Long.parseLong(authentication.getName());
         log.info("profileId" + profileId);
-        return profileRepository.findById(profileId).orElseThrow(()-> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        return profileRepository.findById(profileId);
+    }
+
+    public Profile getProfileWithAuthorize() {
+        return currentProfile().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 }
