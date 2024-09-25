@@ -11,11 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
-import pudding.toy.ourJourney.entity.*;
-import pudding.toy.ourJourney.repository.*;
+import pudding.toy.ourJourney.entity.Comment;
+import pudding.toy.ourJourney.entity.Contents;
+import pudding.toy.ourJourney.entity.Profile;
+import pudding.toy.ourJourney.repository.CommentRepository;
+import pudding.toy.ourJourney.repository.ContentLikeRepository;
+import pudding.toy.ourJourney.repository.ContentRepository;
+import pudding.toy.ourJourney.repository.ProfileRepository;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,19 +40,21 @@ public class ProfileService {
         Profile profile = Profile.builder().userId(profileAuthRequest.getId()).build();
         String defaultNickName = defaultNickName(profile);
         profile.defaultName(defaultNickName);
-        
+
         profileRepository.save(profile);
-        return new NewProfileResponse(profile.getId(),profile.getNickName());
+        return new NewProfileResponse(profile.getId(), profile.getNickName());
     }
-    private String defaultNickName(Profile profile){
+
+    private String defaultNickName(Profile profile) {
         boolean isDuplicate;
         String randomNickName;
-        do{
+        do {
             randomNickName = profile.createRandomNickName();
             isDuplicate = profileRepository.existsByNickName(randomNickName);
-        }while(isDuplicate);
+        } while (isDuplicate);
         return randomNickName;
     }
+
     public GetDetailProfileResponse getDetailProfile(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -57,58 +65,63 @@ public class ProfileService {
                 profile.followerNum(), profile.followingNum()
         );
     }
-    public void updateMyProfile(Long id, UpdateProfileRequest updateProfileRequest){
-        //todo: login_required && is_owner?
+
+    public void updateMyProfile(Long id, UpdateProfileRequest updateProfileRequest) {
         Profile profile = profileRepository.findById(id).orElseThrow(
-                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        if(updateProfileRequest.getImageUrl()!=null){
+        if (updateProfileRequest.getImageUrl() != null) {
             updateProfileRequest.getImageUrl().ifPresent(profile::setProfileImg);
         }
-        if(updateProfileRequest.getNickname()!=null){
+        if (updateProfileRequest.getNickname() != null) {
             updateProfileRequest.getNickname().ifPresent(profile::setNickName);
         }
-        if(updateProfileRequest.getSelfIntroduction()!=null){
+        if (updateProfileRequest.getSelfIntroduction() != null) {
             updateProfileRequest.getSelfIntroduction().ifPresent(profile::setSelfIntroduction);
         }
         profileRepository.save(profile);
     }
-    public void deleteProfile(Long id){
+
+    public void deleteProfile(Long id) {
         //todo: login_required && is_owner?
         Profile profile = profileRepository.findById(id).orElseThrow(
-                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         profile.remove(LocalDateTime.now());
         profileRepository.save(profile);
     }
-    public GetMyContentsResponse getMyContents(Long profileId, Pageable pageable){
-        Page<Contents> contents = contentRepository.findAllByProfileId(profileId,pageable);
-        List <GetMyContentsDto> contentsDto = contents.stream()
+
+    public GetMyContentsResponse getMyContents(Long profileId, Pageable pageable) {
+        Page<Contents> contents = contentRepository.findAllByProfileId(profileId, pageable);
+        long totalElements = contents.getTotalElements();
+        List<GetMyContentsDto> contentsDto = contents.stream()
                 .map(content -> new GetMyContentsDto(
-                        content.getId(),content.getTitle(),content.getProfile().getId(),
-                        content.getImgUrl(),content.getCreatedAt(),content.getUpdatedAt()))
+                        content.getId(), content.getTitle(), content.getProfile().getId(),
+                        content.getImgUrl(), content.getCreatedAt(), content.getUpdatedAt()))
                 .toList();
-        PageImpl<GetMyContentsDto> myContentsDtoPage = new PageImpl<>(contentsDto,pageable,contentsDto.size());
+        PageImpl<GetMyContentsDto> myContentsDtoPage = new PageImpl<>(contentsDto, pageable, totalElements);
         return new GetMyContentsResponse(myContentsDtoPage);
     }
-    public GetMyCommentsResponse getMyComments(Long profileId, Pageable pageable){
-       Page<Comment> comments =  commentRepository.findAllByProfileId(profileId,pageable);
 
-       List<GetMyCommentsDto> getMyCommentsDtos = comments.stream()
-               .map(comment -> new GetMyCommentsDto(comment.getId(),comment.getTexts(), comment.getProfile().getId(), comment.getCreatedAt(),comment.getUpdatedAt()))
-               .toList();
-       PageImpl<GetMyCommentsDto> myCommentsDtoPage = new PageImpl<>(getMyCommentsDtos,pageable,getMyCommentsDtos.size());
+    public GetMyCommentsResponse getMyComments(Long profileId, Pageable pageable) {
+        Page<Comment> comments = commentRepository.findAllByProfileId(profileId, pageable);
+        long totalElements = comments.getTotalElements();
+        List<GetMyCommentsDto> getMyCommentsDtos = comments.stream()
+                .map(comment -> new GetMyCommentsDto(comment.getId(), comment.getTexts(), comment.getProfile().getId(), comment.getCreatedAt(), comment.getUpdatedAt()))
+                .toList();
+        PageImpl<GetMyCommentsDto> myCommentsDtoPage = new PageImpl<>(getMyCommentsDtos, pageable, totalElements);
         return new GetMyCommentsResponse(myCommentsDtoPage);
     }
-    public GetLikeContentsResponse getMyLikeContents(Long profileId,Pageable pageable) {
-        //todo: login_required && is_owner?
+
+    public GetLikeContentsResponse getMyLikeContents(Long profileId, Pageable pageable) {
         Page<Long> contentLikesId = contentLikeRepository.findAllByProfileId(profileId, pageable);
+        long totalElements = contentLikesId.getTotalElements();
         List<Long> contentLikes = contentLikesId.getContent();
         Page<Contents> contents = contentRepository.findAllByContentLikesIdIn(contentLikes, pageable);
         List<GetLikesContentsDto> getLikesContentsDtos = contents.stream()
                 .map(content -> new GetLikesContentsDto(content.getId(), content.getTitle(), content.getProfile().getId(),
                         content.getImgUrl(), content.getCreatedAt(), content.getUpdatedAt()))
                 .toList();
-        return new GetLikeContentsResponse(new PageImpl<>(getLikesContentsDtos, pageable, getLikesContentsDtos.size()));
+        return new GetLikeContentsResponse(new PageImpl<>(getLikesContentsDtos, pageable, totalElements));
     }
 }
