@@ -1,8 +1,5 @@
 package pudding.toy.ourJourney.dto.content;
 
-import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -10,9 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.openapitools.jackson.nullable.JsonNullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,7 +26,3 @@ public class CreateContentRequest {
 
     Optional<List<Long>> tagIds;
 }
-/*
-title= dafd
-category =dafadf
- */

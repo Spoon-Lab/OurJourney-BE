@@ -25,7 +25,7 @@ import java.util.Optional;
 public class AuthService {
     private final RestTemplate authRestTemplate;
     private final ProfileRepository profileRepository;
-    
+
     public AuthResponse validateAuth(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String accessToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 부분을 추출
@@ -60,7 +60,7 @@ public class AuthService {
             return Optional.empty();
         }
         Long profileId = Long.parseLong(authentication.getName());
-        log.info("profileId" + profileId);
+        System.out.println("profileId" + profileId);
         return profileRepository.findById(profileId);
     }
 
