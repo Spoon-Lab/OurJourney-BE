@@ -9,17 +9,15 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
+import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ProfileService;
-import pudding.toy.ourJourney.utils.AuthUtils;
-
-import java.util.List;
-
 @Tag(name = "Profile API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
 public class ProfileController {
     private final ProfileService profileService;
+    private final AuthService authService;
 
     @Operation(summary = "프로필 생성", description = "장고 서버에서 회원가입이 완료되면 호출합니다.")
     @PostMapping("")
@@ -29,7 +27,7 @@ public class ProfileController {
     @Operation(summary = "내 프로필 조회")
     @GetMapping("")
     public GetDetailProfileResponse getProfile() {
-        return profileService.getDetailProfile(AuthUtils.currentUser());
+        return profileService.getDetailProfile(authService.currentProfileId());
     }
 
     @Operation(summary = "프로필 조회")
@@ -41,25 +39,25 @@ public class ProfileController {
     @Operation(summary = "내 프로필 수정")
     @PatchMapping("")
     public void updateProfile(@RequestBody UpdateProfileRequest body) {
-        profileService.updateMyProfile(AuthUtils.currentUser(),body);
+        profileService.updateMyProfile(authService.currentProfileId(),body);
     }
 
     @Operation(summary = "해당 유저가 작성한 글 가져오기")
     @GetMapping("/contents")
     public GetMyContentsResponse getMyContents(@PageableDefault Pageable pageable) {
-        return profileService.getMyContents(AuthUtils.currentUser(), pageable);
+        return profileService.getMyContents(authService.currentProfileId(), pageable);
     }
 
     @Operation(summary = "내가 작성한 댓글 가져오기")
     @GetMapping("/comments")
     public GetMyCommentsResponse getMyComments(@PageableDefault Pageable pageable) {
-        return profileService.getMyComments(AuthUtils.currentUser(), pageable);
+        return profileService.getMyComments(authService.currentProfileId(), pageable);
     }
 
     @Operation(summary = "내가 좋아요한 글 가져오기")
     @GetMapping("/likes/contents")
     public GetLikeContentsResponse getLikesContents(@PageableDefault Pageable pageable) {
-        return profileService.getMyLikeContents(AuthUtils.currentUser(), pageable);
+        return profileService.getMyLikeContents(authService.currentProfileId(), pageable);
     }
 }
 
