@@ -29,6 +29,7 @@ public class ContentService {
     private final ContentsQueryRepository contentsQueryRepository;
     private final ContentLikeRepository contentLikeRepository;
     private final ProfileRepository profileRepository;
+    private final CommentRepository commentRepository;
 
     public PageImpl<ListContentDto> getAllContents(
             Pageable pageable,

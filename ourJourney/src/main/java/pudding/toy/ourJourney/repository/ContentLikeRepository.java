@@ -23,4 +23,5 @@ public interface ContentLikeRepository extends JpaRepository<ContentLike, Long>{
     Page<Long> findAllByProfileId(@RequestParam("profileId") Long profileId, Pageable pageable);
     Boolean existsByContentsAndProfile(Contents contents, Profile profile);
     Optional<ContentLike> findByContentsAndProfile(Contents contents, Profile profile);
+    Long countByContentsId(Long contentsId);
 }
