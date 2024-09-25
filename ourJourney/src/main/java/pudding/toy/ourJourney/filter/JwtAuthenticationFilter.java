@@ -26,8 +26,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService userDetailService;
     private static final String[] exceptURIs = {
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**",
-            "/contents/*", "/profiles/*", "/categories", "/contents"
+            "/contents/*", "/categories", "/contents"
     };
+    private static final String regex = "^/profiles/\\d+$";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -61,6 +62,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isExceptUrl(String requestUrl) {
+        if (requestUrl.matches(regex)) {
+            return true; //get id에만 적용하지 않음.
+        }
         return PatternMatchUtils.simpleMatch(exceptURIs, requestUrl);
     }
 }
