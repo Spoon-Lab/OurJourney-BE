@@ -23,7 +23,10 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AuthService authService;
     private final CustomUserDetailService userDetailService;
-    private static final String[] exceptURIs = {"/contents/*", "/profiles/{id}","/categories","/contents"};
+    private static final String[] exceptURIs = {
+            "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**",
+            "/contents/*", "/profiles/{id}","/categories","/contents"
+    };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
