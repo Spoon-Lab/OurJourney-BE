@@ -7,9 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.config.DummyDataInitializer;
 import pudding.toy.ourJourney.dto.content.*;
-import pudding.toy.ourJourney.entity.Profile;
+import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ContentService;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/contents")
 public class ContentController {
     private final ContentService contentService;
-    private final DummyDataInitializer dummyDataInitializer;
+    private final AuthService authService;
 
     @GetMapping()
     @Operation(summary = "content 보기", description = "content를 검색한다.")
@@ -37,14 +36,13 @@ public class ContentController {
     @PostMapping
     @Operation(summary = "content 작성", description = "content를 작성한다.")
     public CreateContentResponse createNewContent(@RequestBody @Valid CreateContentRequest createContentRequest) {
-        //유저 받아오는 로직
-        return new CreateContentResponse(contentService.createContent(createContentRequest, dummyDataInitializer.dummyProfile));
+        return new CreateContentResponse(contentService.createContent(createContentRequest, authService.getProfileWithAuthorize()));
     }
 
     @GetMapping("/{contentId}")
     @Operation(summary = "content 하나 조회", description = "content 한 개 조회한다.")
     public DetailContentResponse getDetailContent(@PathVariable("contentId") Long contentId) {
-        return contentService.getDetailContent(contentId, Optional.of(dummyDataInitializer.dummyProfile));
+        return contentService.getDetailContent(contentId, authService.currentProfile());
     }
 
     @PatchMapping("/{contentId}")
@@ -62,16 +60,12 @@ public class ContentController {
     @Operation(summary = "글에 좋아요 누르기")
     @PostMapping("/{contentId}/likes")
     public Long addLikesToContent(@PathVariable("contentId") Long contentId) {
-        Profile profile = dummyDataInitializer.dummyProfile; //dummy
-        return contentService.addLikesToContent(contentId, profile);
+        return contentService.addLikesToContent(contentId, authService.getProfileWithAuthorize());
     }
 
     @Operation(summary = "글에 좋아요 취소하기")
     @DeleteMapping("/{contentId}/likes")
     public void deleteLikesToContent(@PathVariable("contentId") Long contentId) {
-        Profile profile = dummyDataInitializer.dummyProfile; //dummy
-        contentService.deleteLike(contentId, profile);
+        contentService.deleteLike(contentId, authService.getProfileWithAuthorize());
     }
-
-
 }
