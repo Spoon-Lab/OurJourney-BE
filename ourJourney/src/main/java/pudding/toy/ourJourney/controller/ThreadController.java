@@ -13,6 +13,8 @@ import pudding.toy.ourJourney.dto.thread.*;
 import pudding.toy.ourJourney.entity.ContentsThread;
 import pudding.toy.ourJourney.service.ThreadService;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Thread API", description = "Thread API 입니다.")
@@ -24,7 +26,7 @@ public class ThreadController {
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
-        return new GetThreadResponse(threadService.getThreads(contentId, pageable));
+        return new GetThreadResponse(threadService.getThreads(contentId, pageable, Optional.of(dummyDataInitializer.dummyProfile)));
     }
 
     @PostMapping("/{contentId}/threads")
