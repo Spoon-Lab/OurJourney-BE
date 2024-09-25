@@ -7,10 +7,18 @@ from apps.userapp.models import Profile
 class Contents(models.Model):
     id = models.AutoField(primary_key=True)
     category_id = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=False, blank=False
+        Category,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="category_id",
     )
     profile_id = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=False, blank=False
+        Profile,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="profile_id",
     )
     title = models.CharField(max_length=255)
     # content 이미지
@@ -27,12 +35,20 @@ class Contents(models.Model):
 class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     profile_id = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=False, blank=False
+        Profile,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="profile_id",
     )
     content_id = models.ForeignKey(
-        Contents, on_delete=models.CASCADE, null=False, blank=False
+        Contents,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="content_id",
     )
-    content = models.CharField(max_length=500)
+    texts = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, default=None)
@@ -57,9 +73,15 @@ class Tag(models.Model):
 class ContentTag(models.Model):
     id = models.AutoField(primary_key=True)
     content_id = models.ForeignKey(
-        Contents, on_delete=models.CASCADE, null=False, blank=False
+        Contents,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="content_id",
     )
-    tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE, null=False, blank=False)
+    tag_id = models.ForeignKey(
+        Tag, on_delete=models.CASCADE, null=False, blank=False, db_column="tag_id"
+    )
 
     class Meta:
         managed = True
@@ -69,14 +91,22 @@ class ContentTag(models.Model):
 class Thread(models.Model):
     id = models.AutoField(primary_key=True)
     profile_id = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=False, blank=False
+        Profile,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="profile_id",
     )
     content_id = models.ForeignKey(
-        Contents, on_delete=models.CASCADE, null=False, blank=False
+        Contents,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="content_id",
     )
-    content = models.CharField(max_length=500)
+    texts = models.CharField(max_length=500)
     # 타래 이미지
-    thread_img = models.CharField(max_length=200, null=True)
+    img_url = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
@@ -88,8 +118,10 @@ class Thread(models.Model):
 
 class ThreadTag(models.Model):
     id = models.AutoField(primary_key=True)
-    tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    thread_id = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE, db_column="tag_id")
+    thread_id = models.ForeignKey(
+        Thread, on_delete=models.CASCADE, db_column="thread_id"
+    )
 
     class Meta:
         managed = True
@@ -99,10 +131,18 @@ class ThreadTag(models.Model):
 class ContentLike(models.Model):
     id = models.AutoField(primary_key=True)
     profile_id = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, null=False, blank=False
+        Profile,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="profile_id",
     )
     content_id = models.ForeignKey(
-        Contents, on_delete=models.CASCADE, null=False, blank=False
+        Contents,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        db_column="content_id",
     )
 
     class Meta:

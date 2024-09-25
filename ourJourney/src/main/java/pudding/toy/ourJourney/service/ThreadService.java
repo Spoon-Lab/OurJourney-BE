@@ -18,6 +18,7 @@ import pudding.toy.ourJourney.repository.ThreadRepository;
 import pudding.toy.ourJourney.repository.ThreadTagRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,10 +29,14 @@ public class ThreadService {
     private final TagRepository tagRepository;
     private final ThreadTagRepository threadTagRepository;
 
-    public PageImpl<ListThreadDto> getThreads(Long contentId, Pageable pageable) {
+    public PageImpl<ListThreadDto> getThreads(Long contentId, Pageable pageable, Optional<Profile> profile) {
         Contents contents = getContent(contentId);
         Page<ContentsThread> pageThreads = threadRepository.findByContents(pageable, contents);
         Long totalCount = threadRepository.countByContents(contents);
+
+        Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+        Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+
         List<ListThreadDto> threadDtos = pageThreads.stream()
                 .map(contentsThread -> new ListThreadDto(
                                 contentsThread.getId(),
@@ -43,7 +48,9 @@ public class ThreadService {
                                 contentsThread.getImgUrl(),
                                 contentsThread.getTexts(),
                                 contentsThread.getTagNames(),
-                                contentsThread.getCreatedAt()
+                                contentsThread.getCreatedAt(),
+                                isEditable,
+                                isRemovable
                         )
                 )
                 .toList();
