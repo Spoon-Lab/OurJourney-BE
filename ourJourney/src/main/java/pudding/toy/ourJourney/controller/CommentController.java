@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.config.DummyDataInitializer;
 import pudding.toy.ourJourney.dto.comment.*;
+import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.CommentService;
 
 @Tag(name = "Comment API")
@@ -16,8 +16,8 @@ import pudding.toy.ourJourney.service.CommentService;
 @RequestMapping("/contents/{contentsId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
-    private final DummyDataInitializer dummyDataInitializer;
     private final CommentService commentService;
+    private final AuthService authService;
 
     @Operation(summary = "댓글 생성")
     @PostMapping("")
@@ -25,8 +25,7 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @RequestBody @Valid CreateCommentRequest body
     ) {
-        commentService.createComment(dummyDataInitializer.dummyProfile, contentsId, body.getTexts());
-
+        commentService.createComment(authService.getProfileWithAuthorize(), contentsId, body.getTexts());
         return new CreateCommentResponse(1L);
     }
 
@@ -58,6 +57,7 @@ public class CommentController {
             @PathVariable("commentId") Long commentId,
             @RequestBody @Valid UpdateCommentRequest body
     ) {
+        authService.getProfileWithAuthorize();
         commentService.updateComment(contentsId, commentId, body.getTexts());
     }
 
@@ -68,6 +68,7 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @PathVariable("commentId") Long commentId
     ) {
+        authService.getProfileWithAuthorize();
         commentService.deleteComment(contentsId, commentId);
     }
 }
