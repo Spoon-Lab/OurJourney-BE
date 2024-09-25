@@ -1,6 +1,7 @@
 package pudding.toy.ourJourney.filter;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
-import pudding.toy.ourJourney.service.CustomUserDetailService;
 import pudding.toy.ourJourney.service.AuthService;
+import pudding.toy.ourJourney.service.CustomUserDetailService;
 
 import java.io.IOException;
 
@@ -25,31 +26,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService userDetailService;
     private static final String[] exceptURIs = {
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**",
-            "/contents/*", "/profiles/{id}","/categories","/contents"
+            "/contents/*", "/profiles/*", "/categories", "/contents"
     };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String requestUrl = request.getRequestURI();
         String method = request.getMethod();
-        try{
-            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method))){
+        try {
+            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method))) {
                 System.out.println("필터적용안한다잇");
-                chain.doFilter(request,response);
+                chain.doFilter(request, response);
                 return;
             }
             System.out.println("필터적용한다잇");
             AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
             setAuthenticationInContext(authResponse);
 
-            chain.doFilter(request,response);
-        }catch (Exception e){
+            chain.doFilter(request, response);
+        } catch (Exception e) {
             throw e;
         }
     }
 
     private void setAuthenticationInContext(AuthResponse authResponse) {
-        System.out.println("UserDetail profileID"+ userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
+        System.out.println("UserDetail profileID" + userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetailService.loadUserByUserId(authResponse.getUserId()),
                 "",
@@ -58,7 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
     }
+
     private boolean isExceptUrl(String requestUrl) {
-         return PatternMatchUtils.simpleMatch(exceptURIs,requestUrl);
+        return PatternMatchUtils.simpleMatch(exceptURIs, requestUrl);
     }
 }
