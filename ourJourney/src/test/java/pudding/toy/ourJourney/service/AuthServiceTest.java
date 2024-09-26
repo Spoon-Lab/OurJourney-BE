@@ -1,4 +1,5 @@
 package pudding.toy.ourJourney.service;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import pudding.toy.ourJourney.dto.auth.AuthResponse;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+@Transactional
 @SpringBootTest
 class AuthServiceTest {
     @Autowired

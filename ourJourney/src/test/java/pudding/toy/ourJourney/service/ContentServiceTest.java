@@ -11,6 +11,8 @@ import pudding.toy.ourJourney.dto.content.DetailContentResponse;
 import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.repository.*;
 
+import java.util.Optional;
+
 @SpringBootTest
 @Transactional
 public class ContentServiceTest {
@@ -43,11 +45,11 @@ public class ContentServiceTest {
         contentLikeRepository.save(new ContentLike(contents, profile));
 
         // when
-        DetailContentResponse act = contentService.getDetailContent(contents.getId());
+        DetailContentResponse act = contentService.getDetailContent(contents.getId(), Optional.of(profile));
 
         // then
         Assertions.assertThat(act.getTitle()).isEqualTo(contents.getTitle());
-//        Assertions.assertThat(act.getCommentCount()).isEqualTo(2);
-//        Assertions.assertThat(act.getLikeCount()).isEqualTo(1);
+        Assertions.assertThat(act.getCommentCount()).isEqualTo(2);
+        Assertions.assertThat(act.getLikeCount()).isEqualTo(1);
     }
 }

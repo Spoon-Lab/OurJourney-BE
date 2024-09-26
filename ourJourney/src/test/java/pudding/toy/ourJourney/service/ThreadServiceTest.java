@@ -50,7 +50,7 @@ class ThreadServiceTest {
         Profile profile = profileRepository.save(new Profile(2L));
         Contents contents = contentRepository.save(new Contents("title1", null, null, profile));
         Tag tag1 = tagRepository.save(new Tag("tag1"));
-        Tag tag2 = tagRepository.save(new Tag("tag1"));
+        Tag tag2 = tagRepository.save(new Tag("tag2"));
         ContentsThread contentsThread = threadRepository.save(new ContentsThread("texts", "imgUrl", profile, contents));
         threadTagRepository.save(new ThreadTag(contentsThread, tag1));
 
@@ -65,6 +65,6 @@ class ThreadServiceTest {
         Assertions.assertThat(act.getTexts()).isEqualTo("updateTexts");
         Assertions.assertThat(act.getImgUrl()).isEqualTo("updateImgUrl");
         List<ThreadTag> actTags = threadTagRepository.findAllByContentsThreadId(act.getId());
-        Assertions.assertThat(actTags.get(0).getId()).isEqualTo(tag2.getId());
+        Assertions.assertThat(actTags.get(0).getTag().getId()).isEqualTo(tag2.getId());
     }
 }
