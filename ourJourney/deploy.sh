@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ### log file backup
-TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 if [ -f nohup.out ]; then
     mv nohup.out "nohup_$TIMESTAMP.out"
