@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestUrl = request.getRequestURI();
         String method = request.getMethod();
         try {
-            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method))) {
+            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method)) || isExceptUrl("/profiles") && "POST".equalsIgnoreCase(method)) {
                 System.out.println("필터적용안한다잇");
                 chain.doFilter(request, response);
                 return;
