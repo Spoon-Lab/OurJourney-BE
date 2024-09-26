@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService userDetailService;
     private static final String[] exceptURIs = {
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**",
-            "/contents/*", "/categories", "/contents"
+            "/contents/*", "/categories", "/contents", "/tags", "/health"
     };
     private static final String regex = "^/profiles/\\d+$";
 
@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestUrl = request.getRequestURI();
         String method = request.getMethod();
         try {
-            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method))) {
+            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method)) || (requestUrl.matches("/profiles") && "POST".equalsIgnoreCase(method))) {
                 System.out.println("필터적용안한다잇");
                 chain.doFilter(request, response);
                 return;
