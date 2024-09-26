@@ -1,5 +1,6 @@
 package pudding.toy.ourJourney.service;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import pudding.toy.ourJourney.repository.CategoryRepository;
 import pudding.toy.ourJourney.repository.ContentRepository;
 import pudding.toy.ourJourney.repository.ProfileRepository;
 
+@Transactional
 @SpringBootTest
 public class AttendeeServiceTest {
     @Autowired

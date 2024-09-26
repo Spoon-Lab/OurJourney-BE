@@ -1,5 +1,6 @@
 package pudding.toy.ourJourney.service;
 
+import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import pudding.toy.ourJourney.repository.TagRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
 @SpringBootTest
 class TagServiceTest {
     @Autowired
