@@ -22,7 +22,7 @@ class Contents(models.Model):
     )
     title = models.CharField(max_length=255)
     # content 이미지
-    img_url = models.CharField(max_length=200, null=True)
+    img_url = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
@@ -106,7 +106,7 @@ class Thread(models.Model):
     )
     content = models.CharField(max_length=500)
     # 타래 이미지
-    img_url = models.CharField(max_length=200, null=True)
+    img_url = models.CharField(max_length=1000, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, default=None)
     deleted_at = models.DateTimeField(null=True, default=None)
