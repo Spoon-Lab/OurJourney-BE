@@ -62,6 +62,8 @@ public class ThreadService {
     public ContentsThread createThreads(Profile profile, Long contentId, CreateThreadRequest createThreadRequest) {
         Contents content = getContent(contentId);
         ContentsThread thread = new ContentsThread(createThreadRequest.getTexts(), profile, content);
+
+        createThreadRequest.getThreadImg().ifPresent(thread::setImgUrl);
         createThreadRequest.getTagIds().ifPresent(tagIds -> {
             List<Tag> tags = tagRepository.findAllById(tagIds);
             List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
