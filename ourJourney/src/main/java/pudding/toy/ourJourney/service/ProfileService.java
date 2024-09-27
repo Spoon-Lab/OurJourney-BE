@@ -83,7 +83,6 @@ public class ProfileService {
     }
 
     public void deleteProfile(Long id) {
-        //todo: login_required && is_owner?
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );

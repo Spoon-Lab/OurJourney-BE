@@ -1,7 +1,10 @@
 package pudding.toy.ourJourney.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Where;
 
@@ -33,6 +36,8 @@ public class Contents extends BaseTimeEntity {
     List<ContentLike> contentLikes;
     @OneToMany(mappedBy = "contents")
     List<ContentsThread> contentsThreads;
+    @OneToMany(mappedBy = "contents")
+    List<Attendee> attendees;
 
     public Contents(Profile profile, Category category, String title, String imgUrl) {
         this.title = title;
@@ -42,10 +47,10 @@ public class Contents extends BaseTimeEntity {
     }
 
     @Builder
-    public Contents(String title, Category category, ContentTag contentTag,Profile profile) {
+    public Contents(String title, Category category, ContentTag contentTag, Profile profile) {
         this.title = title;
         this.category = category;
-        this.contentTags  = new ArrayList<>();
+        this.contentTags = new ArrayList<>();
         this.contentLikes = new ArrayList<>();
         this.profile = profile;
         this.contentsThreads = new ArrayList<>();
@@ -69,6 +74,18 @@ public class Contents extends BaseTimeEntity {
     public void addTags(List<ContentTag> contentTags) {
         for (ContentTag tags : contentTags) {
             this.addTag(tags);
+        }
+    }
+
+    public void addAttendee(Attendee attendee) {
+        if (attendee != null) {
+            this.attendees.add(attendee);
+        }
+    }
+
+    public void addAttendees(List<Attendee> attendees) {
+        for (Attendee attendee : attendees) {
+            this.addAttendee(attendee);
         }
     }
 

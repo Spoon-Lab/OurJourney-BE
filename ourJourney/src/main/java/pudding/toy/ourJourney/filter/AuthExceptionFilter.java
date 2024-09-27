@@ -6,10 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 
 
@@ -18,12 +17,16 @@ import java.io.IOException;
 public class AuthExceptionFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        try{
-            chain.doFilter(request,response);
+        try {
+            chain.doFilter(request, response);
             return;
-        }catch (Exception e){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } catch (ResponseStatusException ex) {
+            // 인증 관련 예외만 필터에서 처리
+            response.setStatus(ex.getStatusCode().value());
+            String reason = ex.getReason() != null ? ex.getReason() : "Error occurred";
+            response.getWriter().write(reason);
+        } catch (Exception e) {
+            throw e;
         }
-
     }
 }

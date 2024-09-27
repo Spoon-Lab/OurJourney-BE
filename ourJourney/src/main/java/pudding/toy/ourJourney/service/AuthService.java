@@ -31,7 +31,7 @@ public class AuthService {
             String accessToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 부분을 추출
             return getAuth(accessToken);
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "맞지 않은 토큰입니다.");
     }
 
     public AuthResponse getAuth(String accessToken) {
@@ -41,7 +41,7 @@ public class AuthService {
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
         if (response.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다.");
         }
         return response.getBody();
     }
@@ -65,6 +65,6 @@ public class AuthService {
     }
 
     public Profile getProfileWithAuthorize() {
-        return currentProfile().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        return currentProfile().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."));
     }
 }
