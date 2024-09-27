@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import pudding.toy.ourJourney.dto.thread.CreateThreadRequest;
 import pudding.toy.ourJourney.dto.thread.ListThreadDto;
 import pudding.toy.ourJourney.dto.thread.ProfileThreadDto;
 import pudding.toy.ourJourney.dto.thread.UpdateThreadRequest;
@@ -58,16 +59,18 @@ public class ThreadService {
         return new PageImpl<>(threadDtos, pageable, totalCount);
     }
 
-    public ContentsThread createThreads(Profile profile, Long contentId, String texts, List<Long> tagIds, String threadImg) {
+    @Transactional
+    public ContentsThread createThreads(Profile profile, Long contentId, CreateThreadRequest createThreadRequest) {
         Contents content = getContent(contentId);
-        List<Tag> tags = tagRepository.findAllById(tagIds);
+        ContentsThread thread = new ContentsThread(createThreadRequest.getTexts(), profile, content);
 
-        ContentsThread thread = new ContentsThread(texts, threadImg, profile, content);
+        createThreadRequest.getThreadImg().ifPresent(thread::setImgUrl);
+        createThreadRequest.getTagIds().ifPresent(tagIds -> {
+            List<Tag> tags = tagRepository.findAllById(tagIds);
+            List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
+            threadTagRepository.saveAll(threadTags);
+        });
         threadRepository.save(thread);
-
-        List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
-        threadTagRepository.saveAll(threadTags);
-
         return thread;
     }
 

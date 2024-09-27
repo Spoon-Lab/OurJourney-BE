@@ -22,7 +22,7 @@ public class CreateContentRequest {
     Long categoryId;
     Optional<String> imgUrl;
 
-    Optional<List<Long>> profileIds;
+    Optional<List<Long>> attendeeIds;
 
     Optional<List<Long>> tagIds;
 }
