@@ -59,6 +59,7 @@ public class ThreadService {
         return new PageImpl<>(threadDtos, pageable, totalCount);
     }
 
+    @Transactional
     public ContentsThread createThreads(Profile profile, Long contentId, CreateThreadRequest createThreadRequest) {
         Contents content = getContent(contentId);
         ContentsThread thread = new ContentsThread(createThreadRequest.getTexts(), profile, content);
@@ -68,7 +69,6 @@ public class ThreadService {
             List<Tag> tags = tagRepository.findAllById(tagIds);
             List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
             threadTagRepository.saveAll(threadTags);
-            thread.addTags(threadTags); // thread 엔티티에 태그 추가
         });
         threadRepository.save(thread);
         return thread;

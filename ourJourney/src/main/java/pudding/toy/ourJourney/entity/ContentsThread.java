@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,6 +41,7 @@ public class ContentsThread extends BaseTimeEntity {
         this.texts = texts;
         this.profile = profile;
         this.contents = contents;
+        this.threadTags = new ArrayList<>();
     }
 
     public List<String> getTagNames() {

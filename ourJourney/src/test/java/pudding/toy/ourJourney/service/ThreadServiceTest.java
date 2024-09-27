@@ -12,6 +12,7 @@ import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.repository.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -40,6 +41,10 @@ class ThreadServiceTest {
         Contents contents = contentRepository.save(new Contents("title1", null, null, profile));
         Tag tag1 = tagRepository.save(new Tag("tag1"));
         CreateThreadRequest createThreadRequest = new CreateThreadRequest();
+        createThreadRequest.setTexts("texts");
+        createThreadRequest.setThreadImg(Optional.of(""));
+        createThreadRequest.setTagIds(Optional.of(List.of(tag1.getId())));
+
         ContentsThread threads = threadService.createThreads(profile, contents.getId(), createThreadRequest);
         Assertions.assertThat(threads.getId()).isNotNull();
     }

@@ -10,5 +10,4 @@ public class CreateThreadRequest {
     String texts;
     Optional<List<Long>> tagIds;
     Optional<String> threadImg;
-
 }
