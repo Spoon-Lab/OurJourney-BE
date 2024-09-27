@@ -11,7 +11,10 @@ import pudding.toy.ourJourney.entity.ContentsThread;
 import java.util.Optional;
 
 @Repository
-public interface ThreadRepository extends JpaRepository<ContentsThread, Long>{
-    Page<ContentsThread> findByContents(Pageable pageable, Contents contents);
+public interface ThreadRepository extends JpaRepository<ContentsThread, Long> {
+    Page<ContentsThread> findByContentsAndDeletedAtIsNull(Pageable pageable, Contents contents);
+
+    Optional<ContentsThread> findByIdAndDeletedAtIsNull(Long id);
+
     Long countByContents(Contents contents);
 }
