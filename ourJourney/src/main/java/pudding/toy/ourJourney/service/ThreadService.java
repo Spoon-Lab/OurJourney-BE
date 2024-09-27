@@ -32,7 +32,7 @@ public class ThreadService {
 
     public PageImpl<ListThreadDto> getThreads(Long contentId, Pageable pageable, Optional<Profile> profile) {
         Contents contents = getContent(contentId);
-        Page<ContentsThread> pageThreads = threadRepository.findByContents(pageable, contents);
+        Page<ContentsThread> pageThreads = threadRepository.findByContentsAndDeletedAtIsNull(pageable, contents);
         Long totalCount = threadRepository.countByContents(contents);
 
         Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
@@ -111,12 +111,12 @@ public class ThreadService {
     }
 
     private ContentsThread getThread(Long threadId) {
-        return threadRepository.findById(threadId)
+        return threadRepository.findByIdAndDeletedAtIsNull(threadId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     private Contents getContent(Long contentId) {
-        return contentRepository.findById(contentId)
+        return contentRepository.findByIdAndDeletedAtIsNull(contentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
