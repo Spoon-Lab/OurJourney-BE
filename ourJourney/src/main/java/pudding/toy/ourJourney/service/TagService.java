@@ -4,13 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.tags.GetTagsDto;
-import pudding.toy.ourJourney.entity.ContentTag;
-import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Tag;
 import pudding.toy.ourJourney.repository.ContentTagRepository;
 import pudding.toy.ourJourney.repository.TagRepository;
@@ -24,8 +20,10 @@ public class TagService {
     private final TagRepository tagRepository;
     private final ContentTagRepository contentTagRepository;
 
-    public void createNewTags(String tagName) {
-        tagRepository.save(new Tag(tagName));
+    public Long createNewTags(String tagName) {
+        Tag tag = new Tag(tagName);
+        tagRepository.save(tag);
+        return tag.getId();
     }
 
     public PageImpl<GetTagsDto> getTags(String tagName, Pageable pageable) {
