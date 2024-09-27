@@ -36,9 +36,8 @@ public class ContentsThread extends BaseTimeEntity {
     @JoinColumn(name = "content_id")
     Contents contents;
 
-    public ContentsThread(String texts, String imgUrl, Profile profile, Contents contents) {
+    public ContentsThread(String texts, Profile profile, Contents contents) {
         this.texts = texts;
-        this.imgUrl = imgUrl;
         this.profile = profile;
         this.contents = contents;
     }
@@ -48,6 +47,10 @@ public class ContentsThread extends BaseTimeEntity {
                 .map(ThreadTag::getTag)
                 .map(Tag::getName)
                 .toList();
+    }
+
+    public void addTags(List<ThreadTag> tags) {
+        threadTags.addAll(tags);
     }
 
     public void setTexts(String texts) {

@@ -33,7 +33,7 @@ public class ThreadController {
     @PostMapping("/{contentId}/threads")
     @Operation(summary = "thread 작성", description = "thread를 작성한다.")
     public CreateThreadResponse createNewThread(@PathVariable("contentId") Long contentId, @RequestBody @Valid CreateThreadRequest body) {
-        ContentsThread threads = threadService.createThreads(authService.getProfileWithAuthorize(), contentId, body.getTexts(), body.getTags(), body.getThreadImg());
+        ContentsThread threads = threadService.createThreads(authService.getProfileWithAuthorize(), contentId, body);
         return new CreateThreadResponse(threads.getId());
     }
 

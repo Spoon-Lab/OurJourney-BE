@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pudding.toy.ourJourney.dto.thread.CreateThreadRequest;
 import pudding.toy.ourJourney.dto.thread.UpdateThreadRequest;
 import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.repository.*;
@@ -38,9 +39,8 @@ class ThreadServiceTest {
         Profile profile = profileRepository.save(new Profile(2L));
         Contents contents = contentRepository.save(new Contents("title1", null, null, profile));
         Tag tag1 = tagRepository.save(new Tag("tag1"));
-
-        ContentsThread threads = threadService.createThreads(profile, contents.getId(), "texts", List.of(tag1.getId()), "imgUrl");
-
+        CreateThreadRequest createThreadRequest = new CreateThreadRequest();
+        ContentsThread threads = threadService.createThreads(profile, contents.getId(), createThreadRequest);
         Assertions.assertThat(threads.getId()).isNotNull();
     }
 
@@ -51,7 +51,7 @@ class ThreadServiceTest {
         Contents contents = contentRepository.save(new Contents("title1", null, null, profile));
         Tag tag1 = tagRepository.save(new Tag("tag1"));
         Tag tag2 = tagRepository.save(new Tag("tag2"));
-        ContentsThread contentsThread = threadRepository.save(new ContentsThread("texts", "imgUrl", profile, contents));
+        ContentsThread contentsThread = threadRepository.save(new ContentsThread("texts", profile, contents));
         threadTagRepository.save(new ThreadTag(contentsThread, tag1));
 
         // when
