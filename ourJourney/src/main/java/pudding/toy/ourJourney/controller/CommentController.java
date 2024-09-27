@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.dto.comment.*;
+import pudding.toy.ourJourney.entity.Comment;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.CommentService;
 
@@ -25,8 +26,8 @@ public class CommentController {
             @PathVariable("contentsId") Long contentsId,
             @RequestBody @Valid CreateCommentRequest body
     ) {
-        commentService.createComment(authService.getProfileWithAuthorize(), contentsId, body.getTexts());
-        return new CreateCommentResponse(1L);
+        Comment comment = commentService.createComment(authService.getProfileWithAuthorize(), contentsId, body.getTexts());
+        return new CreateCommentResponse(comment.getId());
     }
 
     // TODO: 2차 작업으로 미뤄짐

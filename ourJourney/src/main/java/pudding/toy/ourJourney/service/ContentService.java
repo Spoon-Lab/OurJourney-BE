@@ -43,26 +43,30 @@ public class ContentService {
     }
 
     public Long createContent(CreateContentRequest createContentRequest, Profile profile) {
-        Category category = categoryRepository.findById(createContentRequest.getCategoryId()).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
+        Category category = categoryRepository.findById(createContentRequest.getCategoryId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         Contents content = Contents.builder()
                 .title(createContentRequest.getTitle())
                 .profile(profile)
                 .category(category)
                 .build();
-        if (createContentRequest.getImgUrl().isPresent()) {
-            content.setImgUrl(createContentRequest.getImgUrl().orElse(null));
-        }
-        if (createContentRequest.getProfileIds().isPresent()) {
-            addAttendee(createContentRequest.getProfileIds().orElse(null), content);
-        }
-        if (createContentRequest.getTagIds().isPresent()) {
-            addContentTag(createContentRequest.getTagIds().orElse(null), content);
-        }
+
+        // 이미지 URL 설정
+        createContentRequest.getImgUrl().ifPresent(content::setImgUrl);
+
+        // 참석자 추가
+        createContentRequest.getAttendeeIds().ifPresent(profileIds -> addAttendee(profileIds, content));
+
+        // 태그 추가
+        createContentRequest.getTagIds().ifPresent(tagIds -> addContentTag(tagIds, content));
+
+        // 최종 저장
         contentRepository.save(content);
+
         return content.getId();
     }
+
 
     private void addAttendee(List<Long> profileId, Contents content) {
         List<Profile> profiles = profileRepository.findAllById(profileId);
