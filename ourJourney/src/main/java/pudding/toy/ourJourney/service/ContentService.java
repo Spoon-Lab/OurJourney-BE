@@ -82,7 +82,7 @@ public class ContentService {
     private void addContentTag(List<Long> tagIds, Contents content) {
         List<Tag> tags = tagRepository.findAllById(tagIds);
         if (tagIds.size() != tags.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "태그가 생성되지 않았어요.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 태그가 없습니다.");
         }
         List<ContentTag> contentTags = tags.stream()
                 .map(tag -> new ContentTag(content, tag))
@@ -92,7 +92,7 @@ public class ContentService {
 
     public DetailContentResponse getDetailContent(Long contentId, Optional<Profile> profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 글이 없습니다.")
         );
         Long likeCount = contentLikeRepository.countByContentsId(contentId);
         Long totalCount = commentRepository.countByContentsIdAndDeletedAtIsNull(contentId);
