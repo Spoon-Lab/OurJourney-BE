@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
@@ -35,15 +36,18 @@ public class AuthService {
     }
 
     public AuthResponse getAuth(String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
-        if (response.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다.");
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.set("Authorization", "Bearer " + accessToken);
+            HttpEntity<Object> entity = new HttpEntity<>(headers);
+            ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
+            return response.getBody();
+        } catch (HttpClientErrorException.Unauthorized e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않거나 만료된 토큰입니다.");
+        } catch (HttpClientErrorException e) {
+            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
         }
-        return response.getBody();
     }
 
     public Long currentProfileId() {

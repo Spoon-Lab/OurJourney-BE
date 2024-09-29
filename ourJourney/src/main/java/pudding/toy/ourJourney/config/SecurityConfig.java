@@ -1,5 +1,6 @@
 package pudding.toy.ourJourney.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +29,8 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter(authService, userDetailService);
     }
 
-    public AuthExceptionFilter authExceptionFilter() {
-        return new AuthExceptionFilter();
+    public AuthExceptionFilter authExceptionFilter(ObjectMapper objectMapper) {
+        return new AuthExceptionFilter(objectMapper);
     }
 
     @Bean
@@ -45,7 +46,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthService authService, CustomUserDetailService userDetailService) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthService authService, CustomUserDetailService userDetailService, ObjectMapper objectMapper) throws Exception {
         http
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(configurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -59,7 +60,7 @@ public class SecurityConfig {
         http
                 .addFilterBefore(jwtAuthenticationFilter(authService, userDetailService), UsernamePasswordAuthenticationFilter.class);
         http
-                .addFilterBefore(authExceptionFilter(), JwtAuthenticationFilter.class);
+                .addFilterBefore(authExceptionFilter(objectMapper), JwtAuthenticationFilter.class);
         return http.build();
     }
 }
