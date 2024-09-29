@@ -15,17 +15,22 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "follower_user_id")
     Profile follower;
+
     @ManyToOne
     @JoinColumn(name = "following_user_id")
     Profile following;
+
     public Follow(Profile follower, Profile following) {
         this.follower = follower;
         this.following = following;
     }
+
     public Profile getFollower() {
         return this.follower;
     }
+
     public Profile getFollowing() {
         return this.following;
     }
+
 }

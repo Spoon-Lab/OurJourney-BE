@@ -52,7 +52,7 @@ public class ContentService {
                 .category(category)
                 .build();
         contentRepository.save(content);
-        
+
         createContentRequest.getImgUrl().ifPresent(content::setImgUrl);
         createContentRequest.getAttendeeIds()
                 .filter(profileIds -> !profileIds.isEmpty())
@@ -77,7 +77,6 @@ public class ContentService {
                 .map(profile -> new Attendee(profile, content))
                 .toList();
         attendeeRepository.saveAll(attendees);
-        content.addAttendees(attendees);
     }
 
     private void addContentTag(List<Long> tagIds, Contents content) {
@@ -89,7 +88,6 @@ public class ContentService {
                 .map(tag -> new ContentTag(content, tag))
                 .toList();
         contentTagRepository.saveAll(contentTags);
-        content.addTags(contentTags);
     }
 
     public DetailContentResponse getDetailContent(Long contentId, Optional<Profile> profile) {
