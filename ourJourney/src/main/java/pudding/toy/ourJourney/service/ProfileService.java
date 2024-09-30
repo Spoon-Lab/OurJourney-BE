@@ -57,7 +57,7 @@ public class ProfileService {
 
     public GetDetailProfileResponse getDetailProfile(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 유저가 없습니다.")
         );
         return new GetDetailProfileResponse(
                 profile.getId(), profile.getNickName(), Optional.ofNullable(profile.getProfileImg()),
@@ -68,7 +68,7 @@ public class ProfileService {
 
     public void updateMyProfile(Long id, UpdateProfileRequest updateProfileRequest) {
         Profile profile = profileRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 유저가 없습니다.")
         );
         if (updateProfileRequest.getImageUrl() != null) {
             updateProfileRequest.getImageUrl().ifPresent(profile::setProfileImg);
@@ -84,7 +84,7 @@ public class ProfileService {
 
     public void deleteProfile(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 유저가 없습니다.")
         );
         profile.remove(LocalDateTime.now());
         profileRepository.save(profile);

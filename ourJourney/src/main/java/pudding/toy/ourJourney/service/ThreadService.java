@@ -112,11 +112,11 @@ public class ThreadService {
 
     private ContentsThread getThread(Long threadId) {
         return threadRepository.findByIdAndDeletedAtIsNull(threadId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 타래가 없습니다."));
     }
 
     private Contents getContent(Long contentId) {
         return contentRepository.findByIdAndDeletedAtIsNull(contentId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 타래가 없습니다."));
     }
 }
