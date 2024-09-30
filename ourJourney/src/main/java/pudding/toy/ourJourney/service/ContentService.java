@@ -51,17 +51,17 @@ public class ContentService {
                 .profile(profile)
                 .category(category)
                 .build();
+        contentRepository.save(content);
 
-        // 이미지 URL 설정
         createContentRequest.getImgUrl().ifPresent(content::setImgUrl);
+        createContentRequest.getAttendeeIds()
+                .filter(profileIds -> !profileIds.isEmpty())
+                .ifPresent(profileIds -> addAttendee(profileIds, content));
 
-        // 참석자 추가
-        createContentRequest.getAttendeeIds().ifPresent(profileIds -> addAttendee(profileIds, content));
+        createContentRequest.getTagIds()
+                .filter(tagIds -> !tagIds.isEmpty())
+                .ifPresent(tagIds -> addContentTag(tagIds, content));
 
-        // 태그 추가
-        createContentRequest.getTagIds().ifPresent(tagIds -> addContentTag(tagIds, content));
-
-        // 최종 저장
         contentRepository.save(content);
 
         return content.getId();
@@ -71,7 +71,7 @@ public class ContentService {
     private void addAttendee(List<Long> profileId, Contents content) {
         List<Profile> profiles = profileRepository.findAllById(profileId);
         if (profiles.size() != profileId.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 유저가 없습니다.");
         }
         List<Attendee> attendees = profiles.stream()
                 .map(profile -> new Attendee(profile, content))
@@ -82,7 +82,7 @@ public class ContentService {
     private void addContentTag(List<Long> tagIds, Contents content) {
         List<Tag> tags = tagRepository.findAllById(tagIds);
         if (tagIds.size() != tags.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 태그가 없습니다.");
         }
         List<ContentTag> contentTags = tags.stream()
                 .map(tag -> new ContentTag(content, tag))
@@ -90,10 +90,9 @@ public class ContentService {
         contentTagRepository.saveAll(contentTags);
     }
 
-
     public DetailContentResponse getDetailContent(Long contentId, Optional<Profile> profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 글이 없습니다.")
         );
         Long likeCount = contentLikeRepository.countByContentsId(contentId);
         Long totalCount = commentRepository.countByContentsIdAndDeletedAtIsNull(contentId);

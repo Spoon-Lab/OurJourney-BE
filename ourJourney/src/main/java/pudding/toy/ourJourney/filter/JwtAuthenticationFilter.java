@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService userDetailService;
     private static final String[] exceptURIs = {
             "/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**",
-            "/contents/*", "/categories", "/contents", "/tags", "/health"
+            "/contents/*", "/categories", "/contents", "/tags", "/health", "/tags"
     };
     private static final String regex = "^/profiles/\\d+$";
 
