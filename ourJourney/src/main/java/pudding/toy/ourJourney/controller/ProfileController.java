@@ -3,7 +3,6 @@ package pudding.toy.ourJourney.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +10,7 @@ import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ProfileService;
+
 @Tag(name = "Profile API")
 @RestController
 @RequiredArgsConstructor
@@ -24,22 +24,23 @@ public class ProfileController {
     public NewProfileResponse createProfile(@RequestBody ProfileAuthRequest body) {
         return profileService.createProfile(body);
     }
+
     @Operation(summary = "내 프로필 조회")
     @GetMapping("")
     public GetDetailProfileResponse getProfile() {
-        return profileService.getDetailProfile(authService.currentProfileId());
+        return profileService.getMyDetailProfile(authService.currentProfileId());
     }
 
     @Operation(summary = "프로필 조회")
     @GetMapping("/{id}")
-    public GetDetailProfileResponse getProfile(@PathVariable("id") Long id) {
-        return profileService.getDetailProfile(id);
+    public GetDetailProfileResponse getProfile(@PathVariable("id") Long id, @RequestHeader(value = "Authorization", required = false) String header) {
+        return profileService.getDetailProfile(id, authService.getProfileWithAnonymous(header));
     }
 
     @Operation(summary = "내 프로필 수정")
     @PatchMapping("")
     public void updateProfile(@RequestBody UpdateProfileRequest body) {
-        profileService.updateMyProfile(authService.currentProfileId(),body);
+        profileService.updateMyProfile(authService.currentProfileId(), body);
     }
 
     @Operation(summary = "해당 유저가 작성한 글 가져오기")

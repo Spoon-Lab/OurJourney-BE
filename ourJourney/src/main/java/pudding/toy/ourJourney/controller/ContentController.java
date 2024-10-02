@@ -41,26 +41,26 @@ public class ContentController {
 
     @GetMapping("/{contentId}")
     @Operation(summary = "content 하나 조회", description = "content 한 개 조회한다.")
-    public DetailContentResponse getDetailContent(@PathVariable("contentId") Long contentId) {
-        return contentService.getDetailContent(contentId, authService.currentProfile());
+    public DetailContentResponse getDetailContent(@PathVariable("contentId") Long contentId, @RequestHeader(value = "Authorization", required = false) String header) {
+        return contentService.getDetailContent(contentId, authService.getProfileWithAnonymous(header));
     }
 
     @PatchMapping("/{contentId}")
     @Operation(summary = "content 수정", description = "content 한 개 수정한다.")
     public void updateContent(@PathVariable("contentId") Long contentId, @RequestBody UpdateContentRequest editContent) {
-        contentService.updateContent(contentId, editContent);
+        contentService.updateContent(contentId, editContent, authService.getProfileWithAuthorize());
     }
 
     @DeleteMapping("/{contentId}")
     @Operation(summary = "content 삭제", description = "content 삭제한다.")
     public void deleteContent(@PathVariable("contentId") Long contentId) {
-        contentService.deleteContent(contentId);
+        contentService.deleteContent(contentId, authService.getProfileWithAuthorize());
     }
 
     @Operation(summary = "글에 좋아요 누르기")
     @PostMapping("/{contentId}/likes")
-    public Long addLikesToContent(@PathVariable("contentId") Long contentId) {
-        return contentService.addLikesToContent(contentId, authService.getProfileWithAuthorize());
+    public NewLikeResponse addLikesToContent(@PathVariable("contentId") Long contentId) {
+        return new NewLikeResponse(contentService.addLikesToContent(contentId, authService.getProfileWithAuthorize()));
     }
 
     @Operation(summary = "글에 좋아요 취소하기")

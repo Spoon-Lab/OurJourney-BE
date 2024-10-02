@@ -99,22 +99,32 @@ public class ContentService {
 
         Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
         Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+        Boolean isLiked = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+        List<Tag> tags = contents.getContentTags().stream()
+                .map(ContentTag::getTag)
+                .toList();
 
-        return DetailContentResponse.from(contents, likeCount, totalCount, isEditable, isRemovable);
+        return DetailContentResponse.from(contents, likeCount, tags, totalCount, isLiked, isEditable, isRemovable);
     }
 
-    public void updateContent(Long contentId, UpdateContentRequest editRequestDto) {
+    public void updateContent(Long contentId, UpdateContentRequest editRequestDto, Profile profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
+        if (!contents.getProfile().equals(profile)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+        }
         contentsMapper.updateEntityFromDto(editRequestDto, contents);
         contentRepository.save(contents);
     }
 
-    public void deleteContent(Long contentId) {
+    public void deleteContent(Long contentId, Profile profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
+        if (!contents.getProfile().equals(profile)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
+        }
         contents.remove(LocalDateTime.now());
         contentRepository.save(contents);
     }
@@ -123,11 +133,11 @@ public class ContentService {
         Contents content = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        ContentLike contentLike = new ContentLike(content, profile);
-        contentLikeRepository.save(contentLike);
         if (contentLikeRepository.existsByContentsAndProfile(content, profile)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT); //이미 좋아요 처리
         }
+        ContentLike contentLike = new ContentLike(content, profile);
+        contentLikeRepository.save(contentLike);
         return contentLike.getId();
     }
 

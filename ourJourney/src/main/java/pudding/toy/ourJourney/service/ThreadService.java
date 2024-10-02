@@ -75,10 +75,13 @@ public class ThreadService {
     }
 
     @Transactional
-    public ContentsThread updateThread(Long contentId, Long threadId, UpdateThreadRequest body) {
+    public ContentsThread updateThread(Long contentId, Long threadId, UpdateThreadRequest body, Profile profile) {
         Contents contents = getContent(contentId);
         ContentsThread thread = getThread(threadId);
         validateThreadBelongsToContent(thread, contents);
+        if (!thread.getProfile().equals(profile)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+        }
 
         body.getThreadImg().ifPresent(thread::setImgUrl);
         body.getTexts().ifPresent(thread::setTexts);
@@ -95,11 +98,13 @@ public class ThreadService {
         return threadRepository.save(thread);
     }
 
-    public void deleteThread(Long contentId, Long threadId) {
+    public void deleteThread(Long contentId, Long threadId, Profile profile) {
         Contents contents = getContent(contentId);
         ContentsThread thread = getThread(threadId);
         validateThreadBelongsToContent(thread, contents);
-
+        if (!thread.getProfile().equals(profile)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
+        }
         thread.remove();
         threadRepository.save(thread);
     }
@@ -112,11 +117,11 @@ public class ThreadService {
 
     private ContentsThread getThread(Long threadId) {
         return threadRepository.findByIdAndDeletedAtIsNull(threadId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 타래가 없습니다."));
     }
 
     private Contents getContent(Long contentId) {
         return contentRepository.findByIdAndDeletedAtIsNull(contentId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 타래가 없습니다."));
     }
 }

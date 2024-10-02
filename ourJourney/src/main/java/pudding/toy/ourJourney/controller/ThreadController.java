@@ -26,8 +26,8 @@ public class ThreadController {
 
     @GetMapping("/{contentId}/threads")
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
-    public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable) {
-        return new GetThreadResponse(threadService.getThreads(contentId, pageable, authService.currentProfile()));
+    public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable, @RequestHeader(value = "Authorization", required = false) String header) {
+        return new GetThreadResponse(threadService.getThreads(contentId, pageable, authService.getProfileWithAnonymous(header)));
     }
 
     @PostMapping("/{contentId}/threads")
@@ -40,14 +40,13 @@ public class ThreadController {
     @PatchMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "thread 수정", description = "thread를 수정한다.")
     public void updateThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestBody @Valid UpdateThreadRequest body) {
-        authService.getProfileWithAuthorize();
-        threadService.updateThread(contentId, threadId, body);
+        threadService.updateThread(contentId, threadId, body, authService.getProfileWithAuthorize());
     }
 
     @DeleteMapping("/{contentId}/threads/{threadId}")
     @Operation(summary = "thread 삭제", description = "thread 삭제한다.")
     public void deleteThread(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId) {
         authService.getProfileWithAuthorize();
-        threadService.deleteThread(contentId, threadId);
+        threadService.deleteThread(contentId, threadId, authService.getProfileWithAuthorize());
     }
 }

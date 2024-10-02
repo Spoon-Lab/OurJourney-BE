@@ -6,12 +6,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.AuthResponse;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.CustomUserDetailService;
@@ -41,6 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
             System.out.println("필터적용한다잇");
+            if (!isTokenInHeader(request)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "토큰 값이 없습니다.");
+            }
             AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
             setAuthenticationInContext(authResponse);
 
@@ -50,8 +55,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+    //    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+//        try {
+//            //헤더에 토큰이 있을 경우.
+//            if (isTokenInHeader(request)) {
+//                AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
+//                setAuthenticationInContext(authResponse);
+//                chain.doFilter(request, response);
+//                return;
+//            }
+//            //헤더에 토큰이 없을 경우. 비회원 처리
+//            setAnonymousAuthenticationInContext();
+//            chain.doFilter(request, response);
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//    }
+//
+    private boolean isTokenInHeader(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        return authorizationHeader != null && !authorizationHeader.isEmpty();
+    }
+
     private void setAuthenticationInContext(AuthResponse authResponse) {
-        System.out.println("UserDetail profileID" + userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetailService.loadUserByUserId(authResponse.getUserId()),
                 "",
@@ -60,6 +87,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
     }
+
+//    private void setAnonymousAuthenticationInContext() {
+//        Authentication anonymousAuth = new AnonymousAuthenticationToken(
+//                "anonymousUserKey",
+//                "anonymousUser",
+//                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        context.setAuthentication(anonymousAuth);
+//        SecurityContextHolder.setContext(context);
+//    }
 
     private boolean isExceptUrl(String requestUrl) {
         if (requestUrl.matches(regex)) {
