@@ -30,23 +30,43 @@ public class AuthService {
     public AuthResponse validateAuth(String authorizationHeader) {
         if (authorizationHeader.startsWith("Bearer ")) {
             String accessToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 부분을 추출
-            return getAuth(accessToken);
+            return getAuthForAuthorize(accessToken);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "형식이 맞지 않은 토큰입니다.");
     }
 
-    public AuthResponse getAuth(String accessToken) {
+    public AuthResponse getAuthForAuthorize(String accessToken) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.set("Authorization", "Bearer " + accessToken);
-            HttpEntity<Object> entity = new HttpEntity<>(headers);
-            ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
-            return response.getBody();
+            return getAuth(accessToken); // 정상적으로 토큰을 처리
         } catch (HttpClientErrorException.Unauthorized e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않거나 만료된 토큰입니다.");
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+        }
+    }
+
+    private AuthResponse getAuth(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("Authorization", "Bearer " + accessToken);
+        HttpEntity<Object> entity = new HttpEntity<>(headers);
+        ResponseEntity<AuthResponse> response = authRestTemplate.exchange("/auth/certificate", HttpMethod.GET, entity, AuthResponse.class);
+        return response.getBody();
+    }
+
+    public Optional<Profile> getProfileWithAnonymous(String headerToken) {
+        try {
+            if (headerToken == null || !headerToken.startsWith("Bearer ")) {
+                return Optional.empty();
+            }
+            String accessToken = headerToken.substring(7);
+            AuthResponse authResponse = getAuth(accessToken);
+            Optional<Profile> profile = profileRepository.findByUserId(authResponse.getUserId());
+            System.out.println(profile.get().getId());
+            return profile;
+        } catch (HttpClientErrorException e) {
+            log.info(e.getMessage());
+            return Optional.empty();
         }
     }
 
