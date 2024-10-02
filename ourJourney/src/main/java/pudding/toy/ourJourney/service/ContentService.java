@@ -99,13 +99,9 @@ public class ContentService {
 
         Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
         Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
-        Boolean isLiked = contents.getContentLikes().stream()
-                .anyMatch(contentLike -> {
-                    if (contentLike == null || contentLike.getProfile() == null) {
-                        return false;
-                    }
-                    return contentLike.getProfile().getId().equals(profile.get().getId());
-                });
+        Boolean isLiked = contents.getContentLikes()
+                .stream()
+                .anyMatch(contentLikes -> contentLikes.equals(profile.get()));
         List<Tag> tags = contents.getContentTags().stream()
                 .map(ContentTag::getTag)
                 .toList();

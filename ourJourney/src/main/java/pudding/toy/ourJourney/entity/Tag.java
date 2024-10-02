@@ -16,7 +16,7 @@ public class Tag extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "tag_name", unique = true)
+    @Column(unique = true)
     String name; //해시태그 이름
     @OneToMany(mappedBy = "tag")
     List<ContentTag> contentTags;
