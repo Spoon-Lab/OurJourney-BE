@@ -55,13 +55,25 @@ public class ProfileService {
         return randomNickName;
     }
 
-    public GetDetailProfileResponse getDetailProfile(Long id) {
+    public GetDetailProfileResponse getDetailProfile(Long id, Optional<Profile> getProfile) {
+        Profile profile = profileRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 유저가 없습니다.")
+        );
+        boolean isEditable = getProfile.filter(value -> profile.getId().equals(value.getId())).isPresent();
+        return new GetDetailProfileResponse(
+                profile.getId(), profile.getNickName(), Optional.ofNullable(profile.getProfileImg()),
+                Optional.ofNullable(profile.getSelfIntroduction()), isEditable,
+                profile.followerNum(), profile.followingNum()
+        );
+    }
+
+    public GetDetailProfileResponse getMyDetailProfile(Long id) {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 유저가 없습니다.")
         );
         return new GetDetailProfileResponse(
                 profile.getId(), profile.getNickName(), Optional.ofNullable(profile.getProfileImg()),
-                Optional.ofNullable(profile.getSelfIntroduction()),
+                Optional.ofNullable(profile.getSelfIntroduction()), true,
                 profile.followerNum(), profile.followingNum()
         );
     }

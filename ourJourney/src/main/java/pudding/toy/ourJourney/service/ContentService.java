@@ -107,18 +107,24 @@ public class ContentService {
         return DetailContentResponse.from(contents, likeCount, tags, totalCount, isLiked, isEditable, isRemovable);
     }
 
-    public void updateContent(Long contentId, UpdateContentRequest editRequestDto) {
+    public void updateContent(Long contentId, UpdateContentRequest editRequestDto, Profile profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
+        if (!contents.getProfile().equals(profile)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+        }
         contentsMapper.updateEntityFromDto(editRequestDto, contents);
         contentRepository.save(contents);
     }
 
-    public void deleteContent(Long contentId) {
+    public void deleteContent(Long contentId, Profile profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
+        if (!contents.getProfile().equals(profile)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
+        }
         contents.remove(LocalDateTime.now());
         contentRepository.save(contents);
     }
