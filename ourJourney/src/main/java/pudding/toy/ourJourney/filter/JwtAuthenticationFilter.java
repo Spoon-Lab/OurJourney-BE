@@ -6,8 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
@@ -30,34 +32,65 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     };
     private static final String regex = "^/profiles/\\d+$";
 
+    //    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+//        String requestUrl = request.getRequestURI();
+//        String method = request.getMethod();
+//        try {
+//            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method)) || (requestUrl.matches("/profiles") && "POST".equalsIgnoreCase(method))) {
+//                System.out.println("필터적용안한다잇");
+//                chain.doFilter(request, response);
+//                return;
+//            }
+//            System.out.println("필터적용한다잇");
+//            AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
+//            setAuthenticationInContext(authResponse);
+//
+//            chain.doFilter(request, response);
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String requestUrl = request.getRequestURI();
-        String method = request.getMethod();
         try {
-            if ((isExceptUrl(requestUrl) && "GET".equalsIgnoreCase(method)) || (requestUrl.matches("/profiles") && "POST".equalsIgnoreCase(method))) {
-                System.out.println("필터적용안한다잇");
+            //헤더에 토큰이 있을 경우.
+            if (isTokenInHeader(request)) {
+                AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
+                setAuthenticationInContext(authResponse);
                 chain.doFilter(request, response);
                 return;
             }
-            System.out.println("필터적용한다잇");
-            AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
-            setAuthenticationInContext(authResponse);
-
+            //헤더에 토큰이 없을 경우. 비회원 처리
+            setAnonymousAuthenticationInContext();
             chain.doFilter(request, response);
         } catch (Exception e) {
             throw e;
         }
     }
 
+    private boolean isTokenInHeader(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        return authorizationHeader != null && !authorizationHeader.isEmpty();
+    }
+
     private void setAuthenticationInContext(AuthResponse authResponse) {
-        System.out.println("UserDetail profileID" + userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetailService.loadUserByUserId(authResponse.getUserId()),
                 "",
                 userDetailService.loadUserByUserId(authResponse.getUserId()).getAuthorities());
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+    }
+
+    private void setAnonymousAuthenticationInContext() {
+        Authentication anonymousAuth = new AnonymousAuthenticationToken(
+                "anonymousUserKey",
+                "anonymousUser",
+                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(anonymousAuth);
         SecurityContextHolder.setContext(context);
     }
 

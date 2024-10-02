@@ -59,8 +59,8 @@ public class ContentController {
 
     @Operation(summary = "글에 좋아요 누르기")
     @PostMapping("/{contentId}/likes")
-    public Long addLikesToContent(@PathVariable("contentId") Long contentId) {
-        return contentService.addLikesToContent(contentId, authService.getProfileWithAuthorize());
+    public NewLikeResponse addLikesToContent(@PathVariable("contentId") Long contentId) {
+        return new NewLikeResponse(contentService.addLikesToContent(contentId, authService.getProfileWithAuthorize()));
     }
 
     @Operation(summary = "글에 좋아요 취소하기")

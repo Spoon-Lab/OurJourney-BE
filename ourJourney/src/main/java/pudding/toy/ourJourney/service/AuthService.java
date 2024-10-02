@@ -28,11 +28,11 @@ public class AuthService {
     private final ProfileRepository profileRepository;
 
     public AuthResponse validateAuth(String authorizationHeader) {
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader.startsWith("Bearer ")) {
             String accessToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 부분을 추출
             return getAuth(accessToken);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "맞지 않은 토큰입니다.");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "형식이 맞지 않은 토큰입니다.");
     }
 
     public AuthResponse getAuth(String accessToken) {
