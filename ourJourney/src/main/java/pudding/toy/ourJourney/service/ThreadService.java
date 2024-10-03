@@ -35,9 +35,6 @@ public class ThreadService {
         Page<ContentsThread> pageThreads = threadRepository.findByContentsAndDeletedAtIsNull(pageable, contents);
         Long totalCount = threadRepository.countByContents(contents);
 
-        Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
-        Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
-
         List<ListThreadDto> threadDtos = pageThreads.stream()
                 .map(contentsThread -> new ListThreadDto(
                                 contentsThread.getId(),
@@ -50,8 +47,8 @@ public class ThreadService {
                                 contentsThread.getTexts(),
                                 contentsThread.getTagNames(),
                                 contentsThread.getCreatedAt(),
-                                isEditable,
-                                isRemovable
+                                profile.filter(value -> contentsThread.getProfile().getId().equals(value.getId())).isPresent(),
+                                profile.filter(value -> contentsThread.getProfile().getId().equals(value.getId())).isPresent()
                         )
                 )
                 .toList();
