@@ -20,6 +20,7 @@ public class DummyDataInitializer {
     private final CommentRepository commentRepository;
     private final TagRepository tagRepository;
     private final ContentTagRepository contentTagRepository;
+    private final ThreadTagRepository threadTagRepository;
     private final Environment environment;
 
     public Profile dummyProfile;
@@ -50,7 +51,8 @@ public class DummyDataInitializer {
             Contents contents = contentRepository.save(new Contents(dummyProfile, category, "제주도 여행", "jeju.png"));
             contentTagRepository.save(new ContentTag(contents, tag));
 
-            threadRepository.save(new ContentsThread("제주도 여행을 다녀왔어요!", dummyProfile, contents));
+            ContentsThread contentsThread = threadRepository.save(new ContentsThread("제주도 여행을 다녀왔어요!", dummyProfile, contents));
+            threadTagRepository.save(new ThreadTag(contentsThread, tag));
 
             commentRepository.save(new Comment(dummyProfile, contents, "제주도 여행 너무 좋았어요!"));
 
