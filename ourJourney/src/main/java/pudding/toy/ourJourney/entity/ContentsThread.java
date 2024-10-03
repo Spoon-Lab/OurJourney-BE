@@ -29,8 +29,7 @@ public class ContentsThread extends BaseTimeEntity {
     @JoinColumn(name = "profile_id")
     Profile profile;
 
-    @OneToMany
-    @JoinColumn(name = "tag_id")
+    @OneToMany(mappedBy = "contentsThread")
     List<ThreadTag> threadTags;
 
     @ManyToOne
