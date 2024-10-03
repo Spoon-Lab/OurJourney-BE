@@ -139,7 +139,8 @@ public class ContentService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         if (contentLikeRepository.existsByContentsAndProfile(content, profile)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT); //이미 좋아요 처리
+            deleteLike(contentId, profile);
+            return 200L;
         }
         ContentLike contentLike = new ContentLike(content, profile);
         contentLikeRepository.save(contentLike);
