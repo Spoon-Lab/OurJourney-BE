@@ -63,15 +63,25 @@ public class ThreadService {
     public ContentsThread createThreads(Profile profile, Long contentId, CreateThreadRequest createThreadRequest) {
         Contents content = getContent(contentId);
         ContentsThread thread = new ContentsThread(createThreadRequest.getTexts(), profile, content);
-
+        threadRepository.save(thread);
         createThreadRequest.getThreadImg().ifPresent(thread::setImgUrl);
-        createThreadRequest.getTagIds().ifPresent(tagIds -> {
-            List<Tag> tags = tagRepository.findAllById(tagIds);
-            List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
-            threadTagRepository.saveAll(threadTags);
-        });
+        createThreadRequest.getTagIds()
+                .filter(tagIds -> !tagIds.isEmpty())
+                .ifPresent(tagIds -> addThreadTag(tagIds, thread));
         threadRepository.save(thread);
         return thread;
+    }
+
+    private void addThreadTag(List<Long> tagIds, ContentsThread thread) {
+        List<Tag> tags = tagRepository.findAllById(tagIds);
+        if (tagIds.size() != tags.size()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 태그가 없습니다.");
+        }
+        List<ThreadTag> threadTags = tags.stream()
+                .map(tag -> new ThreadTag(thread, tag))
+                .toList();
+        threadTagRepository.saveAll(threadTags);
+
     }
 
     @Transactional
