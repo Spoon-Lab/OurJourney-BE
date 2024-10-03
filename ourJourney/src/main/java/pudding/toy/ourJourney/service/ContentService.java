@@ -96,9 +96,9 @@ public class ContentService {
         );
         Long likeCount = contentLikeRepository.countByContentsId(contentId);
         Long totalCount = commentRepository.countByContentsIdAndDeletedAtIsNull(contentId);
-        Boolean isLiked = false;
         Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
         Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+        Boolean isLiked = false;
         if (!profile.isEmpty()) {
             isLiked = contents.getContentLikes()
                     .stream()
