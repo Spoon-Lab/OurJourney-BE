@@ -62,11 +62,9 @@ public class AuthService {
             String accessToken = headerToken.substring(7);
             AuthResponse authResponse = getAuth(accessToken);
             Optional<Profile> profile = profileRepository.findByUserId(authResponse.getUserId());
-            System.out.println(profile.get().getId());
             return profile;
         } catch (HttpClientErrorException e) {
-            log.info(e.getMessage());
-            return Optional.empty();
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
         }
     }
 

@@ -1,19 +1,14 @@
 package pudding.toy.ourJourney.dto.thread;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class UpdateThreadRequest {
-    JsonNullable<String> texts;
-    JsonNullable<List<Long>> tags;
-    JsonNullable<String> threadImg;
-
-    public UpdateThreadRequest(JsonNullable<String> texts, JsonNullable<List<Long>> tags, JsonNullable<String> threadImg) {
-        this.texts = texts;
-        this.tags = tags;
-        this.threadImg = threadImg;
-    }
+    String texts;
+    List<Long> tags;
+    String threadImg;
 }

@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import pudding.toy.ourJourney.dto.thread.CreateThreadRequest;
-import pudding.toy.ourJourney.dto.thread.CreateThreadResponse;
-import pudding.toy.ourJourney.dto.thread.GetThreadResponse;
-import pudding.toy.ourJourney.dto.thread.UpdateThreadRequest;
+import pudding.toy.ourJourney.dto.thread.*;
 import pudding.toy.ourJourney.entity.ContentsThread;
 import pudding.toy.ourJourney.service.AuthService;
 import pudding.toy.ourJourney.service.ThreadService;
@@ -28,6 +25,12 @@ public class ThreadController {
     @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
     public GetThreadResponse getAllThreads(@PathVariable("contentId") Long contentId, @PageableDefault() Pageable pageable, @RequestHeader(value = "Authorization", required = false) String header) {
         return new GetThreadResponse(threadService.getThreads(contentId, pageable, authService.getProfileWithAnonymous(header)));
+    }
+
+    @GetMapping("/{contentId}/threads/{threadId}")
+    @Operation(summary = "thread 보기", description = "thread를 목록을 본다.")
+    public ThreadDetailResponse getAllThreads(@PathVariable("contentId") Long contentId, @PathVariable("threadId") Long threadId, @RequestHeader(value = "Authorization", required = false) String header) {
+        return threadService.getThreadsDetail(contentId, threadId, authService.getProfileWithAnonymous(header));
     }
 
     @PostMapping("/{contentId}/threads")
