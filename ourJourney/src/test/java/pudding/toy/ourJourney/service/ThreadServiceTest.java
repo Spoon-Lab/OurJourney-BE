@@ -3,7 +3,6 @@ package pudding.toy.ourJourney.service;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pudding.toy.ourJourney.dto.thread.CreateThreadRequest;
@@ -60,11 +59,11 @@ class ThreadServiceTest {
         threadTagRepository.save(new ThreadTag(contentsThread, tag1));
 
         // when
-        UpdateThreadRequest request = new UpdateThreadRequest(JsonNullable.of("updateTexts"),
-                JsonNullable.of(List.of(tag2.getId())),
-                JsonNullable.of("updateImgUrl")
+        UpdateThreadRequest request = new UpdateThreadRequest("updateTexts",
+                List.of(tag2.getId()),
+                "updateImgUrl"
         );
-        ContentsThread act = threadService.updateThread(contents.getId(), contentsThread.getId(), request);
+        ContentsThread act = threadService.updateThread(contents.getId(), contentsThread.getId(), request, profile);
 
         // then
         Assertions.assertThat(act.getTexts()).isEqualTo("updateTexts");

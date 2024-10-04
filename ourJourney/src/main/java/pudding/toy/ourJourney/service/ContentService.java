@@ -12,7 +12,6 @@ import pudding.toy.ourJourney.dto.content.DetailContentResponse;
 import pudding.toy.ourJourney.dto.content.ListContentDto;
 import pudding.toy.ourJourney.dto.content.UpdateContentRequest;
 import pudding.toy.ourJourney.entity.*;
-import pudding.toy.ourJourney.mapper.UpdateContentsMapper;
 import pudding.toy.ourJourney.repository.*;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ import java.util.Optional;
 public class ContentService {
     private final ContentRepository contentRepository;
     private final CategoryRepository categoryRepository;
-    private final UpdateContentsMapper contentsMapper;
     private final AttendeeRepository attendeeRepository;
     private final TagRepository tagRepository;
     private final ContentTagRepository contentTagRepository;
@@ -119,8 +117,53 @@ public class ContentService {
         if (!contents.getProfile().equals(profile)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
         }
-        contentsMapper.updateEntityFromDto(editRequestDto, contents);
+        Optional.ofNullable(editRequestDto.getTitle())
+                .ifPresent(contents::setTitle);
+
+        Optional.ofNullable(editRequestDto.getImgUrl())
+                .ifPresent(contents::setImgUrl);
+
+        updateContentTags(editRequestDto, contents);
+
         contentRepository.save(contents);
+    }
+
+    private void updateContentTags(UpdateContentRequest editRequestDto, Contents contents) {
+        Optional.ofNullable(editRequestDto.getTags())
+                .ifPresent(newTags -> {
+                    //기존에 있던 태그
+                    Optional<List<ContentTag>> existingContentTags = contentTagRepository.findAllByContents(contents);
+                    if (existingContentTags.isPresent()) {
+                        createNewTagsAndDeleteOldTags(contents, newTags, existingContentTags);
+                        return;
+                    }
+                    createNewUpdateContentTags(contents, newTags, existingContentTags);
+
+                });
+    }
+
+    private void createNewTagsAndDeleteOldTags(Contents contents, List<Long> newTags, Optional<List<ContentTag>> existingContentTags) {
+        List<Tag> newTagEntities = tagRepository.findAllById(newTags).stream()
+                .filter(tag -> !existingContentTags.equals(tag))
+                .toList();
+        List<ContentTag> tagsToDelete = existingContentTags.get().stream()
+                .filter(contentTag -> !newTagEntities.equals(contentTag))
+                .toList();
+        contentTagRepository.deleteAll(tagsToDelete);
+        List<ContentTag> contentTags = newTagEntities.stream()
+                .map(tag -> new ContentTag(contents, tag))
+                .toList();
+        contentTagRepository.saveAll(contentTags);
+    }
+
+    private void createNewUpdateContentTags(Contents contents, List<Long> newTags, Optional<List<ContentTag>> existingContentTags) {
+        List<Tag> newTagEntities = tagRepository.findAllById(newTags).stream()
+                .filter(tag -> !existingContentTags.equals(tag))
+                .toList();
+        List<ContentTag> contentTags = newTagEntities.stream()
+                .map(tag -> new ContentTag(contents, tag))
+                .toList();
+        contentTagRepository.saveAll(contentTags);
     }
 
     public void deleteContent(Long contentId, Profile profile) {
@@ -154,5 +197,15 @@ public class ContentService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
         contentLikeRepository.delete(contentLike);
+    }
+
+    public void deleteContentTag(Long contentId, ContentTag contentTag) {
+        Contents content = contentRepository.findById(contentId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        ContentTag tag = contentTagRepository.findByContents(content).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        contentTagRepository.delete(tag);
     }
 }

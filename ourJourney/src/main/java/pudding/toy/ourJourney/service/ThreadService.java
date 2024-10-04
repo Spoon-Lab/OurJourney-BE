@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import pudding.toy.ourJourney.dto.thread.CreateThreadRequest;
-import pudding.toy.ourJourney.dto.thread.ListThreadDto;
-import pudding.toy.ourJourney.dto.thread.ProfileThreadDto;
-import pudding.toy.ourJourney.dto.thread.UpdateThreadRequest;
+import pudding.toy.ourJourney.dto.thread.*;
 import pudding.toy.ourJourney.entity.*;
 import pudding.toy.ourJourney.repository.ContentRepository;
 import pudding.toy.ourJourney.repository.TagRepository;
@@ -59,6 +56,18 @@ public class ThreadService {
         return new PageImpl<>(threadDtos, pageable, totalCount);
     }
 
+    public ThreadDetailResponse getThreadsDetail(Long contentId, Long threadId, Optional<Profile> profile) {
+        Contents contents = getContent(contentId);
+        ContentsThread contentsThread = getThread(threadId);
+        validateThreadBelongsToContent(contentsThread, contents);
+        Optional<List<ThreadTag>> threadTags = threadTagRepository.findAllByContentsThread(contentsThread);
+
+        Boolean isEditable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+        Boolean isRemovable = profile.filter(value -> contents.getProfile().getId().equals(value.getId())).isPresent();
+
+        return new ThreadDetailResponse(contentId, contentsThread, threadTags, isEditable, isRemovable);
+    }
+
     @Transactional
     public ContentsThread createThreads(Profile profile, Long contentId, CreateThreadRequest createThreadRequest) {
         Contents content = getContent(contentId);
@@ -93,19 +102,47 @@ public class ThreadService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
         }
 
-        body.getThreadImg().ifPresent(thread::setImgUrl);
-        body.getTexts().ifPresent(thread::setTexts);
-        body.getTags().ifPresent(tagIds -> {
-            threadTagRepository.deleteAllByContentsThreadId(threadId);
-
-            if (tagIds != null) {
-                List<Tag> tags = tagRepository.findAllById(tagIds);
-                List<ThreadTag> threadTags = tags.stream().map(tag -> new ThreadTag(thread, tag)).toList();
-                threadTagRepository.saveAll(threadTags);
-            }
-        });
+        Optional.ofNullable(body.getThreadImg()).ifPresent(thread::setImgUrl);
+        Optional.ofNullable(body.getTexts()).ifPresent(thread::setTexts);
+        updateThreadTags(body, thread);
 
         return threadRepository.save(thread);
+    }
+
+    private void updateThreadTags(UpdateThreadRequest editRequestDto, ContentsThread thread) {
+        Optional.ofNullable(editRequestDto.getTags())
+                .ifPresent(newTags -> {
+                    Optional<List<ThreadTag>> existingThreadTags = threadTagRepository.findAllByContentsThread(thread);
+                    if (existingThreadTags.isPresent()) {
+                        createNewTagsAndDeleteOldTags(editRequestDto, thread, existingThreadTags);
+                        return;
+                    }
+                    createNewUpdateThreadTag(editRequestDto, thread, existingThreadTags);
+                });
+    }
+
+    private void createNewTagsAndDeleteOldTags(UpdateThreadRequest editRequestDto, ContentsThread thread, Optional<List<ThreadTag>> existingThreadTags) {
+        List<Tag> newTagEntities = tagRepository.findAllById(editRequestDto.getTags()).stream()
+                .filter(tag -> !existingThreadTags.equals(tag))
+                .toList();
+        List<ThreadTag> tagsToDelete = existingThreadTags.get().stream()
+                .filter(contentTag -> !newTagEntities.equals(contentTag))
+                .toList();
+        threadTagRepository.deleteAll(tagsToDelete);
+        List<ThreadTag> threadTags = newTagEntities.stream()
+                .map(tag -> new ThreadTag(thread, tag))
+                .toList();
+        threadTagRepository.saveAll(threadTags);
+    }
+
+    private void createNewUpdateThreadTag(UpdateThreadRequest editRequestDto, ContentsThread thread, Optional<List<ThreadTag>> existingThreadTags) {
+        List<Tag> newTagEntities = tagRepository.findAllById(editRequestDto.getTags()).stream()
+                .filter(tag -> !existingThreadTags.equals(tag))
+                .toList();
+        List<ThreadTag> threadTags = newTagEntities.stream()
+                .map(tag -> new ThreadTag(thread, tag))
+                .toList();
+        threadTagRepository.saveAll(threadTags);
     }
 
     public void deleteThread(Long contentId, Long threadId, Profile profile) {

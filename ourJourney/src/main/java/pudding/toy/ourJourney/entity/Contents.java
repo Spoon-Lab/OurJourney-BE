@@ -71,7 +71,7 @@ public class Contents extends BaseTimeEntity {
         }
     }
 
-    public void addTags(List<ContentTag> contentTags) {
+    public void setTags(List<ContentTag> contentTags) {
         for (ContentTag tags : contentTags) {
             this.addTag(tags);
         }
