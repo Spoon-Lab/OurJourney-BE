@@ -13,6 +13,5 @@ import java.util.List;
 public class UpdateContentRequest {
     String title;
     String imgUrl;
-
     List<Long> tags;
 }
