@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.comment;
+package pudding.toy.ourJourney.comment.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
