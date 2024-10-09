@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
 import pudding.toy.ourJourney.dto.profile.*;
 import pudding.toy.ourJourney.entity.Comment;
+import pudding.toy.ourJourney.entity.ContentLike;
 import pudding.toy.ourJourney.entity.Contents;
 import pudding.toy.ourJourney.entity.Profile;
 import pudding.toy.ourJourney.repository.CommentRepository;
@@ -125,10 +126,13 @@ public class ProfileService {
     }
 
     public GetLikeContentsResponse getMyLikeContents(Long profileId, Pageable pageable) {
-        Page<Long> contentLikesId = contentLikeRepository.findAllByProfileId(profileId, pageable);
-        long totalElements = contentLikesId.getTotalElements();
-        List<Long> contentLikes = contentLikesId.getContent();
-        Page<Contents> contents = contentRepository.findAllByContentLikesIdIn(contentLikes, pageable);
+        Page<ContentLike> contentLikes = contentLikeRepository.findAllByProfileId(profileId, pageable);
+        long totalElements = contentLikes.getTotalElements();
+        List<Long> contentLikesContent = contentLikes.get()
+                .map(ContentLike::getContents)
+                .map(Contents::getId)
+                .toList();
+        List<Contents> contents = contentRepository.findAllByIdIn(contentLikesContent);
         List<GetLikesContentsDto> getLikesContentsDtos = contents.stream()
                 .map(content -> new GetLikesContentsDto(content.getId(), content.getTitle(), content.getProfile().getId(),
                         content.getImgUrl(), content.getCreatedAt(), content.getUpdatedAt()))

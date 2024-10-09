@@ -174,6 +174,8 @@ public class ContentService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
         }
         contents.remove(LocalDateTime.now());
+        contents.getContentLikes()
+                .forEach(cl -> cl.remove(LocalDateTime.now()));
         contentRepository.save(contents);
     }
 
@@ -196,7 +198,7 @@ public class ContentService {
         ContentLike contentLike = contentLikeRepository.findByContentsAndProfile(content, profile).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        contentLikeRepository.delete(contentLike);
+        contentLike.remove(LocalDateTime.now());
     }
 
     public void deleteContentTag(Long contentId, ContentTag contentTag) {
