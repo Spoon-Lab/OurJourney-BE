@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.auth.dto.AuthResponse;
+import pudding.toy.ourJourney.global.error.ErrorCode;
+import pudding.toy.ourJourney.global.exception.CustomException;
 import pudding.toy.ourJourney.profile.entity.Profile;
 import pudding.toy.ourJourney.profile.repository.ProfileRepository;
 
@@ -32,16 +33,14 @@ public class AuthService {
             String accessToken = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 부분을 추출
             return getAuthForAuthorize(accessToken);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "형식이 맞지 않은 토큰입니다.");
+        throw new CustomException(ErrorCode.BAD_REQUEST_400);
     }
 
     public AuthResponse getAuthForAuthorize(String accessToken) {
         try {
             return getAuth(accessToken); // 정상적으로 토큰을 처리
         } catch (HttpClientErrorException.Unauthorized e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않거나 만료된 토큰입니다.");
-        } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+            throw new CustomException(ErrorCode.UNAUTHORIZED_401);
         }
     }
 
@@ -64,7 +63,7 @@ public class AuthService {
             Optional<Profile> profile = profileRepository.findByUserId(authResponse.getUserId());
             return profile;
         } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
+            throw new CustomException(ErrorCode.UNAUTHORIZED_401);
         }
     }
 
@@ -87,6 +86,6 @@ public class AuthService {
     }
 
     public Profile getProfileWithAuthorize() {
-        return currentProfile().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."));
+        return currentProfile().orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_401));
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Where;
-import pudding.toy.ourJourney.entity.BaseTimeEntity;
+import pudding.toy.ourJourney.global.entity.BaseTimeEntity;
 import pudding.toy.ourJourney.profile.entity.Profile;
 
 @Entity

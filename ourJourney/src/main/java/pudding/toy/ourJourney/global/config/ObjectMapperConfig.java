@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.config;
+package pudding.toy.ourJourney.global.config;
 
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springdoc.core.properties.SpringDocConfigProperties;
