@@ -6,17 +6,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.server.ResponseStatusException;
 import pudding.toy.ourJourney.auth.dto.AuthResponse;
 import pudding.toy.ourJourney.auth.service.AuthService;
 import pudding.toy.ourJourney.auth.service.CustomUserDetailService;
+import pudding.toy.ourJourney.global.error.ErrorCode;
+import pudding.toy.ourJourney.global.exception.CustomException;
 
 import java.io.IOException;
 
@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             System.out.println("필터적용한다잇");
             if (!isTokenInHeader(request)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "토큰 값이 없습니다.");
+                throw new CustomException(ErrorCode.NOT_FOUND_404);
             }
             AuthResponse authResponse = authService.validateAuth(request.getHeader("Authorization"));
             setAuthenticationInContext(authResponse);
