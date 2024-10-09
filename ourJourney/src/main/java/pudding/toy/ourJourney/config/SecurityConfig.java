@@ -13,10 +13,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import pudding.toy.ourJourney.auth.service.AuthService;
+import pudding.toy.ourJourney.auth.service.CustomUserDetailService;
 import pudding.toy.ourJourney.filter.AuthExceptionFilter;
 import pudding.toy.ourJourney.filter.JwtAuthenticationFilter;
-import pudding.toy.ourJourney.service.AuthService;
-import pudding.toy.ourJourney.service.CustomUserDetailService;
 
 import java.util.Collections;
 import java.util.List;

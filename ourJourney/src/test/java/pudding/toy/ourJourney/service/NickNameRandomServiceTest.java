@@ -7,13 +7,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pudding.toy.ourJourney.dto.auth.ProfileAuthRequest;
-import pudding.toy.ourJourney.dto.profile.NewProfileResponse;
-import pudding.toy.ourJourney.entity.Profile;
-import pudding.toy.ourJourney.repository.ProfileRepository;
-
-import java.util.Arrays;
-import java.util.List;
+import pudding.toy.ourJourney.auth.dto.ProfileAuthRequest;
+import pudding.toy.ourJourney.profile.dto.NewProfileResponse;
+import pudding.toy.ourJourney.profile.entity.Profile;
+import pudding.toy.ourJourney.profile.repository.ProfileRepository;
+import pudding.toy.ourJourney.profile.service.ProfileService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -66,6 +64,6 @@ public class NickNameRandomServiceTest {
         NewProfileResponse response = profileService.createProfile(request);
         Assertions.assertNotNull(response);
 
-        verify(profileRepository,times(2)).existsByNickName(anyString()); //두번 호출?
+        verify(profileRepository, times(2)).existsByNickName(anyString()); //두번 호출?
     }
 }

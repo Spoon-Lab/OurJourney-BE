@@ -7,10 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import pudding.toy.ourJourney.dto.profile.GetDetailProfileResponse;
-import pudding.toy.ourJourney.entity.Profile;
-import pudding.toy.ourJourney.repository.FollowRepository;
-import pudding.toy.ourJourney.repository.ProfileRepository;
+import pudding.toy.ourJourney.follow.repository.FollowRepository;
+import pudding.toy.ourJourney.follow.service.FollowService;
+import pudding.toy.ourJourney.profile.dto.GetDetailProfileResponse;
+import pudding.toy.ourJourney.profile.entity.Profile;
+import pudding.toy.ourJourney.profile.repository.ProfileRepository;
+import pudding.toy.ourJourney.profile.service.ProfileService;
 
 import java.util.Optional;
 

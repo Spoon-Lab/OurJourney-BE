@@ -5,8 +5,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
-import pudding.toy.ourJourney.entity.*;
-import pudding.toy.ourJourney.repository.*;
+import pudding.toy.ourJourney.category.entity.Category;
+import pudding.toy.ourJourney.category.repository.CategoryRepository;
+import pudding.toy.ourJourney.comment.CommentRepository;
+import pudding.toy.ourJourney.comment.entity.Comment;
+import pudding.toy.ourJourney.content.entity.Contents;
+import pudding.toy.ourJourney.content.repository.ContentRepository;
+import pudding.toy.ourJourney.profile.entity.Profile;
+import pudding.toy.ourJourney.profile.repository.ProfileRepository;
+import pudding.toy.ourJourney.tags.entity.ContentTag;
+import pudding.toy.ourJourney.tags.entity.Tag;
+import pudding.toy.ourJourney.tags.repository.ContentTagRepository;
+import pudding.toy.ourJourney.tags.repository.TagRepository;
+import pudding.toy.ourJourney.tags.repository.ThreadTagRepository;
+import pudding.toy.ourJourney.thread.entity.ContentsThread;
+import pudding.toy.ourJourney.thread.repository.ThreadRepository;
 
 import java.util.Optional;
 

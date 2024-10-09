@@ -14,9 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
-import pudding.toy.ourJourney.dto.auth.AuthResponse;
-import pudding.toy.ourJourney.service.AuthService;
-import pudding.toy.ourJourney.service.CustomUserDetailService;
+import pudding.toy.ourJourney.auth.dto.AuthResponse;
+import pudding.toy.ourJourney.auth.service.AuthService;
+import pudding.toy.ourJourney.auth.service.CustomUserDetailService;
 
 import java.io.IOException;
 

@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import pudding.toy.ourJourney.dto.tags.GetTagsDto;
-import pudding.toy.ourJourney.entity.Tag;
-import pudding.toy.ourJourney.repository.TagRepository;
-
-import static org.junit.jupiter.api.Assertions.*;
+import pudding.toy.ourJourney.tags.dto.GetTagsDto;
+import pudding.toy.ourJourney.tags.entity.Tag;
+import pudding.toy.ourJourney.tags.repository.TagRepository;
+import pudding.toy.ourJourney.tags.service.TagService;
 
 @Transactional
 @SpringBootTest
