@@ -5,11 +5,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import io.swagger.v3.oas.models.media.Content;
-import pudding.toy.ourJourney.dto.content.DetailContentResponse;
-import pudding.toy.ourJourney.entity.*;
-import pudding.toy.ourJourney.repository.*;
+import pudding.toy.ourJourney.category.entity.Category;
+import pudding.toy.ourJourney.category.repository.CategoryRepository;
+import pudding.toy.ourJourney.comment.CommentRepository;
+import pudding.toy.ourJourney.comment.entity.Comment;
+import pudding.toy.ourJourney.content.dto.DetailContentResponse;
+import pudding.toy.ourJourney.content.entity.ContentLike;
+import pudding.toy.ourJourney.content.entity.Contents;
+import pudding.toy.ourJourney.content.repository.ContentLikeRepository;
+import pudding.toy.ourJourney.content.repository.ContentRepository;
+import pudding.toy.ourJourney.content.service.ContentService;
+import pudding.toy.ourJourney.profile.entity.Profile;
+import pudding.toy.ourJourney.profile.repository.ProfileRepository;
 
 import java.util.Optional;
 

@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pudding.toy.ourJourney.dto.auth.AuthResponse;
+import pudding.toy.ourJourney.auth.dto.AuthResponse;
+import pudding.toy.ourJourney.auth.service.AuthService;
 
 import javax.naming.AuthenticationException;
 

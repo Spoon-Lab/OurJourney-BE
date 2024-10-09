@@ -1,19 +1,14 @@
 package pudding.toy.ourJourney.mapper;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pudding.toy.ourJourney.dto.content.CreateContentRequest;
-import pudding.toy.ourJourney.entity.Category;
-import pudding.toy.ourJourney.entity.Contents;
+import pudding.toy.ourJourney.category.entity.Category;
+import pudding.toy.ourJourney.content.dto.CreateContentRequest;
+import pudding.toy.ourJourney.content.entity.Contents;
 
 import java.util.List;
 import java.util.Optional;
