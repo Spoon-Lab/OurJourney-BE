@@ -8,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import pudding.toy.ourJourney.category.entity.Category;
 import pudding.toy.ourJourney.category.repository.CategoryRepository;
-import pudding.toy.ourJourney.config.DummyDataInitializer;
 import pudding.toy.ourJourney.content.entity.Contents;
 import pudding.toy.ourJourney.content.repository.ContentRepository;
 import pudding.toy.ourJourney.content.repository.ContentsQueryRepository;
+import pudding.toy.ourJourney.global.config.DummyDataInitializer;
 
 
 @Transactional

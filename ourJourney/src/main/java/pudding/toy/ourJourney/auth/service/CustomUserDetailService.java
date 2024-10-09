@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import pudding.toy.ourJourney.entity.CustomUserDetail;
+import pudding.toy.ourJourney.global.entity.CustomUserDetail;
 import pudding.toy.ourJourney.profile.entity.Profile;
 import pudding.toy.ourJourney.profile.repository.ProfileRepository;
 

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import pudding.toy.ourJourney.content.entity.Contents;
-import pudding.toy.ourJourney.entity.BaseTimeEntity;
+import pudding.toy.ourJourney.global.entity.BaseTimeEntity;
 import pudding.toy.ourJourney.profile.entity.Profile;
 import pudding.toy.ourJourney.tags.entity.Tag;
 import pudding.toy.ourJourney.tags.entity.ThreadTag;
