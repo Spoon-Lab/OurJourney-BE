@@ -11,7 +11,7 @@ import pudding.toy.ourJourney.attendee.AttendeeRepository;
 import pudding.toy.ourJourney.attendee.entity.Attendee;
 import pudding.toy.ourJourney.category.entity.Category;
 import pudding.toy.ourJourney.category.repository.CategoryRepository;
-import pudding.toy.ourJourney.comment.CommentRepository;
+import pudding.toy.ourJourney.comment.repository.CommentRepository;
 import pudding.toy.ourJourney.content.dto.CreateContentRequest;
 import pudding.toy.ourJourney.content.dto.DetailContentResponse;
 import pudding.toy.ourJourney.content.dto.ListContentDto;
