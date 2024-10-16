@@ -30,10 +30,10 @@ public class Contents extends BaseTimeEntity {
     String title;
     @Column(name = "img_url")
     String imgUrl;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     Profile profile;
     @OneToMany(mappedBy = "contents")

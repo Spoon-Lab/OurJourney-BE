@@ -30,14 +30,14 @@ public class ContentsThread extends BaseTimeEntity {
     @Column(name = "img_url")
     String imgUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     Profile profile;
 
     @OneToMany(mappedBy = "contentsThread")
     List<ThreadTag> threadTags;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     Contents contents;
 
