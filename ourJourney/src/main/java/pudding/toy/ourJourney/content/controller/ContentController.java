@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pudding.toy.ourJourney.auth.service.AuthService;
 import pudding.toy.ourJourney.content.dto.*;
 import pudding.toy.ourJourney.content.service.ContentService;
+import pudding.toy.ourJourney.global.response.BaseResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +25,13 @@ public class ContentController {
 
     @GetMapping()
     @Operation(summary = "content 보기", description = "content를 검색한다.")
-    public GetContentResponse getAllContents(
+    public BaseResponse<?> getAllContents(
             Pageable pageable,
             @RequestParam("categoryId") Optional<Long> categoryId,
             @RequestParam("title") Optional<String> title,
             @RequestParam("tagIds") Optional<List<Long>> tagIds
     ) {
-        return new GetContentResponse(contentService.getAllContents(pageable, categoryId, title, tagIds));
+        return BaseResponse.ok(new GetContentResponse(contentService.getAllContents(pageable, categoryId, title, tagIds)));
     }
 
     @PostMapping

@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.config;
+package pudding.toy.ourJourney.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

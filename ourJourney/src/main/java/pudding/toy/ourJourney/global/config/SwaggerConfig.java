@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.config;
+package pudding.toy.ourJourney.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

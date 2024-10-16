@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Where;
 import pudding.toy.ourJourney.attendee.entity.Attendee;
 import pudding.toy.ourJourney.category.entity.Category;
-import pudding.toy.ourJourney.entity.BaseTimeEntity;
+import pudding.toy.ourJourney.global.entity.BaseTimeEntity;
 import pudding.toy.ourJourney.profile.entity.Profile;
 import pudding.toy.ourJourney.tags.entity.ContentTag;
 import pudding.toy.ourJourney.thread.entity.ContentsThread;
@@ -30,10 +30,10 @@ public class Contents extends BaseTimeEntity {
     String title;
     @Column(name = "img_url")
     String imgUrl;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     Profile profile;
     @OneToMany(mappedBy = "contents")

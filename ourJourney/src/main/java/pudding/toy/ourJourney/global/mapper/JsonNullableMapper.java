@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.mapper;
+package pudding.toy.ourJourney.global.mapper;
 
 import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
@@ -17,6 +17,7 @@ public interface JsonNullableMapper {
 
     /**
      * nullable한 파라미터가 명시적으로 전달되었는지 확인한다.
+     *
      * @return 명시적으로 전달된 경우 true를, 그렇지 않은 경우 false를 반환
      */
     @Condition

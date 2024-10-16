@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.entity;
+package pudding.toy.ourJourney.global.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

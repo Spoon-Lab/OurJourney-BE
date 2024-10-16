@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import pudding.toy.ourJourney.attendee.AttendeeRepository;
 import pudding.toy.ourJourney.attendee.entity.Attendee;
+import pudding.toy.ourJourney.attendee.repository.AttendeeRepository;
 import pudding.toy.ourJourney.category.entity.Category;
 import pudding.toy.ourJourney.category.repository.CategoryRepository;
 import pudding.toy.ourJourney.comment.repository.CommentRepository;
@@ -21,6 +21,8 @@ import pudding.toy.ourJourney.content.entity.Contents;
 import pudding.toy.ourJourney.content.repository.ContentLikeRepository;
 import pudding.toy.ourJourney.content.repository.ContentRepository;
 import pudding.toy.ourJourney.content.repository.ContentsQueryRepository;
+import pudding.toy.ourJourney.global.error.ErrorCode;
+import pudding.toy.ourJourney.global.exception.CustomException;
 import pudding.toy.ourJourney.profile.entity.Profile;
 import pudding.toy.ourJourney.profile.repository.ProfileRepository;
 import pudding.toy.ourJourney.tags.entity.ContentTag;
@@ -56,7 +58,7 @@ public class ContentService {
 
     public Long createContent(CreateContentRequest createContentRequest, Profile profile) {
         Category category = categoryRepository.findById(createContentRequest.getCategoryId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_404));
 
         Contents content = Contents.builder()
                 .title(createContentRequest.getTitle())
@@ -64,6 +66,7 @@ public class ContentService {
                 .category(category)
                 .build();
         contentRepository.save(content);
+
 
         createContentRequest.getImgUrl().ifPresent(content::setImgUrl);
         createContentRequest.getAttendeeIds()
@@ -104,7 +107,7 @@ public class ContentService {
 
     public DetailContentResponse getDetailContent(Long contentId, Optional<Profile> profile) {
         Contents contents = contentRepository.findById(contentId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당하는 글이 없습니다.")
+                () -> new CustomException(ErrorCode.NOT_FOUND_404)
         );
         Long likeCount = contentLikeRepository.countByContentsId(contentId);
         Long totalCount = commentRepository.countByContentsIdAndDeletedAtIsNull(contentId);

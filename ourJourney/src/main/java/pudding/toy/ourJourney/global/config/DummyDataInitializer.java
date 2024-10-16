@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.config;
+package pudding.toy.ourJourney.global.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
