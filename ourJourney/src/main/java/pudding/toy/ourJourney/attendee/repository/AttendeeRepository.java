@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.attendee;
+package pudding.toy.ourJourney.attendee.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

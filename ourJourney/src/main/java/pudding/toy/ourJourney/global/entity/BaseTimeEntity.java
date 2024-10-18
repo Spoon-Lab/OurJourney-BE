@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.entity;
+package pudding.toy.ourJourney.global.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

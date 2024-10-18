@@ -1,4 +1,4 @@
-package pudding.toy.ourJourney.config;
+package pudding.toy.ourJourney.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

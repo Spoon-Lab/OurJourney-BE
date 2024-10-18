@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import pudding.toy.ourJourney.content.entity.Contents;
-import pudding.toy.ourJourney.entity.BaseTimeEntity;
 import pudding.toy.ourJourney.follow.entity.Follow;
+import pudding.toy.ourJourney.global.entity.BaseTimeEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Profile extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    
     @Column(name = "user_id", nullable = false, unique = true)
     Long userId;
 

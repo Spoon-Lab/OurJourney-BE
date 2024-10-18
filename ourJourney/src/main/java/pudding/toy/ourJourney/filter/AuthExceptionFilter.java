@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
-import pudding.toy.ourJourney.config.error.ErrorResponse;
+import pudding.toy.ourJourney.global.error.ErrorCode;
+import pudding.toy.ourJourney.global.response.BaseResponse;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ public class AuthExceptionFilter extends OncePerRequestFilter {
                 String reason = e.getReason() != null ? e.getReason() : "Authentication failed";
                 response.setContentType("application/json; charset=UTF-8");
                 response.setCharacterEncoding("UTF-8");
-                String json = objectMapper.writeValueAsString(ErrorResponse.error(response.getStatus(), reason));
+                String json = objectMapper.writeValueAsString(BaseResponse.fail(ErrorCode.UNAUTHORIZED_401));
                 response.getWriter().write(json);
                 return;
             }

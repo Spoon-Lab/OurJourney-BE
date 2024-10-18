@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import pudding.toy.ourJourney.entity.BaseTimeEntity;
+import pudding.toy.ourJourney.global.entity.BaseTimeEntity;
 
 import java.util.List;
 

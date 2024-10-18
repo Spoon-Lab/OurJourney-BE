@@ -28,6 +28,7 @@ public class ContentsQueryRepository {
         List<Contents> list = baseQuery(categoryId, title, tagIds)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(contents.createdAt.desc())
                 .select(contents)
                 .fetch();
         List<ListContentDto> listDto = list.stream()
